@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title= title
+    meta(name='viewport' content='width=device-width initial-scale=1')
+    meta(name="author" content="Edoardo Putti polimi student")
+    link(rel="icon" type="image/png" sizes='16x16 32x32 48x48 64x64' href="/images/final_icon.png")
+    link(rel="stylesheet", href="/stylesheets/font-awesome/css/font-awesome.min.css")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous")  
+    script(src="https://code.jquery.com/jquery-3.6.0.slim.js") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js") 
+    body(style="background: #f3f2ef") 
+        div(class='container' style="padding-top: 70px")
+            div(class='row justify-content-center')
+                div(class='col-md-4 col-md-offset-4')
+                    div(class='panel panel-default')
+                        div(class='panel-body')
+                            div(class='text-center')
+                                h3
+                                    i(class='fa fa-lock fa-4x')
+                                h2 Forgot your password?
+                                p Remember to check also your spam inbox
+                                if errors
+                                    for error in errors 
+                                        div(class="alert alert-danger")!= error.msg
+                                if success 
+                                    div(class="alert alert-success")!= success
+                                div(class='panel-body')
+                                    form#register-form(role='form' autocomplete='off' class='form' method='post')
+                                        div(class='form-group')
+                                            div(class='input-group')
+                                                div(class='input-group-prepend')
+                                                    div(class='input-group-text') 
+                                                        i(class='fa fa-envelope')
+                                                input#email(name='email' placeholder='email address' class='form-control' type='email')
+                                        div(class='form-group')
+                                            input(name='recover-submit' class='btn btn-lg btn-primary btn-block' value='Reset Password' type='submit')
+                                        

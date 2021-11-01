@@ -1,0 +1,165 @@
+extends layout
+
+block content
+    body(class="studRecap")          
+        input#Url(type='hidden', value=url)
+        #question(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Leave a comment/question
+                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        form(style="padding: 0%;")
+                            label(for="commentBox" class="col-form-label") comment / question:
+                            textarea#commentBox(class="form-control" placeholder="Add yours here")
+                    div(class="modal-footer")
+                        button#postComm(class="btn btn-logOut " style="margin-right: 20px;" onclick="return closeForm()")  Post 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #logged(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Thank you!
+                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        h5 To come back later and edit your feedback without the professor seeing them, click on save 
+                            br
+                            br
+                            | To give your consent to the professor to see your feedback, click on submit
+                    div(class="modal-footer")
+                        button(class="btn btn-logOut2 " style="margin-right: 20px;" onclick="sendConfirmation()")  Submit 
+                        button(class="btn btn-logOut " style="margin-right: 20px;" onclick="updateWatched()")  Save 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #anonim(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Attention!
+                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        h5
+                            | By leaving the page you will no longer be able to edit the reactions and comments given are you sure you want to submit them?
+                        h5 By clicking on the submit button you are giving your consent to the professor to see your reactions and comments.
+                    div(class="modal-footer")
+                        button(class="btn btn-logOut2 " style="margin-right: 20px;" onclick="sendConfirmation()")  Submit 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #editComment(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Edit your comment/question
+                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        form(style="padding: 0%;")
+                            label(for="commentBoxEdit" class="col-form-label") comment / question:
+                            textarea#commentBoxEdit(class="form-control" placeholder="")
+                    div(class="modal-footer")
+                        button#postCommEdited(class="btn btn-logOut " style="margin-right: 20px;")  Confirm Edit 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        nav(class="d-flex    navbar navbar-dark  p-2 px-sm-4 mb-4  ")
+            div(style="color: whitesmoke; text-align: center;")
+                strong#loggedEmail
+                    i(class="fa fa-user")
+                    | Logged-in as: 
+                    = name
+            div(class="ml-auto" style="color: whitesmoke; text-align: center;  ")
+                strong#classTitle  Video:  
+                    = video
+            button#end(class="btn btn-ml  btn-logOut2 ml-auto" data-toggle="modal" style=" border-radius: 40px;  padding: 10px;")  End session 
+        div(class="row ")
+            #fullscreen(class="col-12 col-sm-12  col-lg-7  col-xl-8")
+                div(class="row ")
+                    div(class="col-12 d-flex justify-content-center")
+                        #playerTop(class="videoPlayerRec")
+                    #col-reac(class="col-12 " style="margin-top: 5px;")
+                        #container(class="row d-flex justify-content-center")
+                            button#likeReaction(class="btn btn-lg no-boxshadow" onclick="addLike()" title="I get it")
+                                img(src="../images/happy3.png" height="50px")
+                            button#dislikeReaction(class="btn btn-lg  no-boxshadow" onclick="addDislike()" title="I don't get it")
+                                img(src="../images/sad3.png" height="50px")
+                            button#commentReaction(class="btn btn-lg no-boxshadow" data-toggle="modal" data-target="#question" onclick="openForm()" style="margin-right: 2.3vw;" title="Post a question")
+                                img(src="../images/question.png" height="50px")
+                        button#enableFullScreen(class="btn btn-md btn-logOut2" onclick="openFullscreen();") Fullscreen
+                    div(class="col-12 d-flex justify-content-center" style="margin-top: 10px;")
+                        button#enableFullScreenSmall(class="btn btn-lg btn-logOut2" onclick="openFullscreen();" style="border-radius: 20px; display: none;") Fullscreen
+            #lateral(class="col-12 col-sm-12   col-lg-5 col-xl-4 order-1 order-lg-12 " style="text-align: center; ")
+                h4(style="margin-bottom: 20px;") Your reactions:
+                div(class="btn-group  d-flex justify-content-center" role="group")
+                    button#like(class="btn btn-lg  interact2 " onclick="showTable('#likesArray')" style="display: flex; align-items: center; text-align: center; ")
+                        img(src="../images/happy3.png" height="40px")
+                        p#likesCount(style="font-weight:bold; margin-top: 10px; margin-left: 5px;")
+                        i(class="fa fa-chevron-down fa-lg")
+                    button#dislike(class="btn btn-lg  interact2 " onclick="showTable('#dislikesArray')" style="display: flex; align-items: center;")
+                        img(src="../images/sad3.png" height="40px")
+                        p#dislikesCount(style="font-weight:bold; margin-top: 10px; margin-left: 5px;")
+                        i(class="fa fa-chevron-down fa-lg")
+                    button#comment(class="btn btn-lg  interact2 " onclick="showTable('#commentsArray')" style="display: flex; align-items: center;")
+                        img(src="../images/question.png" height="40px")
+                        p#commentsCount(style="font-weight:bold; margin-top: 10px; margin-left: 5px;")
+                        i(class="fa fa-chevron-down fa-lg")
+                #style-1(class="tablerecap ")
+                    div(class="d-flex justify-content-center" style="margin-bottom: 50px; ")
+                        table#likesArray(class="table  table-hover  tablerecap" style="display:none")
+                            thead
+                                tr
+                                    th(scope="col") Reaction
+                                    th(scope="col") Minute
+                                    th(scope="col") Delete
+                            tbody
+                        table#dislikesArray(class="table  table-hover tablerecap " style="display:none")
+                            thead
+                                tr
+                                    th(scope="col") Reaction
+                                    th(scope="col") Minute
+                                    th(scope="col") Delete
+                            tbody
+                        table#commentsArray(class="table  table-hover  tablerecap" style="display:none")
+                            thead
+                                tr
+                                    th(scope="col") Reaction
+                                    th(scope="col") Minute
+                                    th(scope="col") Modify
+                                    th(scope="col") Delete
+                            tbody
+                div(class="row d-flex justify-content-center")
+                    #sliderContainer(class="row justify-content-center" style=" margin-top: 10px; margin-left: 20px;")
+                        div(class="col-12  ")
+                            h4 How clear was the video?
+                        div(class="col-12  d-inline-flex justify-content-center")
+                            input#clarity(type="range" min="1" max="100" value="50" class="slider" style="margin:0; margin-right: 5px; margin-top: 10px; ")
+                            h4#clarityValue(style="display: inline-block; ")
+                    div(class="row justify-content-center" style="margin-top: 10px; margin-left: 20px;")
+                        div(class="col-12 ")
+                            h4 How much did you appreciate the video?
+                        div(class="col-12  d-flex justify-content-center")
+                            input#appreciation(type="range" min="1" max="100" value="50" class="slider" style="margin:0; margin-right: 5px; margin-top: 10px;")
+                            h4#appreciationValue(style="display:inline-block")
+        #loading(style="top: 0;")
+            img(src="../images/loading_500.gif" alt="loading")
+        script(src="../javascripts/studentClass.js")
+        script.
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            var player;
+
+
+
+            function onYouTubeIframeAPIReady(url) {
+                player = new YT.Player('playerTop', {
+                    height: 'auto',
+                    width: '90%',
+                    videoId: $("#Url").val(),
+                    playerVars: { 'autoplay': false, fs: 0 },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange,
+
+                    }
+
+                });
+            }
+        
+        

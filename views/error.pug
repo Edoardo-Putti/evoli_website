@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  body(style='background: white')
+    h1= message
+    h2= error.status
+    pre #{error.stack}

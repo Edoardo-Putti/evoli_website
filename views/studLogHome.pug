@@ -1,0 +1,57 @@
+extends layout
+
+block content
+    body(class='studenthome')
+        div(class='cube')
+        div(class='cube')
+        div(class='cube')
+        div(class='cube')
+        div(class='cube')
+        div(class='cube')
+        nav(class='d-flex  flex-md-row  navbar navbar-dark navbar-expand-sm p-3 px-md-4 mb-3  ')
+            div(class='navbar-brand' style='color: whitesmoke; text-align: center;')
+                strong#loggedEmail
+                    i(class='fa fa-user')
+                    | Logged as: 
+                    =name
+            button(class='navbar-toggler ' type='button' data-toggle='collapse' data-target='#Navbar')
+                span(class='navbar-toggler-icon')
+            #Navbar(class='collapse navbar-collapse justify-content-stretch ' style='margin-bottom: 20px;')
+                ul(class='navbar-nav ml-auto')
+                    li(class='nav-item')
+                        a(class='nav-link' href='/')
+                            span(class='fa fa-home fa-lg') 
+                            | Home
+                    li(class='nav-item')
+                        a(class='nav-link' href='about')
+                            span(class='fa fa-info-circle fa-lg') 
+                            | About
+                    li(class='nav-item')
+                        a(class='nav-link' href='/instructions/EVOLI_InstructionsOfUse.pdf' target='_blank')
+                            span(class='fa fa-book fa-lg') 
+                            | Instruction
+                    li(class='nav-item ')
+                        a(class='nav-link' href='credits') 
+                            span(class='fa fa-at fa-lg') 
+                            | Credits
+                    li(class='nav-item')
+                        a(role='button' class='btn btn-nav rounded-pill'  href='student/logout')
+                            | Log
+                            | Out
+        div
+            div(class='row  d-flex justify-content-around ' style='padding: 10vw; width: 100%; margin: 0px')
+                div(class='col-12 col-sm-10 col-md-6 col-lg-4 justify-content-center d-none d-lg-block')
+                    img(src='images/login.png' class='img-fluid' alt='home' style='max-width: 100%;')
+                div(class='col-12 col-sm-10 col-md-6 col-lg-4  justify-content-center' style='margin-top: 60px;')
+                    form#test(style='border-radius: 40px;   background: -webkit-linear-gradient(right, orange, #ffc61b ); text-align: center; margin-top: 2px; height: fit-content; width: 100%; ' method='post' action='student/checkCode')
+                        label(for='code' style='margin-top: 10px;  ')
+                            h4 Insert video code: 
+                            if message
+                                if message.code
+                                    div(class="alert alert-danger")!= message.message 
+                        input#code(type='text' class='form-control' placeholder='paste code here' name='code' aria-describedby='basic-addon1' style='margin-bottom: 20px;' required)
+                        div(class='d-flex justify-content-center')
+                            button#send(class=' btn  btn-lg btn-primary ' style='margin-right: 0px;' type='submit')  GO! 
+                                img(src='images/shuttle.png' class='shake' height='30px' style='margin-left: 10px;')
+                div(class='col-12 col-sm-10 col-md-6 col-lg-4  justify-content-center d-none d-md-block ')
+                    img(src='images/feedback.png' class='img-fluid' alt='home' style='max-width: 60vw; margin-top: 8vh;')

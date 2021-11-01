@@ -1,0 +1,105 @@
+extends layout
+
+block content
+  body(class="studenthome")
+    nav(class='d-flex  flex-md-row  navbar navbar-dark navbar-expand-sm p-3 px-md-4 mb-3')
+      div(class='navbar-brand d-none d-md-block my-0 mr-md-auto' href='/')
+        img(src='/images/logo_polimi.png' alt='Polimi Logo' height='80px')
+      div(class='navbar-brand d-md-none d-block  my-0 mr-md-auto' href='/')
+        img(src='/images/logo_polimi_mobile.png' alt='Polimi Logo' height='80px')
+      button(class='navbar-toggler ' type='button' data-toggle='collapse' data-target='#Navbar')
+        span(class='navbar-toggler-icon')
+      #Navbar(class='collapse navbar-collapse justify-content-stretch ' style='margin-bottom: 20px;')
+        ul(class='navbar-nav ml-auto')
+          li(class='nav-item')
+            a(class='nav-link' href='/')
+              span(class='fa fa-home fa-lg')
+              | Home
+          li(class='nav-item')
+            a(class='nav-link' href='about')
+              span(class='fa fa-info-circle fa-lg')
+              | About
+          li(class='nav-item')
+            a(class='nav-link' href='/instructions/EVOLI_InstructionsOfUse.pdf' target='_blank')
+              span(class='fa fa-book fa-lg')
+              | Instruction
+          li(class='nav-item ')
+            a(class='nav-link' href='credits')
+              span(class='fa fa-at fa-lg')
+              | Credits
+    div(class='cube')
+    div(class='cube')
+    div(class='cube')
+    div(class='cube')
+    div(class='cube')
+    div(class='cube')
+    div
+      div(class='row  justify-content-around' style=' width: 100%; margin: 0px; margin-top: 10vw;')
+        div(class='col-12 col-sm-12 col-md-6 col-lg-4 justify-content-center')
+          div(class='login' style='color: #214799;')
+            strong Log In
+          div(class='signup' style='color: #ffc61b;')
+            strong Sign Up
+          form(class='signup-form' method='post' action='student/signup')
+            div(style='text-align: center;')
+              h3
+                strong Create New Account
+            if message
+              if message.signup
+                div(class="alert alert-danger")!= message.message
+            label(for='registerEmail' class='visually-hidden') Email address
+            input#registerEmail(type='email' class='form-control' name='email' placeholder='Email address' required autofocus)
+            label(for='registerPassword' class='visually-hidden') Password
+            div(class='form-group')
+              div(class='input-group' id='show_hide_password')
+                input#registerPassword(type='password' name='password' class='form-control' autocomplete='new-password' minlength='6' placeholder='Password' required autofocus)
+                div(class='input-group-postpend')
+                  a(href='')
+                    i(class='fa fa-eye-slash iconShow' aria-hidden='true')
+            | &nbsp;
+            input#create(class='w-100 btn btn-lg btn-primary' type='submit' value='Create') 
+          form(class='login-form' method='post' action='student/login')
+            div(style='text-align: center;')
+              h3
+                strong Please sign in
+            if message
+              if message.login
+                div(class="alert alert-danger")!= message.message 
+            label(for='email' class='visually-hidden') Email address
+            input#email(type='email' name='email' class='form-control' placeholder='Email address' required autofocus)
+            label(for='password' class='visually-hidden') Password
+            div(class='form-group')
+              div(class='input-group' id='show_hide_password')
+                input#pwd(type='password' name='password' class='form-control' placeholder='Password' minlength='6' required)
+                div(class='input-group-postpend')
+                  a(href='')
+                    i(class='fa fa-eye-slash iconShow' aria-hidden='true')
+            button#login(class='w-100 btn btn-lg btn-primary' style='margin-bottom: 10px; margin-top: 20px;' type='submit') Login
+            h7 Forgot the password ?
+            a#openReset(href='student/resetPwd' class='w-100 btn btn-lg btn-primary' style='margin-bottom: 10px; margin-top: 10px;')
+              | Reset
+              | password
+
+        div(class='col-12 col-sm-12 col-md-6 col-lg-4 justify-content-center ')
+          form(style='border-radius: 40px;   background: -webkit-linear-gradient(right, orange, #ffc61b ); text-align: center; margin-top: 30px;' method='post' action='student/checkCodeAnonim')
+            h3
+              strong Anonymous Access
+            label(for='name')
+              h5 Your username is: 
+            h4#RandomName(style='color: #0051f4; margin-bottom: 20px; text-align: center;')
+            button(class=' btn btn-lg btn-primary' onclick='return generateRandomName()') Change Name
+            br
+            label(for='code' style='margin-top: 10px;  ')
+              h4 Insert video code: 
+            if message
+              if message.code
+                div(class="alert alert-danger")!= message.message 
+            input#test(type='hidden', name='anonim')
+            input#code(type='text' class='form-control' placeholder='paste code here' name='code' aria-describedby='basic-addon1' style='margin-bottom: 20px; width: 70%    ;' required)
+            button#send(class=' btn  btn-lg btn-primary ' type='submit')  GO! 
+              img(src='images/shuttle.png' class='shake' height='30px' style='margin-left: 10px;')
+  script(src="/javascripts/studHome.js") 
+  if message
+    if message.signup
+      script.
+        $(".signup").click()

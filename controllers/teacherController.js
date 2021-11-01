@@ -1,0 +1,1 @@
+var Teacher = require('../models/teacher');

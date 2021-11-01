@@ -1,0 +1,79 @@
+extends layout
+
+block content
+  body
+    nav(class='d-flex  flex-md-row  navbar navbar-dark navbar-expand-sm p-3 px-md-4 mb-3')
+      div(class='navbar-brand d-none d-md-block my-0 mr-md-auto' href='/')
+        img(src='/images/logo_polimi.png' alt='Polimi Logo' height='80px')
+      div(class='navbar-brand d-md-none d-block  my-0 mr-md-auto' href='/')
+        img(src='/images/logo_polimi_mobile.png' alt='Polimi Logo' height='80px')
+      button(class='navbar-toggler ' type='button' data-toggle='collapse' data-target='#Navbar')
+        span(class='navbar-toggler-icon')
+      #Navbar(class='collapse navbar-collapse justify-content-stretch ' style='margin-bottom: 20px;')
+        ul(class='navbar-nav ml-auto')
+          li(class='nav-item active')
+            a(class='nav-link' href='/')
+              span(class='fa fa-home fa-lg')
+              | Home
+          li(class='nav-item ')
+            a(class='nav-link' href='about')
+              span(class='fa fa-info-circle fa-lg')
+              | About
+          li(class='nav-item')
+            a(class='nav-link' href='/instructions/EVOLI_InstructionsOfUse.pdf' target='_blank')
+              span(class='fa fa-book fa-lg')
+              | Instruction
+          li(class='nav-item ')
+            a(class='nav-link' href='credits')
+              span(class='fa fa-at fa-lg')
+              | Credits
+    div(class='row  justify-content-center' style='margin-top: 30px;')
+      div(class='col-12 col-lg-6 align-items-center d-none d-lg-block')
+        img(src='images/home.png' class='img-fluid' alt='home' style='max-width: 90%;')
+      div(class='col-12 col-lg-6 d-none d-lg-block ' style='text-align: center; color: white;  margin-top: 70px;')
+        h1(style='font-size: 4.25vw; margin-bottom: 30px;') Welcome to 
+          b(style='color:#ffc107') EVOLI
+        h5(style='font-size: 1.5vw; margin-bottom: 20px;') A video-tagging tool to collect students' feedback
+        br
+        div(class='row d-flex justify-content-center')
+          a(role='button' class='btn btn-warning rounded-pill' href='student' style='font-size: 1.5vw; color: whitesmoke;') &nbsp;&nbsp;
+            strong  STUDENT
+            | &nbsp;&nbsp;
+          | &nbsp;
+          a(role='button' class='btn btn-warning rounded-pill' href='teacher' style='font-size: 1.5vw; color: whitesmoke; margin-left: 1.5vw;') &nbsp;&nbsp;
+            strong INSTRUCTOR
+            | &nbsp;&nbsp;
+        br
+        br
+      div(class='col-10  col-lg-6 d-none d-md-block d-lg-none' style='text-align: center; color: white;  margin-top: 70px;')
+        h1 Welcome to 
+          b(style='color:#ffc107') EVOLI
+        h5 A video-tagging tool to collect students' feedback
+        br
+        div(class='row d-flex justify-content-center')
+          a(role='button' class='btn btn-warning rounded-pill' href='student' style='color: whitesmoke;') &nbsp;&nbsp; 
+            strong  STUDENT
+            | &nbsp;&nbsp;
+          | &nbsp;
+          a(role='button' class='btn btn-warning rounded-pill' href='teacher' style=' color: whitesmoke; margin-left: 1.5vw;') &nbsp;&nbsp;
+            strong INSTRUCTOR
+            | &nbsp;&nbsp;
+        br
+        br
+      div(class='col-10  d-md-none d-block justify-content-center' style='text-align: center; color: white;  margin-top: 70px;')
+        h1 Welcome to 
+          b(style='color:#ffc107') EVOLI
+        h5 A video-tagging tool to collect students' feedback
+        br
+        div(class='row d-flex justify-content-center')
+          a(role='button' class='btn btn-warning rounded-pill' href='student' style='color: whitesmoke;') &nbsp;&nbsp; 
+            strong  STUDENT
+            | &nbsp;&nbsp;
+          | &nbsp;
+        br
+        div(class='row d-flex justify-content-center')
+          a(role='button' class='btn btn-warning rounded-pill' href='teacher' style=' color: whitesmoke;') &nbsp;&nbsp;
+            strong INSTRUCTOR
+            | &nbsp;&nbsp;
+        br
+

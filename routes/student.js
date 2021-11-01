@@ -12,12 +12,19 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.get('/videoOver', function(req, res, next) {
+    delete req.session.code
+    delete req.session.url
+    delete req.session.title
+    res.render('endVideo', { title: 'Video Over' });
+})
+
 router.get('/resetPwd', function(req, res, next) {
     res.render('resetPwd', { title: 'Reset Password' });
 });
 
 router.get('/class', function(req, res, next) {
-    res.render('studentClass', { title: 'Classroom', name: req.session.email, url: req.session.url, video: req.session.title, reactions: req.session.reaction, slider: req.session.slider })
+    res.render('studentClass', { title: 'Classroom', name: req.session.email, url: req.session.url, video: req.session.title })
 })
 
 router.post('/resetPwd', resetTokenCon.create);
@@ -28,8 +35,21 @@ router.post('/signup', studentController.signUp);
 
 router.get('/logout', studentController.logOut);
 
-router.post('/checkCodeAnonim', studentController.checkCodeAnonim)
+router.post('/checkCodeAnonim', studentController.checkCodeAnonim);
 
-router.post('/checkCode', studentController.checkCode)
+router.post('/checkCode', studentController.checkCode);
+
+router.get('/getFeedbacks', studentController.retriveData);
+
+router.post('/updateSlider', studentController.updateSlider)
+
+router.post('/newReaction', studentController.newReaction)
+
+router.post('/deleteReaction', studentController.deleteReaction);
+
+router.post('/updateComment', studentController.updateComment)
+
+router.post('/updateVisibility', studentController.updateVisibility)
+
 
 module.exports = router;

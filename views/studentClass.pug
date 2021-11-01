@@ -8,7 +8,7 @@ block content
                 div(class="modal-content")
                     div(class="modal-header")
                         h2(class="modal-title") Leave a comment/question
-                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                        button(type="button" class="close" data-dismiss="modal") &times;
                     div(class="modal-body " style="margin-bottom: 10px;")
                         form(style="padding: 0%;")
                             label(for="commentBox" class="col-form-label") comment / question:
@@ -21,7 +21,7 @@ block content
                 div(class="modal-content")
                     div(class="modal-header")
                         h2(class="modal-title") Thank you!
-                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                        button(type="button" class="close" data-dismiss="modal") &times;
                     div(class="modal-body " style="margin-bottom: 10px;")
                         h5 To come back later and edit your feedback without the professor seeing them, click on save 
                             br
@@ -36,7 +36,7 @@ block content
                 div(class="modal-content")
                     div(class="modal-header")
                         h2(class="modal-title") Attention!
-                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                        button(type="button" class="close" data-dismiss="modal") &times;
                     div(class="modal-body " style="margin-bottom: 10px;")
                         h5
                             | By leaving the page you will no longer be able to edit the reactions and comments given are you sure you want to submit them?
@@ -49,7 +49,7 @@ block content
                 div(class="modal-content")
                     div(class="modal-header")
                         h2(class="modal-title") Edit your comment/question
-                        button(type="button" class="close" data-dismiss="modal") &amp;times;
+                        button(type="button" class="close" data-dismiss="modal") &times;
                     div(class="modal-body " style="margin-bottom: 10px;")
                         form(style="padding: 0%;")
                             label(for="commentBoxEdit" class="col-form-label") comment / question:
@@ -127,13 +127,13 @@ block content
                         div(class="col-12  ")
                             h4 How clear was the video?
                         div(class="col-12  d-inline-flex justify-content-center")
-                            input#clarity(type="range" min="1" max="100" value="50" class="slider" style="margin:0; margin-right: 5px; margin-top: 10px; ")
+                            input#clarity(type="range" min="1" max="100" value="50" class="slider-s" style="margin:0; margin-right: 5px; margin-top: 10px; ")
                             h4#clarityValue(style="display: inline-block; ")
                     div(class="row justify-content-center" style="margin-top: 10px; margin-left: 20px;")
                         div(class="col-12 ")
                             h4 How much did you appreciate the video?
                         div(class="col-12  d-flex justify-content-center")
-                            input#appreciation(type="range" min="1" max="100" value="50" class="slider" style="margin:0; margin-right: 5px; margin-top: 10px;")
+                            input#appreciation(type="range" min="1" max="100" value="50" class="slider-s" style="margin:0; margin-right: 5px; margin-top: 10px;")
                             h4#appreciationValue(style="display:inline-block")
         #loading(style="top: 0;")
             img(src="../images/loading_500.gif" alt="loading")
@@ -161,5 +161,6 @@ block content
 
                 });
             }
+
         
         

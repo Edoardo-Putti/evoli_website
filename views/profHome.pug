@@ -1,0 +1,254 @@
+extends layout 
+
+block content 
+    body(class="teacherdashborad")
+        header
+            nav(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-md p-2 px-md-4 ")
+                div(class="navbar-brand d-none d-md-block my-0 mr-md-auto" href="index.html")
+                    img(src="/images/logo_polimi.png" alt="Polimi Logo" height="60px")
+                div(class="row")
+                    a(class="navbar-brand d-md-none d-block my-0 mr-md-auto" href="index.html" style="margin-left: 10px;")
+                        img(src="/images/logo_polimi_mobile.png" alt="Polimi Logo" height="60px")
+                div(style="color: whitesmoke; text-align: center; font-size:calc(10px + .8vw); margin-left: 2vw;")
+                    p#teachersName(style="color: whitesmoke; text-align: center; font-size: calc(10px + .8vw); margin: auto;")
+                        i(class="fa fa-user")
+                        | Logged in as: 
+                        != name
+                button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                    span(class="navbar-toggler-icon")
+                #Navbar(class="collapse navbar-collapse justify-content-stretch")
+                    ul(class="navbar-nav ml-auto principal")
+                        li(class="nav-item ")
+                            a(class="nav-link" href="index.html")
+                                span(class="fa fa-home fa-lg")
+                                | Home
+                        li(class="nav-item active")
+                            a(class="nav-link" href="teacherdashboard.html")
+                                span
+                                    img#teachersLogo(src="images/chalkboard.png" height="30px" width="30px")
+                                | My
+                                | videos
+                    a(role="button" class="btn  btn-logOut  rounded-pill" href='teacher/logout')
+                        | Log
+                        | Out
+        #delReaction(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Attention!
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                    div(class="modal-footer")
+                        button#confirmDelVideo(class="btn btn-logOut " style="margin-right: 5px;" onclick="confirmDelReactCodeChange()")  Conf. & change code
+                        button#confirmDelVideo(class="btn btn-logOut " style="margin-right: 5px;" onclick="confirmDeleteReaction()")  Conf. & keep code
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #cancel(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Attention!
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        | Are you sure you want to delete the video and all the reactions?
+                        br
+                        | The process is irreversible.
+                    #cancVideoCode(class="modal-footer")
+                        button#confirmDelVideo(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmDeleteVideo()")  Confirm 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #cancelFolder(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Attention!
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        | Are you sure you want to delete this folder, all the videos in it and their reactions?
+                        br
+                        | The process is irreversible.
+                    #cancFolderCode(class="modal-footer")
+                        button#confirmDelFolder(class="btn btn-logOut " style="margin-right: 20px;" onclick="deleteFolder()")  Confirm 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #move(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Move video
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        | Select folder where you want to move your video
+                        div(class="dropdown input-group " style="margin-top: 20px;")
+                            span(class="input-group-text" style="color: black;")
+                                strong Folder: 
+                                select#folderMov(class="btn btn-lg nav-folder" name="folder" style="margin-left: 10px; border-color: black; color: black;")
+                                div(class="modal-footer")
+                                    button#confirmMovVideo(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmMoveVideo()")  Confirm 
+                                    button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
+        #renameFolder(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Edit folder name here
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        h5#folderError
+                        div(class="mb-3")
+                            label(for="message-text" class="col-form-label") New folder name:
+                            textarea#modFoldTitle(class="form-control")
+                    div(class="modal-footer")
+                        button#confirmRename(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmRenameFolder()")  Confirm 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #modifyTitle(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Edit your title here
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        h5#titleError
+                        div(class="mb-3")
+                            label(for="message-text" class="col-form-label") New Title:
+                            textarea#modTitle(class="form-control")
+                    div(class="modal-footer")
+                        button#confirmModTitle(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmModifyTitle()")  Confirm 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #modifyNote(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Edit your note here
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        div(class="mb-3")
+                            textarea#modNote(class="form-control")
+                    div(class="modal-footer")
+                        button#confirmModNote(class="btn btn-logOut" style="margin-right: 20px;" onclick="confirmModifyNote()")  Confirm 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #SeeNote(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Your note
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        div(class="mb-3")
+                            textarea#textNote(class="form-control" style="height: 200px;")
+                    div(class="modal-footer")
+                        button#modNodeBtn(class="btn btn-logOut" style="margin-right: 20px;" onclick="editNote()")  Save 
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #wrapper
+            nav#sidebar-wrapper(class="navbar navbar-inverse fixed-top" role="navigation")
+                ul#folderList(class="nav sidebar-nav")
+                    div(class="sidebar-header")
+                        div(class="sidebar-brand")
+                            | FOLDERS
+            div
+                button(type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas")
+                    i#hamburger(class="fa fa-folder fa-lg")
+            div(class="row justify-content-center")
+                div(class="col-10 col-sm-10 col-md-5 col-lg-5 col-xl-3")
+                    div(class="form" style="border-radius: 40px; text-align: center; padding: 5px;")
+                        p
+                        h3(class="showup")
+                            i(class="fa fa-video-camera")
+                            | New Video
+                            i(class="fa fa-chevron-up showup-2" aria-hidden="true")
+                        br
+                        div(class=" upload")
+                            h5#newVideoError
+                            div(class="row ")
+                                div(class="col-3")
+                                    label(class="input-group-text")
+                                        strong Folder: 
+                                    label(class="input-group-text")
+                                        strong Title: 
+                                    label(class="input-group-text")
+                                        strong Link: 
+                                    label(class="input-group-text")
+                                        strong Note: 
+                                div(class="col-8")
+                                    div(class="input-group ")
+                                        select#folder(style="margin-bottom: 8px" name="folder")
+                                    div(class="input-group ")
+                                        input#className(style="margin-bottom: 8px" type="text" class="form-control" placeholder="Add title here" name="title" aria-describedby="basic-addon1" required)
+                                    div(class="input-group ")
+                                        input#link(style="margin-bottom: 8px" type="text" class="form-control" placeholder="Paste YT link here" name="link" aria-describedby="basic-addon1" required)
+                                    div(class="input-group ")
+                                        input#note(style="margin-bottom: 8px" type="text" class="form-control" placeholder="write note (optional)" name="note" aria-describedby="basic-addon1")
+                            button(class="w-50 btn btn-lg btn-primary " onclick="uploadVideo()") Upload
+                div(class="col-10 col-sm-10 col-md-5 col-lg-5 col-xl-3")
+                    div(class="form" style="border-radius: 40px; text-align: center;  padding: 5px;" )
+                        p
+                        h3(class="showfo ")
+                            i(class="fa fa-folder")
+                            | New folder
+                            i(class="fa fa-chevron-up showfo-2" aria-hidden="true")
+                        br
+                        div(class=" newfold")
+                            h5#newFoldError
+                            div(class="input-group justify-content-center")
+                                span(class="input-group-text")
+                                    strong Name: 
+                                    input#folderName(type="text" class="form-control" placeholder="Add folder name here" name="name" aria-describedby="basic-addon1" required)
+                            button(class="w-50 btn btn-lg btn-primary " onclick="uploadFolder()") Create
+            div(class="row d-flex justify-content-center" style="margin-top: 4vw;")
+                #editBottonsSmall(style="margin-top: 5px; display: none; padding: 5px; background-color: #243d70; border-top-left-radius: 20px; border-top-right-radius: 20px;")
+                    button(class="btn btn-circle  btn-logOut move" onclick="moveVideo()")
+                        i(class="fa fa-exchange fa-lg" title="move" aria-hidden="true")
+                    button(class="btn btn-circle btn-logOut delete" style="margin-left: 5px;" onclick="deleteVideo()")
+                        i(class="fa fa-trash fa-lg" title="delete" \aria-hidden="true")
+                    button#smallDelReact(class="btn  btn-logOut " style="align-items: center; border-radius: 40px; margin-left: 5px;" onclick="deleteReaction()")  reset  
+                        i(class="fa fa-bar-chart" aria-hidden="true" style="margin-right: 5px;")
+                div(class="col-12 col-sm-10 col-md-10")
+                    nav(class="navbar navbar-expand-md navbar-dark  shadow-sm nav-teacher")
+                        a(class="navbar-brand d-none d-lg-block " style="color: #f1b467; margin-left: 1.5vw;")
+                            | My videos
+                            | in:
+                        a(class="navbar-brand d-none d-md-block d-lg-none" style="color: #f1b467; margin-left: 1.5vw;") videos in:
+                        div(class="whichfolder d-flex " style="display:inline-flex; margin-left: 1.5vw;")
+                            li#actual(class="list-unstyled" href="#")
+                        div(class="d-flex ml-auto")
+                            #editButtons(style="display: none;")
+                                button(class="btn btn-circle  btn-logOut move" onclick="moveVideo()")
+                                    i(class="fa fa-exchange fa-lg" title="move" aria-hidden="true")
+                                button(class="btn btn-circle btn-logOut delete" style="margin-left: 5px;" onclick="deleteVideo()")
+                                    i(class="fa fa-trash fa-lg" title="delete" \aria-hidden="true")
+                                button#delReact(class="btn  btn-logOut" style="align-items: center; border-radius: 40px; margin-left: 5px;" onclick="deleteReaction()")  reset  
+                                    i(class="fa fa-bar-chart" aria-hidden="true" style="margin-right: 5px;")
+                            div(class="custom d-flex " style="margin-left: 1.5vw; margin-right: 1.5vw;")
+                                input#search(class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="max-width: 30vw ;")
+                                button(class="btn  edit d-flex editable " style="align-items: center;" type="submit")
+                                    i(class="fa fa-pencil" aria-hidden="true" style="margin-right: 5px;")
+                                    | edit
+                    #style-1(class="d-flex justify-content-center table-responsive-md  flex-d scrollbar test" style="margin-right: 10px; margin-left: 10px; padding-right: 5px;  margin-top: 10px;")
+                        table#videoTable(class="table  table-hover my-table " style="margin-top: 0%;")
+                            thead
+                                tr
+                                    th(scope="col") Title
+                                    th(scope="col")
+                                        i(class="fa fa-bar-chart fa-lg" aria-hidden="true")
+                                        | Statistics
+                                    th(scope="col")
+                                        i(class="fa fa-barcode fa-lg" aria-hidden="true")
+                                        | Code
+                                    th(scope="col")
+                                        i(class="fa fa-file-text fa-lg" aria-hidden="true")
+                                        | Notes
+                            tbody
+                        table#videoTableSearch(class="table  table-hover my-table " style="margin-top: 0%; display: none;")
+                            thead
+                                tr
+                                    th(scope="col") Title
+                                    th(scope="col")
+                                        i(class="fa fa-bar-chart fa-lg" aria-hidden="true")
+                                        | Statistics
+                                    th(scope="col")
+                                        i(class="fa fa-barcode fa-lg" aria-hidden="true")
+                                        | Code
+                                    th(scope="col")
+                                        i(class="fa fa-file-text fa-lg" aria-hidden="true")
+                                        | Notes
+                                    th(scope="col")
+                                        i(class="fa fa-folder fa-lg" aria-hidden="true")
+                                        | Folder
+                            tbody
+    script(src="javascripts/profHome.js") 

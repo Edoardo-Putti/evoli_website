@@ -235,7 +235,6 @@ exports.updateComment = (req, res) => {
 }
 
 exports.updateVisibility = (req, res) => {
-    console.log(req.body)
     async.parallel({
         slider: function(callback) {
             if (req.session.loggedin) {

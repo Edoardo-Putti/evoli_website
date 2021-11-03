@@ -86,14 +86,18 @@ router.post('/reset-password', async function(req, res, next) {
     }).then(data => {
         if (data) {
             async.parallel({
-                updateToken: function(callback) { db.ResetToken.update({ used: 1 }, { where: { token: req.body.token } }) },
+                updateToken: function(callback) {
+                    db.ResetToken.update({ used: 1 }, { where: { token: req.body.token } }).then(data => {
+                        callback(null, data);
+                    })
+                },
                 updateHash: function(callback) {
                     var salt = crypto.randomBytes(16).toString('base64');
                     scrypt.hash(req.body.password1, salt).then(hash => {
-                        if (req.body.role) {
-                            db.Student.update({ hash: hash, salt: salt }, { where: { email: req.body.email } }).then(() => { return res.json({ status: 'ok', message: 'Password reset. Please login with your new password.' }); })
+                        if (JSON.parse(req.body.role)) {
+                            db.Student.update({ hash: hash, salt: salt }, { where: { email: req.body.email } }).then((data) => { callback(null, data); })
                         } else {
-                            db.Teacher.update({ hash: hash, salt: salt }, { where: { email: req.body.email } }).then(() => { return res.json({ status: 'ok', message: 'Password reset. Please login with your new password.' }); })
+                            db.Teacher.update({ hash: hash, salt: salt }, { where: { email: req.body.email } }).then((data) => { callback(null, data); })
                         }
                     })
 
@@ -102,6 +106,8 @@ router.post('/reset-password', async function(req, res, next) {
                     if (err) {
                         err.status = 404;
                         return next(err);
+                    } else {
+                        res.json({ status: 'ok', message: 'Password reset. Please login with your new password.' });
                     }
 
                 }

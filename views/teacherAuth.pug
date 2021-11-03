@@ -1,0 +1,72 @@
+extends layout 
+
+block content
+    body(class="teacherauth")
+        nav(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-sm p-3 px-md-4 mb-3  ")
+            div(class="navbar-brand d-none d-md-block my-0 mr-md-auto" href="index.html")
+                img(src="/images/logo_polimi.png" alt="Polimi Logo" height="50px")
+            div(class="navbar-brand d-md-none d-block  my-0 mr-md-auto" href="index.html")
+                img(src="/images/logo_polimi_mobile.png" alt="Polimi Logo" height="50px")
+            button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                span(class="navbar-toggler-icon")
+            #Navbar(class="collapse navbar-collapse justify-content-stretch ")
+                ul(class="navbar-nav ml-auto")
+                    li(class='nav-item')
+                        a(class='nav-link' href='/')
+                            span(class='fa fa-home fa-lg')
+                            | Home
+                    li(class='nav-item')
+                        a(class='nav-link' href='about')
+                            span(class='fa fa-info-circle fa-lg')
+                            | About
+                    li(class='nav-item')
+                        a(class='nav-link' href='/instructions/EVOLI_InstructionsOfUse.pdf' target='_blank')
+                            span(class='fa fa-book fa-lg')
+                            | Instruction
+                    li(class='nav-item active')
+                        a(class='nav-link' href='credits')
+                            span(class='fa fa-at fa-lg')
+                            | Credits
+        div(class="container")
+            div(class="row justify-content-center my-auto" style="padding: 50px;")
+                div(col-9 col-md-6)
+                    div(class="login" style="color: #243d70;")
+                        strong Log In
+                    div(class="signup" style="color: #ffb40d;")
+                        strong Sign Up
+                    form(class="signup-form" method='post' action='teacher/signup')
+                        h1(class="h2 mb-3 fw-normal text-centerd" style="color: #243d70;") Create New Account
+                        if message
+                            if message.signup
+                                div(class="alert alert-danger")!= message.message
+                        label(for="registerEmail" class="visually-hidden") Email address
+                        input#registerEmail(type="email" class="form-control" placeholder="Email address" name='email' required autofocus)
+                        label(for="registerPassword" class="visually-hidden") Password
+                        div(class='form-group')
+                            div(class='input-group' id='show_hide_password')
+                                input#registerPassword(type='password' name='password' class='form-control' autocomplete='new-password' minlength='6' placeholder='Password' required autofocus)
+                                div(class='input-group-postpend')
+                                    a(href='')
+                                        i(class='fa fa-eye-slash iconShow' aria-hidden='true')
+                        | &nbsp;
+                        button#create(class="w-100 btn btn-lg btn-primary" style="margin-bottom: 10px; margin-top: 20px;" type='submit') Create
+                    form(class="login-form" method='post' action='teacher/login')
+                        h1(class="h2 mb-3 fw-normal " style="text-align: center; color: #243d70;") Please sign in
+                        if message
+                            if message.login
+                                div(class="alert alert-danger")!= message.message 
+                        label(for="email" class="visually-hidden") Email address
+                        input#email(type="email" class="form-control" name='email' placeholder="Email address" required autofocus)
+                        label(for="password" class="visually-hidden") Password
+                        div(class='form-group')
+                            div(class='input-group' id='show_hide_password')
+                                input#pwd(type='password' name='password' class='form-control' placeholder='Password' minlength='6' required)
+                                div(class='input-group-postpend')
+                                    a(href='')
+                                        i(class='fa fa-eye-slash iconShow' aria-hidden='true')
+                        button#login(class="w-100 btn btn-lg btn-primary" style="margin-bottom: 10px; margin-top: 20px;" type='submit') Login
+                        h7 Forgot the password ?
+                        a#openReset(href='teacher/resetPwd' class="w-100 btn btn-lg btn-primary" style="margin-bottom: 10px; margin-top: 10px;")
+                            | reset
+                            | password
+    script(src="/javascripts/teacherAuth.js")

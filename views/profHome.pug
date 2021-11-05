@@ -19,11 +19,11 @@ block content
                 #Navbar(class="collapse navbar-collapse justify-content-stretch")
                     ul(class="navbar-nav ml-auto principal")
                         li(class="nav-item ")
-                            a(class="nav-link" href="index.html")
+                            a(class="nav-link" href="/")
                                 span(class="fa fa-home fa-lg")
                                 | Home
                         li(class="nav-item active")
-                            a(class="nav-link" href="teacherdashboard.html")
+                            a(class="nav-link" href="/teacher")
                                 span
                                     img#teachersLogo(src="images/chalkboard.png" height="30px" width="30px")
                                 | My
@@ -66,7 +66,7 @@ block content
                         br
                         | The process is irreversible.
                     #cancFolderCode(class="modal-footer")
-                        button#confirmDelFolder(class="btn btn-logOut " style="margin-right: 20px;" onclick="deleteFolder()")  Confirm 
+                        button#confirmDelFolder(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmDeleteFolder()")  Confirm 
                         button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
         #move(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
@@ -80,9 +80,9 @@ block content
                             span(class="input-group-text" style="color: black;")
                                 strong Folder: 
                                 select#folderMov(class="btn btn-lg nav-folder" name="folder" style="margin-left: 10px; border-color: black; color: black;")
-                                div(class="modal-footer")
-                                    button#confirmMovVideo(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmMoveVideo()")  Confirm 
-                                    button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
+                    div(class="modal-footer")
+                        button#confirmMovVideo(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmMoveVideo()")  Confirm 
+                        button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
         #renameFolder(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
                 div(class="modal-content")
@@ -121,7 +121,7 @@ block content
                         div(class="mb-3")
                             textarea#modNote(class="form-control")
                     div(class="modal-footer")
-                        button#confirmModNote(class="btn btn-logOut" style="margin-right: 20px;" onclick="confirmModifyNote()")  Confirm 
+                        button#confirmModNote(class="btn btn-logOut" style="margin-right: 20px;" onclick="editNote()")  Confirm 
                         button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
         #SeeNote(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")

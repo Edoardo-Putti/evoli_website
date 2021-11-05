@@ -155,7 +155,21 @@ exports.retriveData = (req, res) => {
                         [Op.and]: [{ video_code: req.session.code }, { user_name: req.session.email }]
                     }
                 }).then(data => {
-                    callback(null, data);
+                    if (data)
+                        callback(null, data);
+                    else {
+                        var slider = {
+                            sid: uuid.v4().replace(/-/g, ""),
+                            appreciation: 50,
+                            understanding: 50,
+                            video_code: req.session.code,
+                            user_name: req.session.email,
+                            visible: 0
+                        }
+                        db.Slider.create(slider).then(data => {
+                            callback(null, data);
+                        })
+                    }
                 })
 
             },

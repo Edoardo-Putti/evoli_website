@@ -109,7 +109,7 @@ exports.logOut = (req, res) => {
 exports.retriveData = (req, res) => {
     async.parallel({
         folders: function(callback) {
-            db.Folder.findAll({ where: { uid: req.session.teacherId } }).then(data => {
+            db.Folder.findAll({ attributes: ['name'], where: { uid: req.session.teacherId } }).then(data => {
                 if (data) {
                     callback(null, data);
                 } else {
@@ -119,7 +119,7 @@ exports.retriveData = (req, res) => {
                         name: 'untitled'
                     }
                     db.Folder.create(folder).then(data => {
-                        callback(null, [data]);
+                        callback(null, [{ name: data.name }]);
                     })
                 }
 
@@ -128,7 +128,7 @@ exports.retriveData = (req, res) => {
 
         },
         videos: function(callback) {
-            db.Video.findAll({ where: { uid: req.session.teacherId } }).then(data => {
+            db.Video.findAll({ attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new'], where: { uid: req.session.teacherId } }).then(data => {
                 callback(null, data);
             })
 
@@ -176,4 +176,259 @@ exports.newFolder = (req, res) => {
     }).catch(err => {
         res.status(500).json({ msg: err })
     })
+}
+
+exports.modifyComment = (req, res) => {
+    db.Video.update({ comment: req.body.note }, { where: { video_code: req.body.code } }).then(data => {
+        res.status(200).send(data)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.modifyTitle = (req, res) => {
+    db.Video.update({ title: req.body.title }, { where: { video_code: req.body.code } }).then(data => {
+        res.status(200).send(data)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.renameFolder = (req, res) => {
+    async.parallel({
+        folders: function(callback) {
+            db.Folder.update({ name: req.body.name }, {
+                where: {
+                    [Op.and]: [{ name: req.body.old }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        videos: function(callback) {
+            db.Video.update({ folder: req.body.name }, {
+                where: {
+                    [Op.and]: [{ folder: req.body.old }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+        }
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.deleteFolder = (req, res) => {
+    async.parallel({
+        folders: function(callback) {
+            db.Folder.destroy({
+                where: {
+                    [Op.and]: [{ name: req.body.folder }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        videos: function(callback) {
+            db.Video.destroy({
+                where: {
+                    [Op.and]: [{ folder: req.body.folder }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+        },
+        reactions: function(callback) {
+            db.Reaction.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.videoCodes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.videoCodes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.deleteVideo = (req, res) => {
+    async.parallel({
+        videos: function(callback) {
+            db.Video.destroy({
+                where: {
+                    [Op.and]: [{ video_code: JSON.parse(req.body.codes) }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+        },
+        reactions: function(callback) {
+            db.Reaction.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.moveVideo = (req, res) => {
+    db.Video.update({ folder: req.body.folder }, { where: { video_code: JSON.parse(req.body.codes) } }).then(data => {
+        res.status(200).send(data)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.removeFeedback = (req, res) => {
+    async.parallel({
+        videos: function(callback) {
+            var res = []
+            codes.forEach((codes, index) => {
+                db.Video.update({ new: 0 }, {
+                    where: {
+                        [Op.and]: [{ video_code: codes[index] }, { uid: req.session.teacherId }]
+                    }
+                }).then(data => {
+                    res.push(data)
+                })
+            })
+            callback(null, res);
+        },
+        reactions: function(callback) {
+            db.Reaction.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.removeFeedbackCode = (req, res) => {
+    var codes = JSON.parse(req.body.codes)
+    async.parallel({
+        videos: function(callback) {
+            var res = {}
+            codes.forEach((elem, index) => {
+                var code = crypto.randomBytes(4).toString('base64').slice(0, -2);
+                db.Video.update({ video_code: code, new: 0 }, {
+                    where: {
+                        [Op.and]: [{ video_code: elem }, { uid: req.session.teacherId }]
+                    }
+                }).then(data => {
+                    res[codes[index]] = code
+                })
+            })
+            callback(null, res);
+        },
+        reactions: function(callback) {
+            db.Reaction.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.destroy({
+                where: {
+                    video_code: JSON.parse(req.body.codes)
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+}
+
+exports.showStats = (req, res) => {
+    db.Slider.findOne({
+        where: {
+            [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
+        }
+    }).then(data => {
+        res.status(200).send(data)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+
 }

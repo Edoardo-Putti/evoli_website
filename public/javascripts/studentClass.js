@@ -32,40 +32,42 @@ $(() => {
             appreciationValue.html(slider.appreciation + "/100");
             appreciation.val(slider.appreciation);
 
-            reactions.forEach(reaction => {
-                reactionIds.push(reaction.rid);
-                var code = 'a' + reaction.rid;
-                if (reaction.type === 'like') {
-                    likesNum++;
-                    $("#likesCount").text(likesNum);
-                    var newContent = '<tr id="' + code + '">' +
-                        '<td> I GET IT </td>' +
-                        '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
-                        '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
-                        +'</tr>';
-                    $('#likesArray').append(newContent)
-                } else if (reaction.type === 'dislike') {
-                    dislikesNum++;
-                    $("#dislikesCount").text(dislikesNum);
-                    var newContent = '<tr id="' + code + '">' +
-                        '<td> I DON\'T GET IT </td>' +
-                        '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
-                        '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
-                        +'</tr>';
-                    $('#dislikesArray').append(newContent)
-                } else {
-                    commemtsNum++;
-                    $("#commentsCount").text(commemtsNum);
-                    commentsLocal[code] = reaction.type;
-                    var newContent = '<tr id="' + code + '">' +
-                        '<td>' + reaction.type + '</td>' +
-                        '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
-                        '<td><button class="btn btn-md endsession"  data-toggle="modal" data-target="#editComment" onclick="editComment(' + code + ')">Edit</button></td>' +
-                        '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
-                        +'</tr>';
-                    $('#commentsArray').append(newContent)
-                }
-            })
+            if (reactions) {
+                reactions.forEach(reaction => {
+                    reactionIds.push(reaction.rid);
+                    var code = 'a' + reaction.rid;
+                    if (reaction.type === 'like') {
+                        likesNum++;
+                        $("#likesCount").text(likesNum);
+                        var newContent = '<tr id="' + code + '">' +
+                            '<td> I GET IT </td>' +
+                            '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
+                            '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
+                            +'</tr>';
+                        $('#likesArray').append(newContent)
+                    } else if (reaction.type === 'dislike') {
+                        dislikesNum++;
+                        $("#dislikesCount").text(dislikesNum);
+                        var newContent = '<tr id="' + code + '">' +
+                            '<td> I DON\'T GET IT </td>' +
+                            '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
+                            '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
+                            +'</tr>';
+                        $('#dislikesArray').append(newContent)
+                    } else {
+                        commemtsNum++;
+                        $("#commentsCount").text(commemtsNum);
+                        commentsLocal[code] = reaction.type;
+                        var newContent = '<tr id="' + code + '">' +
+                            '<td>' + reaction.type + '</td>' +
+                            '<td><button class="btn btn-md endsession"  onclick="goToSecond(' + reaction.at_second + ')">' + secondsToMinutes(reaction.at_second) + '</button></td>' +
+                            '<td><button class="btn btn-md endsession"  data-toggle="modal" data-target="#editComment" onclick="editComment(' + code + ')">Edit</button></td>' +
+                            '<td ><button class="btn btn-md endsession"  onclick="remove(' + code + ')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>' +
+                            +'</tr>';
+                        $('#commentsArray').append(newContent)
+                    }
+                })
+            }
 
             $('#loading').hide();
         },

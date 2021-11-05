@@ -15,6 +15,9 @@ router.get('/resetPwd', function(req, res, next) {
     res.render('resetPwd', { title: 'Reset Password' });
 });
 
+router.get('/statistics', function(req, res, next) {
+    res.render('feedbacks', { title: 'View feedbacks', name: req.session.teacher });
+});
 
 router.post('/login', teacherController.logIn);
 
@@ -28,7 +31,25 @@ router.post('/newVideo', teacherController.newVideo);
 
 router.post('/newFolder', teacherController.newFolder);
 
+router.post('/modifyComment', teacherController.modifyComment);
+
+router.post('/modifyTitle', teacherController.modifyTitle);
+
+router.post('/renameFolder', teacherController.renameFolder)
+
+router.post('/deleteFolder', teacherController.deleteFolder)
+
+router.post('/deleteVideo', teacherController.deleteVideo);
+
+router.post('/moveVideo', teacherController.moveVideo);
+
+router.post('/removeFeedback', teacherController.removeFeedback);
+
+router.post('/removeFeedbackCode', teacherController.removeFeedbackCode);
+
+router.post('/showStats', teacherController.showStats);
 
 router.get('/logout', teacherController.logOut);
+
 
 module.exports = router;

@@ -7,7 +7,8 @@ window.onload = function() {
 }
 
 var folders;
-var foldersName = [];
+var name2id = {};
+var folders2code = {};
 var videos;
 var actualFolder;
 var editing = false;
@@ -24,10 +25,11 @@ function retriveData() {
             folders = data.folders;
             videos = data.videos;
             if (folders) {
-                displayFolders(folders)
-                folders.forEach(f => {
-                    foldersName.push(f.name);
+
+                folders.forEach((f, i) => {
+                    name2id[f.name] = 'a' + i;
                 })
+                displayFolders(folders)
             }
             if (videos) {
                 displayVideos(videos);
@@ -46,43 +48,94 @@ function displayFolders(folders) {
     $('#folderMov').empty();
     var list = $('#folderList');
     folders.forEach((folder, index) => {
-        var code = 'a' + folder.fid;
+        var code = name2id[folder.name];
         if (index == 0) {
             actualFolder = folder.name;
             $('#actual').text(actualFolder);
-            var foldVideoForm = '<option selected id="f' + folder.fid + '">' + folder.name + '</option>';
-            var moveVideoForm = '<option selected id="m' + folder.fid + '">' + folder.name + '</option>';
+            var foldVideoForm = '<option selected id="f' + code + '">' + folder.name + '</option>';
+            var moveVideoForm = '<option selected id="m' + code + '">' + folder.name + '</option>';
         } else {
-            var foldVideoForm = '<option id="f' + folder.fid + '">' + folder.name + '</option>';
-            var moveVideoForm = '<option id="m' + folder.fid + '">' + folder.name + '</option>';
+            var foldVideoForm = '<option id="f' + code + '">' + folder.name + '</option>';
+            var moveVideoForm = '<option id="m' + code + '">' + folder.name + '</option>';
         }
         var fold = '<li  onclick="changeCurrentPath(' + code + ')" id="' + code + '"><a href="#folder">' + folder.name + '</a></li>';
         list.append(fold);
         $('#folder').append(foldVideoForm)
         $('#folderMov').append(moveVideoForm)
+        if (editing) {
 
+            $('#' + code).append('<a name="' + index + '" class="mod" data-toggle="modal" data-target="#cancelFolder" onclick="deleteFolder(this)"  href="#trash"></a><a name="' + index + '" class="mod" data-toggle="modal" data-target="#renameFolder" onclick="renameFolder(this)" href="#pencil"></a>')
+
+        }
     })
+    if (editing) {
+        $('.sidebar-nav li a ').css({ 'padding-left': '5px', });
+        if ($(window).width() > 760) {
+            $('.sidebar-nav li a ').css({ 'display': 'inline-block', 'max-width': '145px' });
+        } else {
+            $('.sidebar-nav li a ').css({ 'display': 'inline-block' });
+        }
+        $('.sidebar-nav li a:not(:first-child) ').css({ 'padding-left': '0px' });
+
+    }
 }
 
 function displayVideos(videos) {
     var table = $('#videoTable > tbody').empty();
-    videos.forEach(video => {
-        var code = 'a' + video.vid;
+    var tableSearch = $('#videoTableSearch > tbody').empty();
+    folders2code = {}
+    videos.forEach((video, i) => {
+        var code = 'v' + i;
         if (htmlEntities($.trim(video.folder.toLowerCase())) === htmlEntities($.trim(actualFolder.toLowerCase()))) {
+
             var newContent = '<tr id="' + code + '"> \
                               <td id="' + video.url + '"><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
-                              <td><div style=" width: 60px; display: inline-block; ">' + video.video_code + '</div>  <button class="btn btn-circle" onclick="copyFunction(' + code + ')"><i class="fa fa-clipboard fa-lg" title="copy"\
+                              <td id="s' + code + '"> <button class="btn btn-circle" onclick="showStat(this)"><i class="fa fa-eye fa-lg" title="view"\
+                              aria-hidden="true"></i></button></td>\
+                              <td ><div style=" width: 60px; display: inline-block; ">' + video.video_code + '</div>  <button class="btn btn-circle" name="' + video.video_code + '" onclick="copyFunction(this)"><i class="fa fa-clipboard fa-lg" title="copy"\
                                           aria-hidden="true"></i></button></td>\
-                              <td id="' + video.video_code + '" > <button class="btn btn-circle"><i class="fa fa-eye fa-lg" title="view"\
-                                          aria-hidden="true"></i></button></td>\
-                              <td class="noteTd hoverEffect" onclick="seeNote(' + code + ')" > <div class="noteTxt" >' + htmlEntities(video.comment) + '</div></td>\
+                              <td name="' + i + '" class="noteTd hoverEffect" onclick="seeNote(this)"> <div class="noteTxt" >' + htmlEntities(video.comment) + '</div></td>\
                             </tr>';
             table.prepend(newContent);
+            if (video.new != 0) {
+                $('#s' + code + ' button').css({ 'margin-left': '16.5px' })
+                $('#s' + code).append('<span class="badge">' + video.new + '</span>')
+            }
+            if (editing) {
+                $("#" + code + " td:first-child").append('<button class="btn btn-circle modify" name="' + i + '" data-toggle="modal" data-target="#modifyTitle" onclick="modifyTitle(this)"><i class="fa fa-pencil fa-lg" title="edit"\
+                                aria-hidden="true"></i></button>')
+                $("#" + code + " td:last-child").append('  <button class="btn btn-circle modify" data-toggle="modal" data-target="#modifyNote"><i class="fa fa-pencil fa-lg" title="edit"\
+                                aria-hidden="true"></i></button>')
+                $("#" + code).append('<td class="editing">\
+                                            <input type="checkbox" value="' + i + '" >\
+                                            </td>');
+            }
         }
+
+
+        try { folders2code[video.folder].push(video.video_code) } catch {
+            folders2code[video.folder] = []
+            folders2code[video.folder].push(video.video_code)
+        }
+        var code = 't' + i;
+        var newContent = '<tr id="' + code + '"> \
+                    <td><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
+                    <td id="k' + code + '" > <button class="btn btn-circle" onclick="showStat(this)"><i class="fa fa-eye fa-lg" title="view"\
+                                aria-hidden="true"></i></button></td>\
+                    <td><div style=" width: 60px; display: inline-block; ">' + video.video_code + '</div>  <button class="btn btn-circle" name="' + video.video_code + '" onclick="copyFunction(this)"><i class="fa fa-clipboard fa-lg" title="copy"\
+                                aria-hidden="true"></i></button></td>\
+                    <td class="noteTd hoverEffect" onclick="seeNote(k' + video.video_code + ')" > <div class="noteTxt" >' + htmlEntities(video.comment) + '</div></td>\
+                    <td class=" hoverEffect" onclick="changeCurrentPath(' + name2id[video.folder] + ')" ><div class="noteTxt" > ' + video.folder + '</div></td>\
+                  </tr>';
+        tableSearch.prepend(newContent);
+        if (video.new != 0) {
+            $('#k' + code + ' button').css({ 'margin-left': '16.5px' })
+            $('#k' + code).append('<span class="badge">' + video.new + '</span>')
+        }
+
+
     })
-    if (editing) {
-        editNewTable();
-    }
+
 }
 
 function changeCurrentPath(newPath) {
@@ -91,16 +144,182 @@ function changeCurrentPath(newPath) {
     $("#f" + newPath.id).attr("selected", "selected");
     $('.popover').remove();
     $('#actual').text(actualFolder);
+    if (searching) {
+        $("#videoTableSearch").hide()
+        $("#videoTable").show()
+        searching = false
+    }
     displayVideos(videos);
+}
+
+function deleteFolder(tr) {
+    $('#confirmDelFolder').attr('value', $(tr).parent().text())
+}
+
+function confirmDeleteFolder() {
+    var folder = $('#confirmDelFolder').attr('value');
+    var codes = folders2code[folder];
+    $.ajax({
+        url: 'http://localhost:8000/teacher/deleteFolder',
+        type: 'post',
+        data: {
+            folder: folder,
+            videoCodes: JSON.stringify(codes),
+        },
+        success: function(data) {
+            videos.forEach((video, i) => {
+                if (video.folder == folder)
+                    videos.splice(i, 1);
+            })
+            folders.splice(name2id[folder].slice(1), 1);
+            delete folders2code[folder]
+
+            if (Number(name2id[folder].slice(1)) != 0) {
+                changeCurrentPath(a0)
+            } else {
+                changeCurrentPath(a1)
+            }
+            delete name2id[folder];
+            $('#cancelFolder').modal('hide')
+            displayFolders(folders);
+
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            $('#folderError').val(errorMessage)
+        },
+    })
+}
+
+function renameFolder(tr) {
+    $('#modFoldTitle').val($(tr).parent().text());
+    $('#confirmRename').attr('value', $(tr).attr('name'))
+}
+
+function confirmRenameFolder() {
+    var newFolderName = $('#modFoldTitle').val();
+    var key = $('#confirmRename').attr('value');
+    var old = folders[key].name;
+    var isNew = true
+    folders.forEach(folder => {
+        if (folder.name == $.trim(newFolderName).toLocaleLowerCase() || folder.name == $.trim(newFolderName))
+            isNew = false
+    })
+    if (!isNew) {
+        $('#folderError').text("you already have a folder with this name. Plaese choose anothe one");
+    } else {
+        $.ajax({
+            url: 'http://localhost:8000/teacher/renameFolder',
+            type: 'post',
+            data: {
+                name: newFolderName,
+                old: old,
+            },
+            success: function(data) {
+                folders[key].name = newFolderName
+                videos.forEach(video => {
+                    if (video.folder == old)
+                        video.folder = newFolderName;
+                })
+                delete name2id[old]
+                name2id[newFolderName] = 'a' + key
+                $('#renameFolder').modal('hide')
+                changeCurrentPath($('#' + name2id[newFolderName])[0])
+                displayFolders(folders)
+                displayVideos(videos);
+            },
+            error: function(data, status) {
+                var errorMessage = JSON.parse(data.responseText).msg;
+                $('#folderError').val(errorMessage)
+            },
+        })
+
+    }
+
+}
+
+
+function modifyTitle(tr) {
+    $('#modTitle').val($(tr).parent().text());
+    $('#confirmModTitle').attr('value', $(tr).attr('name'))
+}
+
+function confirmModifyTitle() {
+    var newTitle = $('#modTitle').val();
+    var key = $('#confirmModTitle').attr('value');
+    if (newTitle.length == 0) {
+        $('#titleError').empty().append('the title canno\'t be empty!')
+    } else {
+        $.ajax({
+            url: 'http://localhost:8000/teacher/modifyTitle',
+            type: 'post',
+            data: {
+                title: newTitle,
+                code: videos[key].video_code
+            },
+            success: function(data) {
+                videos[key].title = newTitle
+                $('#modifyTitle').modal('hide')
+                displayVideos(videos);
+            },
+            error: function(data, status) {
+                var errorMessage = JSON.parse(data.responseText).msg;
+                $('#textNote').val(errorMessage)
+            },
+        })
+
+    }
+}
+
+function seeNote(tr) {
+    if (!editing) {
+        $('#SeeNote').modal('show');
+        $('#textNote').val(tr.innerText);
+    } else {
+        $('#modNote').val(tr.innerText);
+    }
+    $('#confirmModNote').attr('value', $(tr).attr('name'))
+}
+
+function editNote() {
+    if (editing) {
+        var newNote = $('#modNote').val();
+    } else {
+        var newNote = $('#textNote').val();
+    }
+    var key = $('#confirmModNote').attr('value');
+    $.ajax({
+        url: 'http://localhost:8000/teacher/modifyComment',
+        type: 'post',
+        data: {
+            note: newNote,
+            code: videos[key].video_code
+        },
+        success: function(data) {
+            videos[key].comment = newNote
+            $('#SeeNote').modal('hide');
+            $('#modifyNote').modal('hide')
+            displayVideos(videos);
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            $('#textNote').val(errorMessage)
+        },
+    })
+
 }
 
 function uploadFolder() {
     var name = $('#folderName').val();
-    if (foldersName.includes($.trim(name).toLocaleLowerCase()) || foldersName.includes($.trim(name))) {
+    var isNew = true;
+    folders.forEach(folder => {
+        if (folder.name == $.trim(name).toLocaleLowerCase() || folder.name == $.trim(name))
+            isNew = false
+    })
+    if (!isNew) {
         $('#newFoldError').empty();
         $('#newFoldError').text("you already have a folder with this name. Plaese choose anothe one");
     } else {
-        foldersName.push($.trim(name));
         $.ajax({
             url: "http://localhost:8000/teacher/newFolder",
             type: 'post',
@@ -108,9 +327,10 @@ function uploadFolder() {
                 name: name
             },
             success: function(data) {
+                name2id[data.name] = 'a' + folders.length
                 folders.push(data);
                 displayFolders(folders)
-                changeCurrentPath($('#a' + data.fid)[0])
+                changeCurrentPath($('#' + name2id[data.name])[0])
                 $(".showfo").trigger('click');
             },
             error: function(data, status) {
@@ -172,8 +392,10 @@ async function uploadVideo() {
                         },
                         success: function(data) {
                             videos.push(data);
-                            changeCurrentPath($('#a' + $('#folder option:selected').attr('id').slice(1))[0])
-                            displayVideos(videos)
+                            if ($('#folder option:selected').val() != actualFolder)
+                                changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
+                            else
+                                displayVideos(videos)
                             $(".showup").trigger('click');
                             $('#link').val('')
                             $('#note').val('')
@@ -230,6 +452,34 @@ function deleteVideo() {
     }
 }
 
+function confirmDeleteVideo() {
+    var codes = []
+    $("input:checkbox:checked").each(function() {
+        codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
+    })
+    $.ajax({
+        url: 'http://localhost:8000/teacher/deleteVideo',
+        type: 'post',
+        data: {
+            codes: JSON.stringify(codes)
+        },
+        success: function(data) {
+            videos.forEach(video => {
+                var y = codes.indexOf(video.video_code)
+                if (y != -1)
+                    videos.splice(y, 1);
+            })
+            displayVideos(videos)
+            $('#cancel').modal('hide');
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            console.log(errorMessage);
+
+        },
+    })
+}
+
 function moveVideo() {
     if ($("input:checkbox:checked").length != 0) {
         $('#move').modal('show')
@@ -254,6 +504,37 @@ function moveVideo() {
             }, 2000);
         }
     }
+}
+
+function confirmMoveVideo() {
+    var codes = []
+    $("input:checkbox:checked").each(function() {
+        codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
+    })
+    var newFolder = $('#folderMov option:selected').val();
+    $.ajax({
+        url: 'http://localhost:8000/teacher/moveVideo',
+        type: 'post',
+        data: {
+            folder: newFolder,
+            codes: JSON.stringify(codes)
+        },
+        success: function(data) {
+            videos.forEach((video, index) => {
+                if (codes.indexOf(video.video_code) != -1) {
+                    videos[index].folder = newFolder;
+                }
+            })
+            displayVideos(videos)
+            $('#move').modal('hide');
+
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            console.log(errorMessage);
+
+        },
+    })
 }
 
 function deleteReaction() {
@@ -287,6 +568,101 @@ function deleteReaction() {
     }
 }
 
+function confirmDeleteReaction() {
+    var codes = []
+    $("input:checkbox:checked").each(function() {
+        codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
+    })
+    $.ajax({
+        url: 'http://localhost:8000/teacher/removeFeedback',
+        type: 'post',
+        data: {
+            codes: JSON.stringify(codes)
+        },
+        success: function(data) {
+            videos.forEach((video, index) => {
+                if (codes.indexOf(video.video_code) != -1) {
+                    videos[index].new = 0;
+                }
+            })
+            $("input:checkbox:checked").each(function() {
+                $(this).prop('checked', false);
+            })
+            displayVideos(videos)
+            $('#delReaction').modal('hide');
+
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            console.log(errorMessage);
+
+        },
+    })
+}
+
+function confirmDelReactCodeChange() {
+    var codes = []
+    $("input:checkbox:checked").each(function() {
+        codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
+    })
+    $.ajax({
+        url: 'http://localhost:8000/teacher/removeFeedbackCode',
+        type: 'post',
+        data: {
+            codes: JSON.stringify(codes)
+        },
+        success: function(data) {
+            videos.forEach((video, index) => {
+                if (codes.indexOf(video.video_code) != -1) {
+                    videos[index].new = 0;
+                    videos[index].video_code = data.videos[video.video_code];
+                }
+            })
+            $("input:checkbox:checked").each(function() {
+                $(this).prop('checked', false);
+            })
+            displayVideos(videos)
+            $('#delReaction').modal('hide');
+
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            console.log(errorMessage);
+
+        },
+    })
+}
+
+function showStat(tr) {
+    var code = $(tr).parent().next().text()
+    $.ajax({
+        url: 'http://localhost:8000/teacher/showStats',
+        type: 'post',
+        data: {
+            code: code
+        },
+        success: function(data) {
+            if (data) {
+
+            } else {
+                $(tr).popover({
+                    placement: "right",
+                    content: 'unfortunately this video has no feedback yet!'
+                }).popover('show')
+                setTimeout(function() {
+                    $(tr).popover('hide')
+                }, 2000);
+            }
+
+        },
+        error: function(data, status) {
+            var errorMessage = JSON.parse(data.responseText).msg;
+            console.log(errorMessage);
+
+        },
+    })
+}
+
 $(".edit").click(
     function() {
         if (editing) {
@@ -304,19 +680,19 @@ $(".edit").click(
 function edit() {
     if (jQuery.isReady) {
         if (editing == false) {
-            $('.noteTd').removeClass('hoverEffect');
+            $('#videoTable .noteTd').removeClass('hoverEffect');
             for (var i = 0; i < videos.length; i++) {
-                $("#a" + videos[i].vid + " td:first-child").append('  <button class="btn btn-circle modify" data-toggle="modal" data-target="#modifyTitle" onclick="modifyTitle(' + videos[i].vid + ')"><i class="fa fa-pencil fa-lg" title="edit"\
+                $("#v" + i + " td:first-child").append('  <button class="btn btn-circle modify" name="' + i + '" data-toggle="modal" data-target="#modifyTitle" onclick="modifyTitle(this)"><i class="fa fa-pencil fa-lg" title="edit"\
                                     aria-hidden="true"></i></button>')
-                $("#a" + videos[i].vid + " td:last-child").append('  <button class="btn btn-circle modify" data-toggle="modal" data-target="#modifyNote" onclick="modifyNote(' + videos[i].vid + ')"><i class="fa fa-pencil fa-lg" title="edit"\
-                                    aria-hidden="true"></i></button>')
-                $("#a" + videos[i].vid).append('<td class="editing" >\
+                $("#v" + i + " td:last-child").append('  <button class="btn btn-circle modify" data-toggle="modal" data-target="#modifyNote"><i class="fa fa-pencil fa-lg" title="edit"\
+                aria-hidden="true"></i></button>')
+                $("#v" + i).append('<td class="editing" >\
                                         <input  type="checkbox" value="' + i + '">\
                                         </td>');
 
             }
-            $('.noteTd div').css({ 'display': 'inline-flex' });
-            $("thead tr").append('<th class="editing" ></th>')
+            $('#videoTable .noteTd div').css({ 'display': 'inline-flex' });
+            $("#videoTable thead tr").append('<th class="editing" ></th>')
             if ($(window).width() < 1025) {
                 $('#editBottonsSmall').show()
             } else {
@@ -324,7 +700,7 @@ function edit() {
             }
             $('.sidebar-nav li a ').css({ 'padding-left': '5px', });
             for (var i = 0; i < folders.length; i++) {
-                $('#a' + folders[i].fid).append('<a id="' + i + 'f" class="mod" data-toggle="modal" data-target="#cancelFolder"  href="#trash"></a><a id="' + i + 'rf" class="mod" data-toggle="modal" data-target="#renameFolder" onclick="renameFolder(' + i + ')" href="#pencil"></a>')
+                $('#a' + i).append('<a name="' + i + '" class="mod" data-toggle="modal" data-target="#cancelFolder" onclick="deleteFolder(this)"  href="#trash"></a><a name="' + i + '" class="mod" data-toggle="modal" data-target="#renameFolder" onclick="renameFolder(this)" href="#pencil"></a>')
             }
             if ($(window).width() > 760) {
                 $('.sidebar-nav li a ').css({ 'display': 'inline-block', 'max-width': '145px' });
@@ -340,9 +716,10 @@ function edit() {
             } else {
                 $('#editButtons').hide()
             }
-            $('.noteTd').addClass('hoverEffect');
-            $('.noteTd div').css({ 'display': 'block' });
-            $(".my-table th:last-child, .my-table td:last-child").remove();
+            $('#videoTable .noteTd').addClass('hoverEffect');
+            $('#videoTable .noteTd div').css({ 'display': 'block' });
+            $("#videoTable th:last-child").remove();
+            $("#videoTable td:last-child").remove();
             $(".modify").remove();
             $(".mod").remove();
             $('.sidebar-nav li a').css({ 'display': 'block', 'max-width': 'fit-content' });
@@ -352,20 +729,53 @@ function edit() {
     }
 }
 
+var searching = false
+
+$("#search").on("keyup", function(e) {
+    if (!searching) {
+        $('#actual').text('Global search');
+        $("#videoTableSearch").show()
+        $("#videoTable").hide()
+        $('#videoTable > tbody').empty();
+    }
+    searching = true
+    var value = $(this).val().toLowerCase();
+    $("#videoTableSearch tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    if (e.key == 'Enter') {
+        $('#actual').text(actualFolder);
+        $("#videoTableSearch").hide()
+        $("#videoTable").show()
+        displayVideos(videos)
+        searching = false
+        return false;
+    }
+});
+
+$('#search').on("search", function(e) {
+    $('#actual').text(actualFolder);
+    $("#videoTableSearch").hide()
+    $("#videoTable").show()
+    displayVideos(videos)
+    searching = false
+    return false;
+
+});
 
 function copyFunction(id) {
-    var text = $('#' + id + ' td:nth-child(3)').text().replace(/ /g, '');
+    var text = id.name
     var $temp = $("<input>");
     $("body").append($temp);
     $temp.val(text).select();
     document.execCommand("copy");
     $temp.remove();
-    $('#' + id + ' td:nth-child(3) button').popover({
+    $(id).popover({
         placement: "right",
         content: 'Code copied!'
     }).popover('show')
     setTimeout(function() {
-        $('#' + id + ' td:nth-child(3) button').popover('hide')
+        $(id).popover('hide')
     }, 2000);
 
 
@@ -406,7 +816,7 @@ $(".showup").click(function() {
     if ($(".upload").is(":hidden")) {
         $(".upload").show();
         $('#folder option:selected').attr("selected", null);
-        $("#f" + actualFolder.replace(/ /g, '')).attr("selected", "selected");
+        $("#f" + name2id[actualFolder]).attr("selected", "selected");
         $(".showup-2").removeClass('fa-chevron-up');
         $(".showup-2").addClass('fa-chevron-down');
     } else {

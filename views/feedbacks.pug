@@ -1,0 +1,136 @@
+extends layout 
+
+block content 
+    body(class="feedback")
+        #seeFullFeadback(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") comment/question
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        p#timeFeed The comment was given at minute: 
+                        form(style="padding: 0%; background: transparent;")
+                            textarea#fedbackBox(class="form-control" placeholder="Add yours here" style="height: 200px;")
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                        button#prev(type="button" class="btn btn-logOut" onclick="prevComment()") Prev.
+                        button#next(type="button" class="btn btn-logOut" onclick="nextComment()") Next
+        header
+            nav#navbarCont(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-md p-2 px-md-4 ")
+                button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                    span(class="navbar-toggler-icon")
+                div(class="d-flex d-none d-lg-block" style="color: whitesmoke; text-align: center; font-size:calc(10px + .6vw); margin-right: 20px;")
+                    p#teachersName(style="color: whitesmoke; text-align: center; font-size: calc(10px + .8vw); margin: auto;")
+                        i(class="fa fa-user")
+                        | Logged in as: 
+                        != name
+                #Navbar(class="collapse navbar-collapse justify-content-end")
+                    ul(class="navbar-nav ml-auto" style="margin-left: 0!important;")
+                        li(class="nav-item ")
+                            a(class="nav-link" href="/")
+                                span(class="fa fa-home fa-lg")
+                                | Home
+                        li(class="nav-item")
+                            a(class="nav-link" href="/teacher")
+                                span
+                                    img#teachersLogo(src="../images/chalkboard.png" height="30px" width="30px")
+                                | My videos
+                        li(class="nav-item active")
+                            a(class="nav-link")
+                                span(class="fa fa-bar-chart fa-lg")
+                                | Statistics
+                a(role="button" class="btn  btn-logOut  rounded-pill" href='teacher/logout')
+                    | Log
+                    | Out
+        div(class="row " style="border-bottom: black solid; text-align: center;")
+            div(class="col-12 d-flex justify-content-center" style="margin-bottom: 5px;")
+                h2#classTitle Video: 
+            #wrap(class="col-12 " style="font-weight: bold; overflow-x: auto; ")
+                #content(class="row d-flex justify-content-center flex")
+                    div(class="col-3")
+                        div(class="row d-flex justify-content-center")
+                            p Assessment
+                        div(class="row d-flex justify-content-center")
+                            div(class="col-6 ")
+                                div(style="cursor: auto;" class="btn roundStat ")
+                                    i(class="fa fa-lg fa-lightbulb-o" aria-hidden="true")
+                                p#avgUnderstanding
+                            div(class="col-5 ")
+                                div(style="cursor: auto;" class="btn roundStat ")
+                                    i(class="fa fa-lg fa-thumbs-up" aria-hidden="true")
+                                p#avgAppreciation
+                    div(class="col-4 ")
+                        div(class="row d-flex justify-content-center")
+                            p#reacTot Reactions: 
+                        div(class="row d-flex justify-content-center")
+                            div(class="col-3 ")
+                                div(style="cursor: auto;" class="btn roundStat")
+                                    img(src="../images/happy3.png" height="50px" style="margin-bottom: 5px;")
+                                p#getIt
+                            div(class="col-4 ")
+                                div(class="btn roundStat")
+                                    img(src="../images/sad3.png" height="50px" style="margin-bottom: 5px;")
+                                p#dGetIt(style="white-space: nowrap;")
+                            div(class="col-3 ")
+                                div(class="btn roundStat")
+                                    img(src="../images/question.png" height="50px" style="margin-bottom: 5px;")
+                                p#comm
+                    div(class="col-3 ")
+                        div(class="row d-flex justify-content-center")
+                            p#studTot Students: 
+                        div(class="row d-flex justify-content-center")
+                            div(class="col-5 ")
+                                div(style="cursor: auto;" class="btn roundStat")
+                                    i(class="fa fa-lg fa-user" aria-hidden="true")
+                                p#logged
+                            div(class="col-5 ")
+                                div(style="cursor: auto;" class="btn roundStat")
+                                    i(class="fa fa-lg fa-user-secret" aria-hidden="true")
+                                p#anonym
+                    div(class="col-1 ")
+                        div(class="row d-flex justify-content-center")
+                            p Download
+                        div(class="row d-flex justify-content-center ")
+                            div(class=" btn roundStat" onclick="downloadUniqueFile()")
+                                i(class="fa fa-lg fa-download" aria-hidden="true")
+                            p#statTxt(style="line-height: 1; margin-top: 10px;") Stats & Comments 
+        div(class="row d-flex  ")
+            div(class="col-12 col-lg-8 " style="padding: 25px")
+                div(class="row")
+                    #chartRow(class="col-12")
+                        #smallChart(class="d-flex justify-content-center" style="display: none!important; margin-bottom: 15px;")
+                            button(type="button" class="btn btn-logOut zoomOut" onclick="zoomOutChart()")
+                                i(class="fa fa-search-minus")
+                            button(type="button" class="btn btn-logOut zoomIn" onclick="zoomInChart()")
+                                i(class="fa fa-search-plus")
+                            button(type="button" class="btn btn-logOut" onclick="returnFirstChart()") Reset
+                            button(class="btn btn-logOut" onclick="downloadChart()")
+                                span(class="fa fa-download fa-lg")
+                        #legend(style="display: flex; margin-top: 5px; justify-content: center;")
+                            #chartControl(class="btn-group" role="group" style="margin-right: 2vw;")
+                                button(type="button" class="btn btn-logOut zoomOut" onclick="zoomOutChart()")
+                                    i(class="fa fa-search-minus")
+                                button(type="button" class="btn btn-logOut zoomIn" onclick="zoomInChart()")
+                                    i(class="fa fa-search-plus")
+                                button(type="button" class="btn btn-logOut" onclick="returnFirstChart()") reset
+                        canvas#chart(style="max-height: 88%;")
+                    div(class="col-12  d-flex justify-content-center")
+                        #player(class="videoPlayerRec" style="margin-right: 0px; margin-left: 10px; width: 100%; height: 42vh;")
+            div(class="col-12 col-lg-4 " style="padding: 25px; padding-left: 0px;")
+                table#commentsTable(class="table  table-hover " style="max-width: 95%; max-height: 85vh; margin-top: 0;")
+                    thead
+                        tr
+                            th(style="padding-top: 10px; padding-bottom: 3px; ")
+                                h3(style="margin-bottom:0px") Comment
+                            th(style="padding-top: 10px; padding-bottom: 3px; ")
+                                h3(style="margin-bottom:0px;") Minute
+                    tbody
+        #loading
+            img(src="../images/loadingProf.gif" alt="loading")
+    script(src="../javascripts/feedbacks.js") 
+    script(src="../javascripts/node_modules/patternomaly/dist/patternomaly.js") 
+    script(src="../javascripts/node_modules/html2canvas/dist/html2canvas.js") 
+    script(src="https://cdn.jsdelivr.net/npm/chart.js")
+    script(src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8")
+    script(src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next")

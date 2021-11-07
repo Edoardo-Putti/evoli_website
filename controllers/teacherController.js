@@ -426,9 +426,59 @@ exports.showStats = (req, res) => {
             [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
         }
     }).then(data => {
+        db.Video.update({ new: 0 }, {
+            where: {
+                [Op.and]: [{ video_code: req.body.code }, { uid: req.session.teacherId }]
+            }
+        })
+        req.session.code = req.body.code
         res.status(200).send(data)
     }).catch(err => {
         res.status(500).json({ msg: err })
     })
 
+}
+
+exports.retriveFeedbacks = (req, res) => {
+    async.parallel({
+        video: function(callback) {
+            db.Video.findOne({
+                attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new'],
+                where: {
+                    [Op.and]: [{ video_code: req.session.code }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+        },
+        reactions: function(callback) {
+            db.Reaction.findAll({
+                attributes: ['type', 'at_second', 'user_name'],
+                where: {
+                    [Op.and]: [{ video_code: req.session.code }, { visible: 1 }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.findAll({
+                attributes: ['appreciation', 'understanding', 'user_name'],
+                where: {
+                    [Op.and]: [{ video_code: req.session.code }, { visible: 1 }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
 }

@@ -1,6 +1,5 @@
 window.onload = function() {
     retriveData();
-    hamburger_cross();
     $('.scrollbar').css({
         height: window.innerHeight / 2.2
     })
@@ -642,8 +641,9 @@ function showStat(tr) {
             code: code
         },
         success: function(data) {
+            console.log(data)
             if (data) {
-
+                document.location.href = 'teacher/statistics';
             } else {
                 $(tr).popover({
                     placement: "right",

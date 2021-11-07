@@ -49,6 +49,8 @@ router.post('/removeFeedbackCode', teacherController.removeFeedbackCode);
 
 router.post('/showStats', teacherController.showStats);
 
+router.post('/retriveFeedbacks', teacherController.retriveFeedbacks)
+
 router.get('/logout', teacherController.logOut);
 
 

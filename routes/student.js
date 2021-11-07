@@ -24,7 +24,12 @@ router.get('/resetPwd', function(req, res, next) {
 });
 
 router.get('/class', function(req, res, next) {
-    res.render('studentClass', { title: 'Classroom', name: req.session.email, url: req.session.url, video: req.session.title })
+    if (req.session.url) {
+        res.render('studentClass', { title: 'Classroom', name: req.session.email, url: req.session.url, video: req.session.title })
+    } else {
+        res.redirect('/student')
+    }
+
 })
 
 router.post('/resetPwd', resetTokenCon.create);

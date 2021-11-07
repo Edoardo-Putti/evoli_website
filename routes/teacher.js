@@ -16,7 +16,12 @@ router.get('/resetPwd', function(req, res, next) {
 });
 
 router.get('/statistics', function(req, res, next) {
-    res.render('feedbacks', { title: 'View feedbacks', name: req.session.teacher });
+    if (req.session.teacher) {
+        res.render('feedbacks', { title: 'View feedbacks', name: req.session.teacher });
+    } else {
+        res.render('teacherAuth', { title: 'Auth' })
+    }
+
 });
 
 router.post('/login', teacherController.logIn);

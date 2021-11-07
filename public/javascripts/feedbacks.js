@@ -4,6 +4,9 @@ window.onload = function() {
         top: $('#navbarCont').outerHeight()
     })
 }
+
+
+
 var url;
 var player;
 var video;
@@ -17,6 +20,7 @@ var [l, d, c] = [
     [],
     []
 ]
+var co = [];
 var duration
 
 function YTplayerMaker() {
@@ -74,11 +78,13 @@ function retriveData() {
                     } else if (reaction.type == 'dislike') {
                         d.push(reaction.at_second)
                     } else {
+                        co.push(reaction)
                         c.push(reaction.at_second)
                     }
                 })
             }
             generateChart(l, d, c, duration)
+            createSortedTable();
             $('#reacTot').append(reactions.length)
             $('#studTot').append(sliders.length)
             $('#logged').append(logged + '<br>')
@@ -97,7 +103,95 @@ function retriveData() {
     });
 }
 
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
+
+function createSortedTable() {
+    $('#commentsTable > tbody').empty()
+    co.sort(GetSortOrder("at_second"))
+    co.forEach((comment, key) => {
+        var newEntry = '<tr> \
+                <td style="cursor: pointer" class="t" id="' + key + '" data-toggle="modal" data-target="#seeFullFeadback" onclick="addText(' + key + ')" >' + htmlEntities(comment.type) + '</td>\
+                <td class="t" ><button class="btn btn-md endsession"  onclick="goToSecond(' + comment.at_second + ')">' + secondsToMinutes(comment.at_second) + '</button></td>\
+                </tr>';
+        $('#commentsTable > tbody').append(newEntry);
+
+    })
+    $('tr td:first-child').css({
+        maxWidth: $('th:first-child').outerWidth(),
+        width: $('th:first-child').outerWidth()
+    })
+    $('tr td:last-child').css({
+        width: $('th:last-child').outerWidth()
+    })
+}
+
+function GetSortOrder(prop) {
+    return function(a, b) {
+        return a[prop] - b[prop];
+    }
+}
+
+function goToSecond(second) {
+    if (second < 10) {
+        player.seekTo(0);
+        player.playVideo();
+    } else {
+        player.seekTo(second - 10);
+        player.playVideo();
+    }
+}
+
+function addText(key) {
+    $("#fedbackBox").attr('name', key);
+    $('#timeFeed strong').empty();
+    $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+    $("#fedbackBox").val(htmlEntities(co[key].type));
+    if (key == 0) {
+        $('#prev').hide()
+    }
+    if (key == co.length - 1) {
+        $('#next').hide()
+    }
+}
+
+function prevComment() {
+    var key = Number($("#fedbackBox").attr('name')) - 1;
+
+    if (key > 0) {
+        $('#next').show()
+        $("#fedbackBox").attr('name', key);
+        $('#timeFeed strong').empty();
+        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $("#fedbackBox").val(htmlEntities(co[key].type));
+    } else {
+        $("#fedbackBox").attr('name', key);
+        $('#timeFeed strong').empty();
+        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $("#fedbackBox").val(htmlEntities(co[key].type));
+        $('#prev').hide()
+    }
+
+}
+
+function nextComment() {
+    var key = Number($("#fedbackBox").attr('name')) + 1;
+    if (key < co.length - 1) {
+        $('#prev').show()
+        $("#fedbackBox").attr('name', key);
+        $('#timeFeed strong').empty();
+        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $("#fedbackBox").val(htmlEntities(co[key].type));
+    } else {
+        $("#fedbackBox").attr('name', key);
+        $('#timeFeed strong').empty();
+        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $("#fedbackBox").val(htmlEntities(co[key].type));
+        $('#next').hide()
+    }
+}
 
 function createConfig(l, d, c, duration) {
     segmentsLength = Math.ceil(duration / numSegments);
@@ -168,7 +262,7 @@ function createConfig(l, d, c, duration) {
                     },
                     zoom: {
                         wheel: {
-                            enabled: true,
+                            enabled: false,
                         },
                         pinch: {
                             enabled: true
@@ -218,7 +312,7 @@ const getOrCreateLegendList = (chart, id) => {
     if (!listContainer) {
         listContainer = document.createElement('ul');
         listContainer.style.display = 'flex';
-        listContainer.style.flexDirection = 'row';
+        listContainer.style.flexDirection = 'column';
         listContainer.style.margin = 0;
         listContainer.style.padding = 0;
 
@@ -241,28 +335,30 @@ var htmlLegendPlugin = {
 
         // Reuse the built-in legendItems generator
         const items = chart.options.plugins.legend.labels.generateLabels(chart);
-
+        var tooltips = ['I get it', 'I don\' t get it', 'Comment']
         items.forEach((item, index) => {
             const li = document.createElement('li');
-            li.style.alignItems = 'center';
-            //li.style.cursor = 'pointer';
+            li.title = tooltips[index]
+                //li.style.alignItems = 'center';
+            li.style.verticalAlign = 'middle';
             //first combination
-            //li.style.display = 'table-cell';
-            //li.style.marginLeft = '15px';
+            li.style.display = 'table-cell';
+            li.style.marginLeft = '15px';
             //second and third combination
-            li.style.display = 'flex';
-            li.style.flexDirection = 'row';
+            // li.style.display = 'flex';
+            // li.style.flexDirection = 'row';
 
-            li.style.marginLeft = '10px';
+            // li.style.marginLeft = '10px';
 
 
 
 
             // Color box
             const boxSpan = document.createElement('img');
-            boxSpan.height = 25;
-            boxSpan.width = 25;
-            //boxSpan.style.marginRight = '1.5px';
+            boxSpan.height = 20;
+            boxSpan.width = 20;
+            boxSpan.style.marginLeft = '1.5px';
+            boxSpan.style.marginRight = '1.5px';
             if (item.datasetIndex == 0) {
                 boxSpan.src = "../images/likePattern.png";
             } else if (item.datasetIndex == 1) {
@@ -303,14 +399,14 @@ var htmlLegendPlugin = {
 
             var image = document.createElement('img');
             // first setting
-            // image.style.verticalAlign = 'unset';
-            // image.style.paddingLeft = '3px';
-            //second setting
+            //image.style.verticalAlign = 'unset';
             image.style.paddingLeft = '3px';
+            //second setting
+            //image.style.paddingLeft = '3px';
             // //third setting
             // image.style.paddingLeft = '2px';
             // boxSpan.style.paddingLeft = '2px';
-            image.height = 25;
+            image.height = 20;
             if (item.datasetIndex == 0) {
                 image.src = "../images/happy3.png";
             } else if (item.datasetIndex == 1) {
@@ -319,10 +415,11 @@ var htmlLegendPlugin = {
                 image.src = "../images/question.png";
             }
 
-            li.appendChild(checkbox);
-            //li.appendChild(boxSpan);
-            li.appendChild(image);
 
+
+            li.appendChild(image);
+            li.appendChild(boxSpan);
+            li.appendChild(checkbox);
 
             ul.appendChild(li);
 
@@ -453,25 +550,25 @@ const externalTooltipHandler = (context) => {
 
 };
 
-function addDownload() {
-    $('#legend').append('<div id = "download" \
-                style = "margin-left: 3vw;" >\
-                <button class = "btn btn-logOut"\
-                style = "margin-bottom: 5px;"\
-                onclick = "downloadChart()" > <span class = "fa fa-download fa-lg" > </span> Chart</button >\
-                </div> ')
-}
+// function addDownload() {
+//     $('#legend').append('<div id = "download" \
+//                 style = "margin-left: 3vw;" >\
+//                 <button class = "btn btn-logOut"\
+//                 style = "margin-bottom: 5px;"\
+//                 onclick = "downloadChart()" > <span class = "fa fa-download fa-lg" > </span> Chart</button >\
+//                 </div> ')
+// }
 
 function generateChart(l, d, c, duration) {
     var ctx = document.getElementById('chart').getContext('2d');
     var config = createConfig(l, d, c, duration);
     chart = new Chart(ctx, config);
-    if ($('#chartControl').is(':visible')) {
-        if (!$('#download').is(':visible')) {
-            addDownload();
-        }
+    // if ($('#chartControl').is(':visible')) {
+    //     if (!$('#download').is(':visible')) {
+    //         addDownload();
+    //     }
 
-    }
+    // }
 
 }
 
@@ -640,14 +737,11 @@ $(document).ready(() => {
         $('#content').css({ width: '1200px' })
         $('#wrap').css({ width: '1900px' })
     }
-    if ($(window).width() < 600) {
-        $('#smallChart').show()
-        $('#chartControl').hide()
-        $('#download').hide()
-    }
+
 })
 
 $(window).resize(() => {
+    createSortedTable();
     if ($(window).width() < 1200) {
         $('#content').css({ width: '1200px' })
         $('#wrap').css({ width: '1900px' })
@@ -655,25 +749,7 @@ $(window).resize(() => {
         $('#content').css({ width: 'auto' })
     }
 
-    if ($(window).width() < 600) {
-        $('#smallChart').show()
-        $('#chartControl').hide()
-        $('#download').hide()
-    } else {
 
-        $('#smallChart').attr('style', 'display: none!important; margin-bottom: 15px');
-        $('#chartControl').show()
-        if ($('#download').length == 0) {
-            $('#legend').append('<div id = "download" \
-                style = "margin-left: 3vw;" >\
-                <button class = "btn btn-logOut"\
-                style = "margin-bottom: 5px;"\
-                onclick = "downloadChart()" > <span class = "fa fa-download fa-lg" > </span> Chart</button >\
-                </div> ')
-        }
-        $('#download').show()
-
-    }
 
 })
 

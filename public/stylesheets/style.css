@@ -1437,17 +1437,22 @@ tr:last-child td:last-child {
     border-bottom-right-radius: 20px;
 }
 
+#legend {
+    display: flex;
+    position: absolute;
+    left: 30px;
+    top: 5px;
+}
+
 #chartControl {
     max-height: 40px;
-    /* position: relative;
-    top: 40px;
-    left: -20vh; */
-    border-radius: 40px;
+    position: absolute;
+    bottom: 60px;
+    right: 0px;
 }
 
 #chartControl .btn-logOut {
-    border-radius: 40px;
-    margin-left: 5px;
+    padding: 0.5rem 0.3rem;
 }
 
 #download .btn-logOut {
@@ -1607,6 +1612,7 @@ tr:last-child td:last-child {
     position: relative;
     width: 30px;
     height: 30px;
+    vertical-align: -webkit-baseline-middle;
 }
 
 

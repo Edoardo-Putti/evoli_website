@@ -1447,8 +1447,8 @@ tr:last-child td:last-child {
 #chartControl {
     max-height: 40px;
     position: absolute;
-    bottom: 60px;
-    right: 0px;
+    bottom: 70px;
+    right: 16px;
 }
 
 #chartControl .btn-logOut {

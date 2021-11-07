@@ -6,6 +6,8 @@ const session = require('express-session');
 const { Op } = require("sequelize");
 var async = require('async')
 var uuid = require("uuid");
+var xl = require('excel4node');
+fs = require('fs');
 
 const parameters = {
     memCost: 14,
@@ -481,4 +483,78 @@ exports.retriveFeedbacks = (req, res) => {
     }).catch(err => {
         res.status(500).json({ msg: err })
     })
+}
+
+function secondsToMinutes(s) {
+    var h = Math.floor(s / 3600); //Get whole hours
+    s -= h * 3600;
+    var m = Math.floor(s / 60); //Get remaining minutes
+    s -= m * 60;
+    if (h == 0) {
+        return (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
+    } else {
+        return h + ":" + (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
+    }
+}
+
+var Readable = require('stream').Readable
+
+
+exports.download = (req, res) => {
+    var wb = new xl.Workbook();
+    var ws = wb.addWorksheet('statistics');
+    var ws2 = wb.addWorksheet('comments');
+    var str = req.body.chart
+    var img = str.substring(str.indexOf(",") + 1);
+    const imgBuffer = Buffer.from(img, 'base64')
+    var s = new Readable()
+    s.push(imgBuffer)
+    s.push(null)
+    s.pipe(fs.createWriteStream('canvas/' + req.body.name + '.png'));
+
+    var header1 = [
+        '# students',
+        'average understanding',
+        'average appreciation',
+        '# I get it',
+        '# I don\'t get it',
+        '# comments'
+    ]
+    var header2 = [
+        'Comments',
+        'Minute',
+        'Student id'
+    ]
+    header1.forEach((h, i) => {
+        ws.cell(1, i + 1).string(h)
+    })
+    header2.forEach((h, i) => {
+        ws2.cell(1, i + 1).string(h)
+    })
+
+    var stat = JSON.parse(req.body.stat);
+    var comments = JSON.parse(req.body.comments)
+    stat.forEach((h, i) => {
+        ws.cell(2, i + 1).number(h)
+    })
+    comments.forEach((c, i) => {
+        ws2.cell(i + 2, 1).string(c.type)
+        ws2.cell(i + 2, 2).string(secondsToMinutes(c.at_second))
+        ws2.cell(i + 2, 3).string(c.user_name)
+    })
+    setTimeout(() => {
+        ws.addImage({
+            path: 'canvas/' + req.body.name + '.png',
+            type: 'picture',
+            position: {
+                type: 'oneCellAnchor',
+                from: {
+                    col: 1,
+                    row: 5,
+                },
+            },
+        });
+        wb.write('EVOLI_' + req.body.name + '_data', res)
+        setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name + '.png'); }, 200)
+    }, 600)
 }

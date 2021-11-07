@@ -100,7 +100,7 @@ block content
                 div(class="row")
                     #chartRow(class="col-12")
                         #legend
-                        canvas#chart(style=" padding-right: 40px;")
+                        canvas#chart
                         #chartControl(class="btn-group-vertical" role="group" )
                             button(type="button" class="btn btn-logOut zoomIn" onclick="zoomInChart()" style="border-top-left-radius: 40px; border-top-right-radius: 40px;")
                                 i(class="fa fa-search-plus")
@@ -123,7 +123,7 @@ block content
     script(src="../javascripts/feedbacks.js") 
     script(src="../javascripts/node_modules/patternomaly/dist/patternomaly.js") 
     script(src="../javascripts/node_modules/html2canvas/dist/html2canvas.js")
-    script(src="../public/javascripts/node_modules/excel4node/distribution/index.js")  
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")  
     script(src="https://cdn.jsdelivr.net/npm/chart.js")
     script(src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8")
     script(src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next")

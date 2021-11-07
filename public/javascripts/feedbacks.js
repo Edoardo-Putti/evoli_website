@@ -22,6 +22,7 @@ var [l, d, c] = [
 ]
 var co = [];
 var duration
+var stat = [];
 
 function YTplayerMaker() {
     var tag = document.createElement('script');
@@ -95,12 +96,56 @@ function retriveData() {
             $('#getIt').append(l.length + '<br> I get it')
             $('#dGetIt').append(d.length + '<br>I don\'t get it')
             $('#loading').hide();
+            stat.push(reactions.length, Math.round(avgUnd), Math.round(avgApp), l.length, d.length, c.length)
         },
         error: function(data, status) {
             var errorMessage = JSON.parse(data.responseText).msg;
             console.log(errorMessage);
         },
     });
+}
+
+
+function downloadChart() {
+    html2canvas($('#chartRow')[0]).then(canvas => {
+        var a = document.createElement('a');
+        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+        a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+        a.download = 'EVOLI_' + video.title + '.jpeg';
+        a.click();
+    });
+}
+
+function downloadUniqueFile() {
+    html2canvas($('#chartRow')[0]).then(canvas => {
+        axios({
+            url: 'http://localhost:8000/teacher/download',
+            method: 'post',
+            responseType: 'blob',
+            data: {
+                name: video.title,
+                comments: JSON.stringify(co),
+                stat: JSON.stringify(stat),
+                chart: canvas.toDataURL(),
+            }
+        }).then(response => {
+            let headerLine = response.headers['content-disposition'];
+            let startFileNameIndex = headerLine.indexOf('"') + 1
+            let endFileNameIndex = headerLine.lastIndexOf('"')
+            let filename = headerLine.substring(startFileNameIndex, endFileNameIndex)
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+            const link = document.createElement('a');
+
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }).catch(error => {
+            console.log(error)
+        })
+    });
+
 }
 
 function htmlEntities(str) {
@@ -201,14 +246,16 @@ function createConfig(l, d, c, duration) {
         var med = Math.round((i + i + segmentsLength) / 2)
         Xlabels.push(secondsToMinutes(med));
     }
-
-
+    Xlabels.push('zoom');
     var likesMap = fillMap(l, duration);
     var dislikesMap = fillMap(d, duration);
     var commentsMap = fillMap(c, duration);
     var maxValue = getMaxYValue(likesMap, dislikesMap, commentsMap);
-
-
+    likesMap.push({
+        x: duration + 100,
+        y: 0,
+        t: ['zoom']
+    })
     return {
         type: 'bar',
         data: {
@@ -279,7 +326,7 @@ function createConfig(l, d, c, duration) {
 
                     stacked: true,
                     min: 0,
-                    max: 23,
+                    max: 24,
 
                 },
                 y: {
@@ -752,13 +799,3 @@ $(window).resize(() => {
 
 
 })
-
-function downloadChart() {
-    html2canvas($('#chartRow')[0]).then(canvas => {
-        var a = document.createElement('a');
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-        a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-        a.download = 'EVOLI_' + video.title + '.jpeg';
-        a.click();
-    });
-}

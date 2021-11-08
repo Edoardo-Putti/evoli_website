@@ -17,7 +17,7 @@ body {
 .teacherauth,
 .studclass,
 .studRecap {
-    background: #f3f2ef;
+    background: rgb(243, 242, 239);
 }
 
 .teacherdashborad .btn-primary {

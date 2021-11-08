@@ -19,7 +19,7 @@ var sliderAnonim = {
 
 $(() => {
     $.ajax({
-        url: "http://localhost:8000/student/getFeedbacks",
+        url: "./getFeedbacks",
         type: 'get',
         success: function(data, status) {
             logged = true;
@@ -147,7 +147,7 @@ understanding.on('input', function() {
 appreciation.on('change', function() {
     if (logged) {
         $.ajax({
-            url: "http://localhost:8000/student/updateSlider",
+            url: "./updateSlider",
             type: 'post',
             data: {
                 value: appreciation.val(),
@@ -174,7 +174,7 @@ appreciation.on('change', function() {
 understanding.on('change', function() {
     if (logged) {
         $.ajax({
-            url: "http://localhost:8000/student/updateSlider",
+            url: "./updateSlider",
             type: 'post',
             data: {
                 value: understanding.val(),
@@ -204,7 +204,7 @@ function addLike() {
         $('#likesArray').removeClass('noReaction');
     }
     $.ajax({
-        url: "http://localhost:8000/student/newReaction",
+        url: "./newReaction",
         type: 'post',
         data: {
             type: 'like',
@@ -251,7 +251,7 @@ function addDislike() {
 
     }
     $.ajax({
-        url: "http://localhost:8000/student/newReaction",
+        url: "./newReaction",
         type: 'post',
         data: {
             type: 'dislike',
@@ -328,7 +328,7 @@ function closeForm() {
         $('#commentsArray').html('<thead><tr><th scope="col">Reaction</th><th scope="col">Minute</th><th scope="col">Modify</th><th scope="col">Delete</th></tr></thead><tbody></tbody>');
     }
     $.ajax({
-        url: "http://localhost:8000/student/newReaction",
+        url: "./newReaction",
         type: 'post',
         data: {
             type: $.trim($('#commentBox').val()),
@@ -377,7 +377,7 @@ function closeForm() {
 function remove(code) {
     var type = $.trim($('#' + code.id + ' > td:first-child').html());
     $.ajax({
-        url: "http://localhost:8000/student/deleteReaction",
+        url: "./deleteReaction",
         type: 'post',
         data: {
             rid: code.id.substring(1)
@@ -434,7 +434,7 @@ function editComment(code) {
         updatedComment = $("#commentBoxEdit").val();
         commentsLocal[code.id] = updatedComment;
         $.ajax({
-            url: "http://localhost:8000/student/updateComment",
+            url: "./updateComment",
             type: 'post',
             data: {
                 comment: updatedComment,
@@ -459,7 +459,7 @@ function editComment(code) {
 function sendConfirmation() {
     confirmed = true;
     $.ajax({
-        url: "http://localhost:8000/student/updateVisibility",
+        url: "./updateVisibility",
         type: 'post',
         data: {
             sid: sliderId,

@@ -18,7 +18,7 @@ function htmlEntities(str) {
 
 function retriveData() {
     $.ajax({
-        url: "http://localhost:8000/teacher/retriveData",
+        url: "teacher/retriveData",
         type: 'post',
         success: function(data) {
             folders = data.folders;
@@ -159,7 +159,7 @@ function confirmDeleteFolder() {
     var folder = $('#confirmDelFolder').attr('value');
     var codes = folders2code[folder];
     $.ajax({
-        url: 'http://localhost:8000/teacher/deleteFolder',
+        url: '.teacher/deleteFolder',
         type: 'post',
         data: {
             folder: folder,
@@ -208,7 +208,7 @@ function confirmRenameFolder() {
         $('#folderError').text("you already have a folder with this name. Plaese choose anothe one");
     } else {
         $.ajax({
-            url: 'http://localhost:8000/teacher/renameFolder',
+            url: 'teacher/renameFolder',
             type: 'post',
             data: {
                 name: newFolderName,
@@ -250,7 +250,7 @@ function confirmModifyTitle() {
         $('#titleError').empty().append('the title canno\'t be empty!')
     } else {
         $.ajax({
-            url: 'http://localhost:8000/teacher/modifyTitle',
+            url: 'teacher/modifyTitle',
             type: 'post',
             data: {
                 title: newTitle,
@@ -288,7 +288,7 @@ function editNote() {
     }
     var key = $('#confirmModNote').attr('value');
     $.ajax({
-        url: 'http://localhost:8000/teacher/modifyComment',
+        url: 'teacher/modifyComment',
         type: 'post',
         data: {
             note: newNote,
@@ -320,7 +320,7 @@ function uploadFolder() {
         $('#newFoldError').text("you already have a folder with this name. Plaese choose anothe one");
     } else {
         $.ajax({
-            url: "http://localhost:8000/teacher/newFolder",
+            url: "teacher/newFolder",
             type: 'post',
             data: {
                 name: name
@@ -380,7 +380,7 @@ async function uploadVideo() {
                 var duration = ISO2Second(Isotime)
                 if (duration) {
                     $.ajax({
-                        url: "http://localhost:8000/teacher/newVideo",
+                        url: "teacher/newVideo",
                         type: 'post',
                         data: {
                             title: $('#className').val(),
@@ -457,7 +457,7 @@ function confirmDeleteVideo() {
         codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
     })
     $.ajax({
-        url: 'http://localhost:8000/teacher/deleteVideo',
+        url: 'teacher/deleteVideo',
         type: 'post',
         data: {
             codes: JSON.stringify(codes)
@@ -512,7 +512,7 @@ function confirmMoveVideo() {
     })
     var newFolder = $('#folderMov option:selected').val();
     $.ajax({
-        url: 'http://localhost:8000/teacher/moveVideo',
+        url: 'teacher/moveVideo',
         type: 'post',
         data: {
             folder: newFolder,
@@ -573,7 +573,7 @@ function confirmDeleteReaction() {
         codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
     })
     $.ajax({
-        url: 'http://localhost:8000/teacher/removeFeedback',
+        url: 'teacher/removeFeedback',
         type: 'post',
         data: {
             codes: JSON.stringify(codes)
@@ -605,7 +605,7 @@ function confirmDelReactCodeChange() {
         codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
     })
     $.ajax({
-        url: 'http://localhost:8000/teacher/removeFeedbackCode',
+        url: 'teacher/removeFeedbackCode',
         type: 'post',
         data: {
             codes: JSON.stringify(codes)
@@ -635,13 +635,12 @@ function confirmDelReactCodeChange() {
 function showStat(tr) {
     var code = $(tr).parent().next().text()
     $.ajax({
-        url: 'http://localhost:8000/teacher/showStats',
+        url: 'teacher/showStats',
         type: 'post',
         data: {
             code: code
         },
         success: function(data) {
-            console.log(data)
             if (data) {
                 document.location.href = 'teacher/statistics';
             } else {

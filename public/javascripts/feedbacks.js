@@ -45,7 +45,7 @@ function onYouTubeIframeAPIReady() {
 
 function retriveData() {
     $.ajax({
-        url: "http://localhost:8000/teacher/retriveFeedbacks",
+        url: "./retriveFeedbacks",
         type: 'post',
         success: function(data) {
             var sliders = data.sliders;
@@ -119,7 +119,7 @@ function downloadChart() {
 function downloadUniqueFile() {
     html2canvas($('#chartRow')[0]).then(canvas => {
         axios({
-            url: 'http://localhost:8000/teacher/download',
+            url: './download',
             method: 'post',
             responseType: 'blob',
             data: {

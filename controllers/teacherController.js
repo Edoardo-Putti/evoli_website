@@ -500,15 +500,16 @@ function secondsToMinutes(s) {
 var Readable = require('stream').Readable
 
 exports.saveImage = (req, res) => {
-    var str = req.body.chart
-    var img = str.substring(str.indexOf(",") + 1);
-    console.log(img)
-    const imgBuffer = Buffer.from(img, 'base64')
-    var s = new Readable()
-    s.push(imgBuffer)
-    s.push(null)
-    s.pipe(fs.createWriteStream('canvas/' + req.body.name + '.png'));
-    res.status(200).send('ok')
+    var str = req.body.chart;
+
+
+    // var img = str.substring(str.indexOf(",") + 1);
+    // console.log(img)
+    // const imgBuffer = Buffer.from(img, 'base64')
+    // var s = new Readable()
+    // s.push(imgBuffer)
+    // s.push(null)
+    // s.pipe(fs.createWriteStream(''));
 }
 
 exports.download = (req, res) => {

@@ -40,7 +40,7 @@ var sessionStore = new MySQLStore({
     host: "localhost",
     user: "root",
     password: "",
-    database: "evoli_test",
+    database: "evoli",
 });
 
 app.use(session({

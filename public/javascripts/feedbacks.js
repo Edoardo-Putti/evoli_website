@@ -122,7 +122,7 @@ function test() {
         type: 'post',
         data: {
             name: video.title,
-            chart: $('#chartRow')[0],
+            chart: $('#chartRow').html(),
         },
         success: function(data) {},
     });

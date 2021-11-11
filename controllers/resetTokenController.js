@@ -41,7 +41,7 @@ exports.create = [
                                 to: req.body.email,
                                 replyTo: 'noreply',
                                 subject: 'Reset password',
-                                text: 'To reset your password, please click the link below.\n\nhttp://localhost:8000/reset-password?token=' + encodeURIComponent(data.token) + '&email=' + req.body.email + '&stud=true'
+                                text: 'To reset your password, please click the link below.\n\nhttps://www.evoli.polimi.it/reset-password?token=' + encodeURIComponent(data.token) + '&email=' + req.body.email + '&stud=true'
                             };
                             transport.sendMail(message, function(err, info) {
                                 if (err) {
@@ -75,7 +75,7 @@ exports.create = [
                                 to: req.body.email,
                                 replyTo: 'noreply',
                                 subject: 'Reset password',
-                                text: 'To reset your password, please click the link below.\n\nhttp://localhost:8000/reset-password?token=' + encodeURIComponent(data.token) + '&email=' + req.body.email + '&stud=false'
+                                text: 'To reset your password, please click the link below.\n\nhttps://www.evoli.polimi.it/reset-password?token=' + encodeURIComponent(data.token) + '&email=' + req.body.email + '&stud=false'
                             };
                             transport.sendMail(message, function(err, info) {
                                 if (err) {

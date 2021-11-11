@@ -116,33 +116,58 @@ function downloadChart() {
     });
 }
 
+function test() {
+    $.ajax({
+        url: './saveImage',
+        type: 'post',
+        data: {
+            name: video.title,
+            chart: $('#chartRow')[0],
+        },
+        success: function(data) {},
+    });
+}
+
 function downloadUniqueFile() {
     html2canvas($('#chartRow')[0]).then(canvas => {
-        axios({
-            url: './download',
-            method: 'post',
-            responseType: 'blob',
+        $.ajax({
+            url: './saveImage',
+            type: 'post',
             data: {
                 name: video.title,
-                comments: JSON.stringify(co),
-                stat: JSON.stringify(stat),
-                chart: canvas.toDataURL(),
-            }
-        }).then(response => {
-            let headerLine = response.headers['content-disposition'];
-            let startFileNameIndex = headerLine.indexOf('"') + 1
-            let endFileNameIndex = headerLine.lastIndexOf('"')
-            let filename = headerLine.substring(startFileNameIndex, endFileNameIndex)
-            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
-            const link = document.createElement('a');
+                chart: canvas.toDataURL('image/jpeg'),
+            },
+            success: function(data) {
+                axios({
+                    url: './download',
+                    method: 'post',
+                    responseType: 'blob',
+                    data: {
+                        name: video.title,
+                        comments: JSON.stringify(co),
+                        stat: JSON.stringify(stat),
+                    }
+                }).then(response => {
+                    let headerLine = response.headers['content-disposition'];
+                    let startFileNameIndex = headerLine.indexOf('"') + 1
+                    let endFileNameIndex = headerLine.lastIndexOf('"')
+                    let filename = headerLine.substring(startFileNameIndex, endFileNameIndex)
+                    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+                    const link = document.createElement('a');
 
-            link.href = url;
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-        }).catch(error => {
-            console.log(error)
+                    link.href = url;
+                    link.setAttribute('download', filename);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            error: function(data, status) {
+                var errorMessage = JSON.parse(data.responseText).msg;
+                console.log(errorMessage);
+            },
         })
     });
 

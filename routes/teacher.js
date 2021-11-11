@@ -56,6 +56,8 @@ router.post('/showStats', teacherController.showStats);
 
 router.post('/retriveFeedbacks', teacherController.retriveFeedbacks)
 
+router.post('/saveImage', teacherController.saveImage);
+
 router.post('/download', teacherController.download);
 
 router.get('/logout', teacherController.logOut);

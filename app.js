@@ -7,6 +7,8 @@ const Sequelize = require('sequelize');
 const config = require('./config/config.json')['development'];
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var compression = require('compression');
+
 let sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 
@@ -15,6 +17,7 @@ var studentRouter = require('./routes/student');
 var teacherRouter = require('./routes/teacher');
 
 var app = express();
+app.use(compression());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

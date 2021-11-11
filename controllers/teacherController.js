@@ -499,18 +499,23 @@ function secondsToMinutes(s) {
 
 var Readable = require('stream').Readable
 
-
-exports.download = (req, res) => {
-    var wb = new xl.Workbook();
-    var ws = wb.addWorksheet('statistics');
-    var ws2 = wb.addWorksheet('comments');
+exports.saveImage = (req, res) => {
     var str = req.body.chart
     var img = str.substring(str.indexOf(",") + 1);
+    console.log(img)
     const imgBuffer = Buffer.from(img, 'base64')
     var s = new Readable()
     s.push(imgBuffer)
     s.push(null)
     s.pipe(fs.createWriteStream('canvas/' + req.body.name + '.png'));
+    res.status(200).send('ok')
+}
+
+exports.download = (req, res) => {
+    var wb = new xl.Workbook();
+    var ws = wb.addWorksheet('statistics');
+    var ws2 = wb.addWorksheet('comments');
+
 
     var header1 = [
         '# students',
@@ -542,19 +547,19 @@ exports.download = (req, res) => {
         ws2.cell(i + 2, 2).string(secondsToMinutes(c.at_second))
         ws2.cell(i + 2, 3).string(c.user_name)
     })
-    setTimeout(() => {
-        ws.addImage({
-            path: 'canvas/' + req.body.name + '.png',
-            type: 'picture',
-            position: {
-                type: 'oneCellAnchor',
-                from: {
-                    col: 1,
-                    row: 5,
-                },
+
+    ws.addImage({
+        path: 'canvas/' + req.body.name + '.png',
+        type: 'picture',
+        position: {
+            type: 'oneCellAnchor',
+            from: {
+                col: 1,
+                row: 5,
             },
-        });
-        wb.write('EVOLI_' + req.body.name + '_data', res)
-        setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name + '.png'); }, 200)
-    }, 600)
+        },
+    });
+    wb.write('EVOLI_' + req.body.name + '_data', res)
+    setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name + '.png'); }, 200)
+
 }

@@ -1,5 +1,6 @@
 window.onload = function() {
     retriveData();
+    hamburger_cross();
     $('.scrollbar').css({
         height: window.innerHeight / 2.2
     })

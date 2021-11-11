@@ -155,7 +155,7 @@ appreciation.on('change', function() {
                 type: false
             },
             success: function(data, status) {
-                console.log(data.done)
+
             },
             error: function(data, status) {
                 var errorMessage = JSON.parse(data.responseText).msg;
@@ -182,7 +182,7 @@ understanding.on('change', function() {
                 type: true,
             },
             success: function(data, status) {
-                console.log(data.done)
+
             },
             error: function(data, status) {
                 var errorMessage = JSON.parse(data.responseText).msg;
@@ -442,7 +442,7 @@ function editComment(code) {
             },
             success: function(data, status) {
                 $('#' + code.id + ' > td:first-child').empty().append(updatedComment);
-                console.log(data.done);
+
             },
             error: function(data, status) {
                 var errorMessage = JSON.parse(data.responseText).msg;
@@ -472,7 +472,6 @@ function sendConfirmation() {
             document.location.href = 'videoOver';
         },
         error: function(data, status) {
-            console.log(data)
             var errorMessage = JSON.parse(data.responseText).msg;
             console.log(errorMessage);
         },
@@ -506,7 +505,6 @@ function openFullscreen() {
         $('#fullscreen').removeClass('col-lg-7  col-xl-8')
         $('#playerTop').addClass('videoFullScreen')
         var h = window.screen.height - 70;
-        console.log(h)
         $('#playerTop').css({ height: h, width: window.screen.width })
         var w = window.screen.width / 3.5;
         $('#container').addClass('reactionFullScreen')
@@ -579,7 +577,6 @@ function exitHandler() {
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
 
         if (document.exitFullscreen) {
-            console.log('a')
             $('nav').removeClass('disappear')
             full = false;
             $('#playerTop').removeClass('videoFullScreen')
@@ -596,7 +593,7 @@ function exitHandler() {
 
 
         } else if (document.webkitExitFullscreen) { /* Safari */
-            console.log('b')
+
             $('nav').removeClass('disappear')
             full = false;
             $('#playerTop').removeClass('videoFullScreen')
@@ -612,7 +609,7 @@ function exitHandler() {
             }
 
         } else if (document.msExitFullscreen) { /* IE11 */
-            console.log('c')
+
             $('nav').removeClass('disappear')
             full = false;
             $('#playerTop').removeClass('videoFullScreen')
@@ -707,7 +704,6 @@ $(window).resize(() => {
 
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
-        console.log('ended')
         $('html, body').animate({
             scrollTop: $("#sliderContainer").offset().top
         }, 1500);
@@ -853,7 +849,7 @@ $('#commentReaction').on('click', () => {
 
 
 window.addEventListener('beforeunload', function(e) {
-    console.log('called', e)
+
     if (!confirmed) {
         e.preventDefault();
         e.returnValue = '';

@@ -502,12 +502,11 @@ var Readable = require('stream').Readable
 exports.saveImage = (req, res) => {
     var str = req.body.chart
     var img = str.substring(str.indexOf(",") + 1);
-    console.log(img)
     const imgBuffer = Buffer.from(img, 'base64')
     var s = new Readable()
     s.push(imgBuffer)
     s.push(null)
-    s.pipe(fs.createWriteStream('canvas/' + req.body.name + '.jpeg'));
+    s.pipe(fs.createWriteStream('canvas/' + req.body.name.replace(/\s/g, '') + '.jpeg'));
     res.status(200).send('ok')
 }
 
@@ -549,7 +548,7 @@ exports.download = (req, res) => {
     })
 
     ws.addImage({
-        path: 'canvas/' + req.body.name + '.jpeg',
+        path: 'canvas/' + req.body.name.replace(/\s/g, '') + '.jpeg',
         type: 'picture',
         position: {
             type: 'oneCellAnchor',
@@ -559,7 +558,7 @@ exports.download = (req, res) => {
             },
         },
     });
-    wb.write('EVOLI_' + req.body.name + '_data', res)
-    setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name + '.jpeg'); }, 200)
+    wb.write('EVOLI_' + req.body.name.replace(/\s/g, '') + '_data', res)
+    setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name.replace(/\s/g, '') + '.jpeg'); }, 200)
 
 }

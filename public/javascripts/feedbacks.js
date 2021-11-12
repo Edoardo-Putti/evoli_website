@@ -116,17 +116,7 @@ function downloadChart() {
     });
 }
 
-function test() {
-    $.ajax({
-        url: './saveImage',
-        type: 'post',
-        data: {
-            name: video.title,
-            chart: $('#chartRow').html(),
-        },
-        success: function(data) {},
-    });
-}
+
 
 function downloadUniqueFile() {
     html2canvas($('#chartRow')[0]).then(canvas => {
@@ -135,7 +125,7 @@ function downloadUniqueFile() {
             type: 'post',
             data: {
                 name: video.title,
-                chart: canvas.toDataURL('image/jpeg'),
+                chart: canvas.toDataURL('image/jpeg', 0.5)
             },
             success: function(data) {
                 axios({

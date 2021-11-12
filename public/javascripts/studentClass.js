@@ -69,7 +69,7 @@ $(() => {
                 })
             }
 
-            $('#loading').hide();
+
         },
         error: function(data, status) {
 
@@ -125,7 +125,7 @@ $(() => {
             $("#commentsCount").text(commemtsNum);
             understandingValue.html(understanding.val() + "/100");
             appreciationValue.html(appreciation.val() + "/100");
-            $('#loading').hide();
+
         }
 
     })
@@ -649,6 +649,7 @@ function closeFullscreen() {
 function onPlayerReady(event) {
     var l = $('#commentReaction').position().left + $('#commentReaction').position().left / 2.5;
     $('#enableFullScreen').css({ left: l, })
+    $('#loading').hide();
 }
 
 $(() => {

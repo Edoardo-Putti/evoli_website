@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+          - database
+  database:
+    image: mysql
+    restart: always
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: evoli
+      MYSQL_USER: edoardo
+      MYSQL_PASSWORD: toor
+      
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+  phpmyadmin:
+      image: phpmyadmin
+      links:
+        - database
+      environment:
+        PMA_HOST: database
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+      restart: always
+      ports:
+        - 8081:80
+volumes:
+  mysql:

@@ -4,12 +4,24 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const Sequelize = require('sequelize');
-const config = require('./config/config.json')['production'];
+const config = require('./config/config');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var compression = require('compression');
 
-let sequelize = new Sequelize(config.database, config.username, config.password, config);
+let sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.HOST,
+    dialect: config.dialect,
+    port: config.port,
+    operatorsAliases: false,
+
+    pool: {
+        max: config.pool.max,
+        min: config.pool.min,
+        acquire: config.pool.acquire,
+        idle: config.pool.idle
+    }
+});
 
 
 var indexRouter = require('./routes/index');
@@ -37,10 +49,10 @@ try {
 }
 
 var sessionStore = new MySQLStore({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "evoli",
+    host: config.host,
+    user: config.username,
+    password: config.password,
+    database: config.database,
 });
 
 app.use(session({

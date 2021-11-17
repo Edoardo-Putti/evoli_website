@@ -1,0 +1,3 @@
+FROM mariadb 
+
+ADD evoli.sql /docker-entrypoint-initdb.d/evoli.sql

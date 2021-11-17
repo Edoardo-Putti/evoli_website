@@ -1,11 +1,10 @@
 {
     "name": "evoli",
-    "version": "0.0.0",
+    "version": "3.0.0",
     "private": true,
     "scripts": {
         "start": "node ./bin/www",
-        "devstart": "nodemon ./bin/www",
-        "pm2": "pm2 start config/ecosystem.config.js"
+        "devstart": "nodemon ./bin/www"
     },
     "dependencies": {
         "async": "^3.2.1",
@@ -24,7 +23,6 @@
         "morgan": "~1.9.1",
         "mysql2": "^2.3.2",
         "nodemailer": "^6.7.0",
-        "pm2": "^5.1.2",
         "pug": "^3.0.2",
         "sequelize": "^6.8.0",
         "sequelize-auto": "^0.8.5",

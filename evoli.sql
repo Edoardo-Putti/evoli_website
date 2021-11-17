@@ -1,41 +1,22 @@
--- phpMyAdmin SQL Dump
--- version 5.1.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Nov 11, 2021 at 04:02 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `evoli`
---
+CREATE DATABASE IF NOT EXISTS `evoli` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `evoli`;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `folder`
---
-
-CREATE TABLE `folder` (
+CREATE TABLE IF NOT EXISTS `folder` (
   `fid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `name` varchar(100) DEFAULT NULL,
-  `uid` varchar(32) DEFAULT NULL
+  `uid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`fid`),
+  KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `folder`
---
 
 INSERT INTO `folder` (`fid`, `name`, `uid`) VALUES
 ('3907d3d642fd11ec9bc200155d06d18e', 'root', '66e22f9042fa11ec9bc200155d06d18e'),
@@ -307,30 +288,66 @@ INSERT INTO `folder` (`fid`, `name`, `uid`) VALUES
 ('392d7f6642fd11ec9bc200155d06d18e', 'first', '677289c442fa11ec9bc200155d06d18e'),
 ('392d9bad42fd11ec9bc200155d06d18e', 'root', '6773922d42fa11ec9bc200155d06d18e');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `reaction`
---
-
-CREATE TABLE `reaction` (
+CREATE TABLE IF NOT EXISTS `reaction` (
   `rid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `type` varchar(1000) DEFAULT NULL,
   `at_second` int(11) DEFAULT NULL,
   `video_code` varchar(20) DEFAULT NULL,
   `user_name` varchar(100) DEFAULT NULL,
-  `visible` smallint(6) DEFAULT NULL
+  `visible` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `reaction`
---
-
 INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('0041f6208d06456cbbeb22792303063f', 'like', 158, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('03a771813ef04ad79b807468a64d63ff', 'like', 200, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('04c65895fdd04b6fae9aab356f614c68', 'dislike', 178, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('0502aaff575d438884ad3516daef8f4b', 'dislike', 122, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('0a4fb557f0594471b13a5f7ab4b2ab6d', 'sbsg', 56, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('0c2510a156cf4ca18341e2a5c06de70c', 'vsvsv', 157, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('159297d02f9649bdab7076d2274cf251', 'like', 53, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
 ('1df28c46554c494899c8733d107ce9be', 'dislike', 0, 'AW7MHU', 'edoardo.putti@mail.polimi.it', 1),
+('2255682bb59b4a54b85544974284bb2f', 'dislike', 177, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('2bb76b666ed54a2ba2856ad2e1905947', 'like', 97, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('315a389556034e89be128d961d417908', 'dislike', 178, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('332417a64af542b0a291391f1c6ce3eb', 'like', 191, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('37081bc29df74e539fca0d9c4598f590', 'like', 53, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('444a80cc86a4489d86fc95fe110e8ab9', 'dislike', 190, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('46636d858e8d48bd860006ef08b9c259', 'dislike', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('46a1b1cd32fb4293b64748753c7ca297', 'like', 179, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('4b34c33476604356adc722832d481d7f', 'like', 41, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
 ('50d5ea17d9f94f29a8f90f7a861cddbf', 'like', 0, 'AW7MHU', 'edoardo.putti@mail.polimi.it', 1),
+('5181d620c0b546c496476b8d8f0421b4', 'dislike', 199, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('51c999c1a91446c3971276045fb1810b', 'like', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('52b9687d9bb64091a8c8f3d84f542dc2', 'like', 201, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('5ef06ffee3cb49db8e371ab6ed0d31d0', 'like', 191, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('62b93463ead74a18bef7323fbc5b4dc6', 'like', 178, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
 ('64e91f9d784d4b72a073b70ff88c070a', 'ada', 0, 'AW7MHU', 'Graceful-Squirrel', 1),
+('6da118ad7d7d4a58beabcb6c8d9b701d', 'dislike', 54, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('6e54735ab07d4151a971670791b41d3e', 'like', 97, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('6fdd9923d09f44ebacc821fe3812882d', 'like', 200, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('70bb77cbf3af46c582f9c1375dd341ad', 'dislike', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('72495d182f4b4aad82e50d958610f338', 'like', 200, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('72514444d8584fb38a48bc3543f6ab09', 'dislike', 54, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('726f95380d674f76b0e6a7d8b3ca62e1', 'like', 158, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('740523b11e8d4c579ccb0f0925e37387', 'jdbcouahbodi', 67, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('7675005e740f43408283c81cc355158c', 'like', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('7aec9bcd6c7b46339159463a33bd0f6c', 'like', 124, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('7bf26c04803641d3827c8f8b83e40908', 'like', 200, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('7d5beba0a03045fea968514219cfe930', 'dislike', 10, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('7e79dd2b4d3c418386738af4d3b2d5c2', 'dislike', 159, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('80c422e90a494962832ab1363a2f8299', 'svsvsvsv', 183, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('80dac5f0ad2f427e835ffef0bb861569', 'like', 124, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('8550b6eb80c447b694de6485d7df34a8', 'dislike', 122, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('8dcda37d459745f7aa00b5b7a00ae430', 'bdnfmh', 194, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('8e82423711ea4e14a12b8aeea42aa57c', 'like', 2, 'test', 'Continuous-Rooster', 1),
 ('94923dc1a50242af90f87f591fb79d57', 'like', 0, 'AW7MHU', 'Graceful-Squirrel', 1),
+('94a3186905534ae4bd068b4a65d742ac', 'dislike', 178, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('98b7846038ec41aa8bd9fce81d51bc33', 'dislike', 54, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('9ed3e0a62d33454ba5dd3fd0f873c98b', 'dislike', 98, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('a6393e36ded044fa942f9b8717e6f54d', 'dislike', 98, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('af34bbb874e44c4d8cfd800b5523041b', 'like', 191, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('b482a2d7ff1d4f68af639e26f4bdcbd1', 'dislike', 5, 'test', 'Continuous-Rooster', 1),
 ('b4d4618f42fa11ec9bc200155d06d18e', 'like', 0, 'test', 'FrailIberianLynx', 1),
 ('b4dd37ff42fa11ec9bc200155d06d18e', 'dislike', 0, 'test', 'FrailIberianLynx', 1),
 ('b4ddaf0b42fa11ec9bc200155d06d18e', 'dddd', 1, 'test', 'FrailIberianLynx', 1),
@@ -749,6 +766,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b51922fe42fa11ec9bc200155d06d18e', 'like', 81, 'J6Q21g', 'SorrowfulElkhound', 1),
 ('b5193fe542fa11ec9bc200155d06d18e', 'like', 81, 'J6Q21g', 'SorrowfulElkhound', 1),
 ('b5195c3942fa11ec9bc200155d06d18e', 'like', 81, 'J6Q21g', 'SorrowfulElkhound', 1),
+('b51966d3ddbe4926b9fd9ec99650eeee', 'sdvva', 0, 'test', 'Healthy-Roundworm', 0),
 ('b5197eae42fa11ec9bc200155d06d18e', 'like', 0, 'J6Q21g', 'SorrowfulElkhound', 1),
 ('b519a28142fa11ec9bc200155d06d18e', 'like', 0, 'J6Q21g', 'SorrowfulElkhound', 1),
 ('b519c4f242fa11ec9bc200155d06d18e', 'like', 4, 'J6Q21g', 'SorrowfulElkhound', 1),
@@ -855,7 +873,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b527226442fa11ec9bc200155d06d18e', 'like', 146, 'fDEx2C', 'HugeWaterDragons', 1),
 ('b527433442fa11ec9bc200155d06d18e', 'like', 475, 'fDEx2C', 'HugeWaterDragons', 1),
 ('b52763a842fa11ec9bc200155d06d18e', 'like', 106, '8qTK3h', 'RichMarmot', 1),
-('b5277c9342fa11ec9bc200155d06d18e', 'like', 797, 'fDEx2C', 'HugeWaterDragons', 1),
+('b5277c9342fa11ec9bc200155d06d18e', 'like', 797, 'fDEx2C', 'HugeWaterDragons', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b527999542fa11ec9bc200155d06d18e', 'like', 258, '8qTK3h', 'RichMarmot', 1),
 ('b527b46242fa11ec9bc200155d06d18e', 'like', 1319, 'fDEx2C', 'HugeWaterDragons', 1),
 ('b527d03e42fa11ec9bc200155d06d18e', 'like', 307, '8qTK3h', 'RichMarmot', 1),
@@ -905,8 +924,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b52d365c42fa11ec9bc200155d06d18e', 'like', 13, 'Q8UfhY', 'PotableBeetle', 1),
 ('b52d690542fa11ec9bc200155d06d18e', 'like', 39, 'Q8UfhY', 'PotableBeetle', 1),
 ('b52d84e342fa11ec9bc200155d06d18e', 'like', 55, 'Q8UfhY', 'Ill-informedSpottedDolphin', 1),
-('b52da12742fa11ec9bc200155d06d18e', 'like', 52, 'Q8UfhY', 'PleasingAmericanRedSquirrel', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b52da12742fa11ec9bc200155d06d18e', 'like', 52, 'Q8UfhY', 'PleasingAmericanRedSquirrel', 1),
 ('b52dbbe942fa11ec9bc200155d06d18e', 'like', 58, 'Q8UfhY', 'Ill-informedSpottedDolphin', 1),
 ('b52dd84842fa11ec9bc200155d06d18e', 'like', 55, 'Q8UfhY', 'CloudyCrocodile', 1),
 ('b52df47142fa11ec9bc200155d06d18e', 'like', 57, 'Q8UfhY', 'CloudyCrocodile', 1),
@@ -1452,7 +1470,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b56e889c42fa11ec9bc200155d06d18e', 'like', 28, '6BW19x', 'FlippantThrip', 1),
 ('b56ea97442fa11ec9bc200155d06d18e', 'like', 124, '6BW19x', 'IdealXantus', 1),
 ('b56ec76142fa11ec9bc200155d06d18e', 'like', 88, '6BW19x', 'MarvelousMassospondylus', 1),
-('b56ee2d242fa11ec9bc200155d06d18e', 'dislike', 120, '6BW19x', 'MarvelousMassospondylus', 1),
+('b56ee2d242fa11ec9bc200155d06d18e', 'dislike', 120, '6BW19x', 'MarvelousMassospondylus', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b56efe7142fa11ec9bc200155d06d18e', 'like', 149, '6BW19x', 'FlippantThrip', 1),
 ('b56f1f0a42fa11ec9bc200155d06d18e', 'I don\'t know what she ment with chest???', 121, '6BW19x', 'MarvelousMassospondylus', 1),
 ('b56f3f1e42fa11ec9bc200155d06d18e', 'Who is in the picture? (The two womens)', 176, '6BW19x', 'IdealXantus', 1),
@@ -1502,8 +1521,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b574558a42fa11ec9bc200155d06d18e', 'like', 246, 'rMNwFL', 'VirtuousTrogon', 1),
 ('b574712a42fa11ec9bc200155d06d18e', 'like', 268, 'rMNwFL', 'VirtuousTrogon', 1),
 ('b5748d7242fa11ec9bc200155d06d18e', 'like', 301, 'rMNwFL', 'VirtuousTrogon', 1),
-('b574abcc42fa11ec9bc200155d06d18e', 'dislike', 327, 'rMNwFL', 'VirtuousTrogon', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b574abcc42fa11ec9bc200155d06d18e', 'dislike', 327, 'rMNwFL', 'VirtuousTrogon', 1),
 ('b574cfee42fa11ec9bc200155d06d18e', 'dislike', 341, 'rMNwFL', 'VirtuousTrogon', 1),
 ('b574f08842fa11ec9bc200155d06d18e', 'too many dramatic pauses, ideas are vague', 356, 'rMNwFL', 'VirtuousTrogon', 1),
 ('b5750f1742fa11ec9bc200155d06d18e', 'dislike', 388, 'rMNwFL', 'VirtuousTrogon', 1),
@@ -2035,7 +2053,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b5b796a642fa11ec9bc200155d06d18e', 'like', 420, 'milano', 'RadiantWallaby', 1),
 ('b5b7b38a42fa11ec9bc200155d06d18e', 'like', 841, 'milano', 'RadiantWallaby', 1),
 ('b5b7cfe242fa11ec9bc200155d06d18e', 'dislike', 83, 'milano', 'RadiantWallaby', 1),
-('b5b7eaa542fa11ec9bc200155d06d18e', 'dislike', 103, 'milano', 'RadiantWallaby', 1),
+('b5b7eaa542fa11ec9bc200155d06d18e', 'dislike', 103, 'milano', 'RadiantWallaby', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b5b80ab442fa11ec9bc200155d06d18e', 'dislike', 166, 'milano', 'RadiantWallaby', 1),
 ('b5b82a5642fa11ec9bc200155d06d18e', 'dislike', 374, 'milano', 'RadiantWallaby', 1),
 ('b5b8424642fa11ec9bc200155d06d18e', 'dislike', 763, 'milano', 'RadiantWallaby', 1),
@@ -2085,8 +2104,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b5bd786f42fa11ec9bc200155d06d18e', 'like', 458, 'hS18NW', 'antrom@st.amu.edu.pl', 1),
 ('b5bd991c42fa11ec9bc200155d06d18e', 'like', 458, 'hS18NW', 'antrom@st.amu.edu.pl', 1),
 ('b5bdb90a42fa11ec9bc200155d06d18e', 'like', 459, 'hS18NW', 'antrom@st.amu.edu.pl', 1),
-('b5bdd92b42fa11ec9bc200155d06d18e', 'like', 459, 'hS18NW', 'antrom@st.amu.edu.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b5bdd92b42fa11ec9bc200155d06d18e', 'like', 459, 'hS18NW', 'antrom@st.amu.edu.pl', 1),
 ('b5bdf5fb42fa11ec9bc200155d06d18e', 'like', 41, 'FasKpi', 'StrongSwellfish', 1),
 ('b5be121c42fa11ec9bc200155d06d18e', 'like', 62, 'FasKpi', 'StrongSwellfish', 1),
 ('b5be2fd442fa11ec9bc200155d06d18e', 'dislike', 130, 'FasKpi', 'StrongSwellfish', 1),
@@ -2501,7 +2519,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b5eea59442fa11ec9bc200155d06d18e', 'dislike', 161, 'nkgK8L', 'BuzzingDrever', 1),
 ('b5eebffe42fa11ec9bc200155d06d18e', 'dislike', 197, 'nkgK8L', 'BuzzingDrever', 1),
 ('b5eedc7b42fa11ec9bc200155d06d18e', 'I think he speaks too fast and it is difficult to understand. ', 191, 'nkgK8L', 'BuzzingDrever', 1),
-('b5eef90442fa11ec9bc200155d06d18e', 'like', 925, 'oJE7tS', 'AbleAmericanRiverOtter', 1),
+('b5eef90442fa11ec9bc200155d06d18e', 'like', 925, 'oJE7tS', 'AbleAmericanRiverOtter', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b5ef113542fa11ec9bc200155d06d18e', 'like', 118, 'nkgK8L', 'CommonFinWhale', 1),
 ('b5ef2cf542fa11ec9bc200155d06d18e', 'like', 120, 'nkgK8L', 'CommonFinWhale', 1),
 ('b5ef4f1242fa11ec9bc200155d06d18e', 'like', 175, 'nkgK8L', 'CommonFinWhale', 1),
@@ -2553,8 +2572,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b5f4be4842fa11ec9bc200155d06d18e', 'like', 36, 'nkgK8L', 'MessyAsianLion', 1),
 ('b5f4da1842fa11ec9bc200155d06d18e', 'like', 39, 'nkgK8L', 'MessyAsianLion', 1),
 ('b5f4f1b642fa11ec9bc200155d06d18e', 'like', 39, 'nkgK8L', 'MessyAsianLion', 1),
-('b5f5112542fa11ec9bc200155d06d18e', 'like', 52, 'nkgK8L', 'MessyAsianLion', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b5f5112542fa11ec9bc200155d06d18e', 'like', 52, 'nkgK8L', 'MessyAsianLion', 1),
 ('b5f52fd042fa11ec9bc200155d06d18e', 'like', 55, 'nkgK8L', 'MessyAsianLion', 1),
 ('b5f551c042fa11ec9bc200155d06d18e', 'like', 58, 'nkgK8L', 'MessyAsianLion', 1),
 ('b5f56c2642fa11ec9bc200155d06d18e', 'like', 78, 'nkgK8L', 'MessyAsianLion', 1),
@@ -3005,7 +3023,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b629616a42fa11ec9bc200155d06d18e', 'A natural perspective, like seeing,  is how he aims to photograph. A less staged approach is taken when we look however the act of photographing is much more formal with intention ', 126, 'SUiuhi', 'MarriedLobo', 1),
 ('b62a19f442fa11ec9bc200155d06d18e', 'Formal exploration of photography, exploring technology and process - exploring what photography\'s possibilities are through technology ', 203, 'SUiuhi', 'MarriedLobo', 1),
 ('b62a6ce042fa11ec9bc200155d06d18e', 'Repetition develops certainty', 251, 'SUiuhi', 'MarriedLobo', 1),
-('b62aa4a842fa11ec9bc200155d06d18e', 'I should try to develop a heightened awareness for the world around me to find inspiration, and take notice of what is already there ', 265, 'SUiuhi', 'MarriedLobo', 1),
+('b62aa4a842fa11ec9bc200155d06d18e', 'I should try to develop a heightened awareness for the world around me to find inspiration, and take notice of what is already there ', 265, 'SUiuhi', 'MarriedLobo', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b62acabd42fa11ec9bc200155d06d18e', '\"The more words you use, the longer it takes to read\" - the idea of simplicity and not overcomplicating something that doesn\'t require complexity ', 287, 'SUiuhi', 'MarriedLobo', 1),
 ('b62af51c42fa11ec9bc200155d06d18e', 'Start with a topic which I am interested in and use photography as a tool to understand it, and break it down into an image', 22, 'xK5qGa', 'LividRat', 1),
 ('b62b186c42fa11ec9bc200155d06d18e', 'Amoser is similar to me in a way an observation is a starting point and from there is where the photography begins ', 54, 'xK5qGa', 'LividRat', 1),
@@ -3050,8 +3069,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b62faf1642fa11ec9bc200155d06d18e', 'like', 0, 'e2wTDU', 'ModestErin', 1),
 ('b62fd29642fa11ec9bc200155d06d18e', 'Il video dà spunti interessanti', 0, 'e2wTDU', 'ModestErin', 1),
 ('b62ff44042fa11ec9bc200155d06d18e', 'like', 0, 'e2wTDU', 'SpectacularBufeo', 1),
-('b630136942fa11ec9bc200155d06d18e', 'like', 0, 'e2wTDU', 'SpectacularBufeo', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b630136942fa11ec9bc200155d06d18e', 'like', 0, 'e2wTDU', 'SpectacularBufeo', 1),
 ('b630385c42fa11ec9bc200155d06d18e', 'like', 0, 'e2wTDU', 'SpectacularBufeo', 1),
 ('b6305a5342fa11ec9bc200155d06d18e', 'ok', 0, 'e2wTDU', 'SpectacularBufeo', 1),
 ('b630944a42fa11ec9bc200155d06d18e', 'like', 647, 'G5ACqQ', 'nahom.habtemariam@mail.polimi.it', 1),
@@ -3358,7 +3376,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b655246c42fa11ec9bc200155d06d18e', 'dislike', 89, 'RcLUbj', 'PleasantCoqui', 1),
 ('b655405942fa11ec9bc200155d06d18e', 'like', 223, 'HeNX1l', 'MediumHorseshoeBat', 1),
 ('b6555a2c42fa11ec9bc200155d06d18e', 'like', 463, 'G5ACqQ', 'YearlySheldrake', 1),
-('b65575e742fa11ec9bc200155d06d18e', 'like', 1595, 'G5ACqQ', 'YearlySheldrake', 1),
+('b65575e742fa11ec9bc200155d06d18e', 'like', 1595, 'G5ACqQ', 'YearlySheldrake', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b65592c342fa11ec9bc200155d06d18e', 'dislike', 360, 'G5ACqQ', 'YearlySheldrake', 1),
 ('b655acca42fa11ec9bc200155d06d18e', 'dislike', 870, 'G5ACqQ', 'YearlySheldrake', 1),
 ('b655cf9c42fa11ec9bc200155d06d18e', 'dislike', 2504, 'G5ACqQ', 'YearlySheldrake', 1),
@@ -3412,8 +3431,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b65b601742fa11ec9bc200155d06d18e', 'dislike', 270, 'wcNzj7', 'BackSilverfox', 1),
 ('b65b834842fa11ec9bc200155d06d18e', 'de ce zice DER Leon? si ea zice DIE Luisa??', 120, 'wcNzj7', 'BackSilverfox', 1),
 ('b65ba73942fa11ec9bc200155d06d18e', 'nu imi place clown-ul din Koln :))', 196, 'wcNzj7', 'BackSilverfox', 1),
-('b65bc3ca42fa11ec9bc200155d06d18e', 'like', 189, 'kAN7YT', 'QueasyAmericanIndianHorse', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b65bc3ca42fa11ec9bc200155d06d18e', 'like', 189, 'kAN7YT', 'QueasyAmericanIndianHorse', 1),
 ('b65be3d242fa11ec9bc200155d06d18e', 'MARRAZZA:N1 Vie aeree sono bocca,naso,faringe,laringe,trachea,bronchi e polmoni', 182, 'kAN7YT', 'QueasyAmericanIndianHorse', 1),
 ('b65c008742fa11ec9bc200155d06d18e', 'MARRAZZA: La laringe serve per parlare,perchè al suo interno ci sono le corde vocali', 197, 'kAN7YT', 'QueasyAmericanIndianHorse', 1),
 ('b65c1eb442fa11ec9bc200155d06d18e', 'MARRAZZA: La trachea è lunga circa 10cm e si divide in 2 rami che arrivano ai 2 bronchioli e infine in alveoli polmonari ', 135, 'kAN7YT', 'QueasyAmericanIndianHorse', 1),
@@ -3784,7 +3802,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b686edc642fa11ec9bc200155d06d18e', 'I like this idea of photography being a tool and having the power to change you perception on something. photography is a more powerful form than literature it has the ability to make you question things and change your hole perception of life in one image. ', 246, 'NCxput', 'ThankfulAstrangiaCoral', 1),
 ('b6870b4642fa11ec9bc200155d06d18e', 'This idea surrounding the experience and the photograph is a good thing to think about. If photography is a tool for capturing this moment in time, in essence you are capturing the experience. This links back to this hole idea of time and memory and photography being used as a tool in the help of remembering these experience and looking back at the images to spark emotion, however this emotion is different for viewers who have not had this same experience. ', 290, 'NCxput', 'ThankfulAstrangiaCoral', 1),
 ('b6872a8642fa11ec9bc200155d06d18e', 'like', 142, '2H6rDB', 'EnviousNorwayRat', 1),
-('b687445842fa11ec9bc200155d06d18e', 'like', 142, '2H6rDB', 'EnviousNorwayRat', 1),
+('b687445842fa11ec9bc200155d06d18e', 'like', 142, '2H6rDB', 'EnviousNorwayRat', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b68764f842fa11ec9bc200155d06d18e', '*DOMANDE BIOLOGIA CASABONA ANTONIO 2F*  1-Le vie aeree sono composte da :  -naso -bocca -faringe -laringe  -nasofaringe  -trachea  -bronchi -bronchioli   2-La laringe è l\'organo deputato alla fonazione, ovvero all\'emissione dei suoni. È situata nel collo, tra la faringe e la trachea, e si presenta come un cilindro cavo. La laringe permette anche il passaggio dell\'aria inspirata (da naso e bocca verso i bronchi) ed espirata (dai bronchi verso naso e bocca).   3- La trachea è un organo dell’apparato respiratorio, la cui funzione primaria è trasferire l’aria dall’esterno ai polmoni, ripulendola e umidificandola. Morfologicamente è un condotto impari e mediano; fa parte delle vie aeree inferiori insieme alla laringe che la precede e ai bronchi che la seguono. È un viscere cavo tubulare che  si divide nei due bronchi principali (destro e sinistro) in un punto denominato carena, sfocianti nei rispettivi polmoni.   4- I polmoni sono avvolti da una membrana sierosa, la pleura, a sua volta form', 141, '2H6rDB', 'EnviousNorwayRat', 1),
 ('b687829542fa11ec9bc200155d06d18e', 'like', 504, '2p9EzQ', 'LavishIndianCow', 1),
 ('b6879a4842fa11ec9bc200155d06d18e', 'dislike', 37, 'o4UxX6', 'SeveralScaup', 1),
@@ -3811,8 +3830,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b68a132742fa11ec9bc200155d06d18e', 'I find the remark around the camera illustrates forgetting creating this idea that photography is a form of memory and the link of how a photograph can spark a memory. And how without photographs there is no way to reminisce.  ', 63, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
 ('b68a2ef442fa11ec9bc200155d06d18e', 'I find this part to be slightly confusing. I find the idea of an image being taken in a state of unconsciousness to be unfamiliar and the idea that the process of the creation of this image and the development of the positive brings to light the image. Almost representing a metaphor for life.    ', 82, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
 ('b68a4d9242fa11ec9bc200155d06d18e', 'He links photography with the ideas of memory and the tool that photography can be used in capturing these memory\'s.', 102, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
-('b68a689f42fa11ec9bc200155d06d18e', 'I like this idea that each photograph sparks a different memory. ', 110, 'fXX6Kv', 'LonelyTasmanianTiger', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b68a689f42fa11ec9bc200155d06d18e', 'I like this idea that each photograph sparks a different memory. ', 110, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
 ('b68a819942fa11ec9bc200155d06d18e', 'he thinks more about this coronation between the image and the viewer and how different images can spark different emotions/memories for different people.  ', 118, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
 ('b68aa15e42fa11ec9bc200155d06d18e', 'studium: The studium indicates historical, social or cultural meanings extracted via semiotic analysis. Punctum: The punctum points to those features of a photograph that seem to produce or convey a meaning without invoking any recognisable symbolic system.', 145, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
 ('b68abd0042fa11ec9bc200155d06d18e', 'I think this relates to the idea that when viewing an image it sarks an unconscious reaction which is only brought to light when thinking about studium and punctum and when these are present within an image. ', 177, 'fXX6Kv', 'LonelyTasmanianTiger', 1),
@@ -4233,7 +4251,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b6ba9f5f42fa11ec9bc200155d06d18e', 'dislike', 141, 'RCb32H', 'PowerlessBug', 1),
 ('b6babe4d42fa11ec9bc200155d06d18e', 'like', 0, 'VDXvTH', 'VirtualInsect', 1),
 ('b6bade4642fa11ec9bc200155d06d18e', 'Dorothea Tanning was a Surrealist painter later turned sculptor. There are reoccurring motifs present throughout her works including doors, sunflowers and little girls. Tanning tried capturing the fragility of life and love through her art. Her work is how she made sense of the world around her.  I think it’s interesting to see how Tanning utilised her skills and knowledge of the world around her to paint and sculpt these bizarre scenarios. I am currently exploring the world of surrealism within my works, and while this isn’t necessarily photographic, I believe it is of use to me within my project as it gives me a deeper contextual understanding of what the art movement stands behind.  Tanning’s work is deeply embedded into the dream world, the traditional approach of the surrealists to explore the unconscious mind. Within my own work, I am starting to embrace this notion of exploring the dream world – of manipulating images to be something recognisable but not quite, so your eyes wand', 0, 'VDXvTH', 'VirtualInsect', 1),
-('b6bafdeb42fa11ec9bc200155d06d18e', 'like', 0, 'fd605E', 'EqualRaven', 1),
+('b6bafdeb42fa11ec9bc200155d06d18e', 'like', 0, 'fd605E', 'EqualRaven', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b6bb16ad42fa11ec9bc200155d06d18e', 'Lee Miller was a Surrealist, Fashion & Commercial Photographer and later War Correspondant. Her varied background drove her artistic development which has been a point of fascination surrounding her within the art industry. She moved from New York to Paris to learn photography from Man Ray, and from there her surrealist work began.  The central themes of surrealism include the unconscious, the non-visible and the phantasmagorical however portraying that through photography is challenging as photography captures the apparent reality around us with the press of a shutter. To combat this, Miller and Ray developed techniques including solarisation and narrow image sections in her work to put across this sense of the surreal.  Another element of surrealism lies in sex and as such female nude portraits were often depicted in the movement, however Miller’s nude photographs take on a feminist aura due to her positioning and careful curation on the zoom and cropping of the frame. Where normally', 0, 'fd605E', 'EqualRaven', 1),
 ('b6bb463842fa11ec9bc200155d06d18e', 'Pushing the boundaries of photography, seeing how far it can go..commenting on its position in world? ', 33, 'fjI8un', 'WanElver', 1),
 ('b6bb5fe642fa11ec9bc200155d06d18e', 'E.g film, literature, conventional research tools..', 45, 'fjI8un', 'WanElver', 1),
@@ -4253,8 +4272,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b6bcff7542fa11ec9bc200155d06d18e', 'Photography as a reproducible image...now in digital age consider.. ', 143, 'yNPX7P', 'MustyMoth', 1),
 ('b6bd1afc42fa11ec9bc200155d06d18e', 'Relevant to current circumstances ', 161, 'yNPX7P', 'MustyMoth', 1),
 ('b6bd358f42fa11ec9bc200155d06d18e', 'basic domestic items ... related to how we use photography now? aestheticising the banal and everyday through our phones and instant digital image ', 259, 'yNPX7P', 'MustyMoth', 1),
-('b6bd551c42fa11ec9bc200155d06d18e', 'predicted how we think and relate to photography now? work needs to be seen physically in space.. how does this alter/ enhance/ hinder the way the audience perceives and interprets work... consider this in relevance to current work as it will be exhibited virtually. ', 278, 'yNPX7P', 'MustyMoth', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b6bd551c42fa11ec9bc200155d06d18e', 'predicted how we think and relate to photography now? work needs to be seen physically in space.. how does this alter/ enhance/ hinder the way the audience perceives and interprets work... consider this in relevance to current work as it will be exhibited virtually. ', 278, 'yNPX7P', 'MustyMoth', 1),
 ('b6bd6f8442fa11ec9bc200155d06d18e', 'She uses these \'pure\' black, white and red colours in her series \"Femme Maison\". When she says she changed from this palette in 1993 because \"life is not a matter of black and white” this suggests that to her when she was painting “Femme Maison” is was a black and white situation- she believed it to be a simple matter that was true.', 157, 'vnJ6Ym', 'FluffyHyrax', 1),
 ('b6bd8f7442fa11ec9bc200155d06d18e', 'She works to a rhythm, I find the rhythm matches her heart beat. When she says she has a coffee, the metronome speeds up, and when she is tired it slows down. Some of her work focuses on the psychological matters and involves, organs and limbs. I think she physically connects to a lot of her work. This can be seen in Femme Maison where she draws the female figure stark and vulnerable. ', 380, 'vnJ6Ym', 'FluffyHyrax', 1),
 ('b6bdaae142fa11ec9bc200155d06d18e', 'Her art is a reflection of the self but also in the case of Femme Maison, a reflection of many other women. When at home they believe they are safe but at the very moment they are trying to be hidden from view, they are revealed.  ', 742, 'vnJ6Ym', 'FluffyHyrax', 1),
@@ -4656,7 +4674,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b6ef964e42fa11ec9bc200155d06d18e', 'like', 1323, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
 ('b6efb01542fa11ec9bc200155d06d18e', 'like', 1333, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
 ('b6efc87b42fa11ec9bc200155d06d18e', 'like', 1374, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
-('b6efe1aa42fa11ec9bc200155d06d18e', 'like', 1392, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
+('b6efe1aa42fa11ec9bc200155d06d18e', 'like', 1392, 'dFrfZw', 'GuiltyAmericanWirehair', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b6effcd742fa11ec9bc200155d06d18e', 'like', 1457, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
 ('b6f0170742fa11ec9bc200155d06d18e', 'like', 1821, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
 ('b6f0311742fa11ec9bc200155d06d18e', 'like', 1518, 'dFrfZw', 'GuiltyAmericanWirehair', 1),
@@ -4711,8 +4730,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b6f5d14442fa11ec9bc200155d06d18e', 'like', 1553, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
 ('b6f5f01a42fa11ec9bc200155d06d18e', 'like', 1710, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
 ('b6f60e6c42fa11ec9bc200155d06d18e', 'like', 1738, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
-('b6f627e642fa11ec9bc200155d06d18e', 'like', 1780, 'dFrfZw', 'CompetentAmazonTreeBoa', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b6f627e642fa11ec9bc200155d06d18e', 'like', 1780, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
 ('b6f646ec42fa11ec9bc200155d06d18e', 'like', 1809, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
 ('b6f665a242fa11ec9bc200155d06d18e', 'like', 1848, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
 ('b6f683eb42fa11ec9bc200155d06d18e', 'like', 1934, 'dFrfZw', 'CompetentAmazonTreeBoa', 1),
@@ -5182,7 +5200,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b72befad42fa11ec9bc200155d06d18e', 'like', 40, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
 ('b72c104742fa11ec9bc200155d06d18e', 'like', 57, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
 ('b72c2ee242fa11ec9bc200155d06d18e', 'like', 79, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
-('b72c485c42fa11ec9bc200155d06d18e', 'like', 124, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
+('b72c485c42fa11ec9bc200155d06d18e', 'like', 124, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b72c61e442fa11ec9bc200155d06d18e', 'like', 221, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
 ('b72c7b5942fa11ec9bc200155d06d18e', 'like', 262, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
 ('b72c98a942fa11ec9bc200155d06d18e', 'like', 319, 'QJPhrY', 'ExperiencedHairstreakButterfly', 1),
@@ -5237,8 +5256,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b7323b6042fa11ec9bc200155d06d18e', 'like', 557, 'QJPhrY', 'LeanIndianaBat', 1),
 ('b73254fa42fa11ec9bc200155d06d18e', 'like', 759, 'QJPhrY', 'LeanIndianaBat', 1),
 ('b73273b242fa11ec9bc200155d06d18e', 'like', 867, 'QJPhrY', 'LeanIndianaBat', 1),
-('b7328eea42fa11ec9bc200155d06d18e', 'like', 1014, 'QJPhrY', 'LeanIndianaBat', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b7328eea42fa11ec9bc200155d06d18e', 'like', 1014, 'QJPhrY', 'LeanIndianaBat', 1),
 ('b732a65242fa11ec9bc200155d06d18e', 'dislike', 343, 'QJPhrY', 'LeanIndianaBat', 1),
 ('b732c1ad42fa11ec9bc200155d06d18e', 'dislike', 358, 'QJPhrY', 'LeanIndianaBat', 1),
 ('b732dd1342fa11ec9bc200155d06d18e', 'dislike', 502, 'QJPhrY', 'LeanIndianaBat', 1),
@@ -5678,7 +5696,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b765884942fa11ec9bc200155d06d18e', 'How do you correct mistakes in the classroom based on his point of view?', 51, 'IkLkwy', 'PersonalLice', 1),
 ('b765a7df42fa11ec9bc200155d06d18e', 'Often my teachers knew how to use the materials and objects. But I also had teachers, especially in secondary school that did not know how to make a power-point presentation and someone made it for them ', 0, 'IkLkwy', 'ColorlessXenotarsosaurus', 1),
 ('b765c6e742fa11ec9bc200155d06d18e', 'like', 40, 'IkLkwy', 'AbsoluteIrrawaddyDolphin', 1),
-('b765e4f442fa11ec9bc200155d06d18e', 'Yes', 55, 'IkLkwy', 'FrillyHogget', 1),
+('b765e4f442fa11ec9bc200155d06d18e', 'Yes', 55, 'IkLkwy', 'FrillyHogget', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b7660fbc42fa11ec9bc200155d06d18e', '1. Yes, my teachers knew how to use their presentation materials properly', 30, 'IkLkwy', 'ImpossibleAllen\'SBigEaredBat', 1),
 ('b7663b6b42fa11ec9bc200155d06d18e', 'Never used it nor did I do it in school', 75, 'IkLkwy', 'PersonalLice', 1),
 ('b7665e1142fa11ec9bc200155d06d18e', 'like', 103, 'IkLkwy', 'FrillyHogget', 1),
@@ -5724,8 +5743,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b76bb0ef42fa11ec9bc200155d06d18e', 'like', 253, 'IkLkwy', 'FrillyHogget', 1),
 ('b76bd41f42fa11ec9bc200155d06d18e', 'like', 241, 'IkLkwy', 'AbsoluteIrrawaddyDolphin', 1),
 ('b76bf38442fa11ec9bc200155d06d18e', 'My teachers used this method, in primary and secondary school', 209, 'IkLkwy', 'ColorlessXenotarsosaurus', 1),
-('b76c154642fa11ec9bc200155d06d18e', 'like', 244, 'IkLkwy', 'AbsoluteIrrawaddyDolphin', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b76c154642fa11ec9bc200155d06d18e', 'like', 244, 'IkLkwy', 'AbsoluteIrrawaddyDolphin', 1),
 ('b76c31ad42fa11ec9bc200155d06d18e', 'My teachers did not used this technique', 245, 'IkLkwy', 'AbsoluteIrrawaddyDolphin', 1),
 ('b76c4cc142fa11ec9bc200155d06d18e', 'Yes,My English teacher knew how to use materials and when and how to correct mistakes. I think this applies to my secondary school teacher. ', 58, 'IkLkwy', 'AmpleXanthareel', 1),
 ('b76c6e9e42fa11ec9bc200155d06d18e', 'In my experience, students don\'t really ask many questions.', 235, 'IkLkwy', 'CleanNewt', 1),
@@ -6151,7 +6169,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b79c841842fa11ec9bc200155d06d18e', 'like', 0, 'DK5GSJ', 'WrithingAnteater', 1),
 ('b79c9dfc42fa11ec9bc200155d06d18e', 'like', 0, 'DK5GSJ', 'WrithingAnteater', 1),
 ('b79cbe0342fa11ec9bc200155d06d18e', 'like', 0, 'DK5GSJ', 'WrithingAnteater', 1),
-('b79cdcc942fa11ec9bc200155d06d18e', 'like', 1, 'DK5GSJ', 'WrithingAnteater', 1),
+('b79cdcc942fa11ec9bc200155d06d18e', 'like', 1, 'DK5GSJ', 'WrithingAnteater', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b79cf9d042fa11ec9bc200155d06d18e', 'like', 1, 'DK5GSJ', 'WrithingAnteater', 1),
 ('b79d18b342fa11ec9bc200155d06d18e', 'like', 1, 'DK5GSJ', 'WrithingAnteater', 1),
 ('b79d31fd42fa11ec9bc200155d06d18e', 'like', 1, 'DK5GSJ', 'WrithingAnteater', 1),
@@ -6212,8 +6231,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b7a35ac242fa11ec9bc200155d06d18e', 'like', 528, 'G0zWCs', 'FatalNoolbenger', 1),
 ('b7a375ae42fa11ec9bc200155d06d18e', 'like', 528, 'G0zWCs', 'FatalNoolbenger', 1),
 ('b7a38f7d42fa11ec9bc200155d06d18e', 'like', 0, 'G0zWCs', 'ImmaculateAuklet', 1),
-('b7a3a91a42fa11ec9bc200155d06d18e', 'like', 515, 'G0zWCs', 'BeneficialGoshawk', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b7a3a91a42fa11ec9bc200155d06d18e', 'like', 515, 'G0zWCs', 'BeneficialGoshawk', 1),
 ('b7a3cef042fa11ec9bc200155d06d18e', 'like', 512, 'G0zWCs', 'GummyJay', 1),
 ('b7a3ea3e42fa11ec9bc200155d06d18e', 'like', 514, 'G0zWCs', 'GummyJay', 1),
 ('b7a4091942fa11ec9bc200155d06d18e', 'like', 512, 'G0zWCs', 'UnhappyHoverfly', 1),
@@ -6630,7 +6648,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b7d2382c42fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
 ('b7d253e842fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
 ('b7d26f9c42fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
-('b7d2918842fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
+('b7d2918842fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b7d2aa5d42fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
 ('b7d2c82842fa11ec9bc200155d06d18e', 'like', 187, 'otflit', 'InfatuatedMillipede', 1),
 ('b7d2e13b42fa11ec9bc200155d06d18e', 'like', 429, 'jxOHK4', 'ThunderousShibaInu', 1),
@@ -6678,8 +6697,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b7d79ffb42fa11ec9bc200155d06d18e', 'like', 1565, 'iGsUpI', 'jacopostefano.ragazzini@mail.polimi.it', 1),
 ('b7d7be9a42fa11ec9bc200155d06d18e', 'like', 2181, 'iGsUpI', 'jacopostefano.ragazzini@mail.polimi.it', 1),
 ('b7d7d92f42fa11ec9bc200155d06d18e', 'Credo che nella dispensa  (pag 18, prima relazione) abbia scambiato f con g', 1523, 'iGsUpI', 'jacopostefano.ragazzini@mail.polimi.it', 1),
-('b7d7fb7542fa11ec9bc200155d06d18e', 'like', 2226, 'rgF7fI', 'jacopostefano.ragazzini@mail.polimi.it', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b7d7fb7542fa11ec9bc200155d06d18e', 'like', 2226, 'rgF7fI', 'jacopostefano.ragazzini@mail.polimi.it', 1),
 ('b7d813f542fa11ec9bc200155d06d18e', 'Quindi il risolvente è tutto il piano complesso (non reale)?', 2799, 'rgF7fI', 'jacopostefano.ragazzini@mail.polimi.it', 1),
 ('b7d82f2642fa11ec9bc200155d06d18e', 'like', 3132, 'cIS7zS', 'vincenzo.laudando@mail.polimi.it', 1),
 ('b7d8486242fa11ec9bc200155d06d18e', 'Aiutano la comprensione, queste panoramiche storiche. Peccato che in molti corsi di Fisica e Matematica vengano sottovalutate.', 3137, 'cIS7zS', 'vincenzo.laudando@mail.polimi.it', 1),
@@ -7121,7 +7139,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b80ccf0342fa11ec9bc200155d06d18e', 'like', 1180, 'sHlzDQ', 'ImaginativeSchnauzer', 1),
 ('b80ce53e42fa11ec9bc200155d06d18e', 'like', 1212, 'sHlzDQ', 'ImaginativeSchnauzer', 1),
 ('b80cff9342fa11ec9bc200155d06d18e', 'like', 1247, 'sHlzDQ', 'ImaginativeSchnauzer', 1),
-('b80d1a4c42fa11ec9bc200155d06d18e', 'like', 58, 'dfzthw', 'WoozyShrew', 1),
+('b80d1a4c42fa11ec9bc200155d06d18e', 'like', 58, 'dfzthw', 'WoozyShrew', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b80d32ff42fa11ec9bc200155d06d18e', 'like', 85, 'dfzthw', 'WoozyShrew', 1),
 ('b80d51de42fa11ec9bc200155d06d18e', 'like', 124, 'dfzthw', 'WoozyShrew', 1),
 ('b80d6fe742fa11ec9bc200155d06d18e', 'like', 157, 'dfzthw', 'WoozyShrew', 1),
@@ -7155,8 +7174,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b810941142fa11ec9bc200155d06d18e', 'Por norma há sempre alguma resistência a mudança. Tem que haver sempre algo benéfico para as pessoas, para que se reduza a resistência.  ', 77, 'dfzthw', 'ForsakenCrab', 1),
 ('b810af0742fa11ec9bc200155d06d18e', 'Na minha opinião este vídeo retrata muito bem todas as fases necessárias para conseguir implementar uma mudança que seja bem aceite. De uma forma instintiva, eu considero que as pessoas resistem a qualquer mudança porque adotam um comportamento de conformismo e é desafiante conseguir a alterar o comportamento de uma pessoa. Desta forma, ao longo do processo de mudança a comunicação assume um papel de destaque, sendo o meio mais assertivo a utilizar para alcançar um consenso.', 354, 'dfzthw', 'DarlingDromedary', 1),
 ('b810c8ab42fa11ec9bc200155d06d18e', 'A linguagem corporal tem um papel significativo não só na maneira como as outras pessoas nos veem, mas também na maneira como nós nos sentimos connosco. Adotar uma linguagem corporal confiante, faz-nos ter uma atitude mais positiva para com situações de desconforto. A incerteza do que irá acontecer é o que nos deixa nervosos, não sabermos aquilo para o que vamos. Ao adotar uma linguagem corporal positiva, encaramos essa situação de maneira diferente, de forma a conseguir enfrentá-la até ficarmos familiarizados com ela e nos tornemos preparados para tal.', 5, 'sHlzDQ', 'ShinyScarletIbis', 1),
-('b810e7dd42fa11ec9bc200155d06d18e', 'Resistir à mudança é algo \"natural\" nas pessoas. Sair da zona de conforto requer muita força de vontade, e uma preparação muito cuidada. Temos de salientar o bom da mudança e o mau de não a fazermos, tendo em consideração que cada individuo tem uma personalidade única, e as suas perspetivas destes aspetos são diferentes uns dos outros. ', 0, 'dfzthw', 'DeadDalmatian', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b810e7dd42fa11ec9bc200155d06d18e', 'Resistir à mudança é algo \"natural\" nas pessoas. Sair da zona de conforto requer muita força de vontade, e uma preparação muito cuidada. Temos de salientar o bom da mudança e o mau de não a fazermos, tendo em consideração que cada individuo tem uma personalidade única, e as suas perspetivas destes aspetos são diferentes uns dos outros. ', 0, 'dfzthw', 'DeadDalmatian', 1),
 ('b811019b42fa11ec9bc200155d06d18e', 'Se ainda havia dúvidas sobre o poder da linguagem corporal com este vídeo deixou de haver. É muito interessante ver as diferenças e os resultados que se pode alcançar apenas com a linguagem corporal.', 1170, 'sHlzDQ', 'HarmfulEasternGlassLizard', 1),
 ('b8111b1d42fa11ec9bc200155d06d18e', 'É uma verdade, resiste-se sempre ás mudanças e neste caso, dentro de uma organização, é necessário explicar as vantagens do ponto de vista de cada um de forma a que todos encarem a mudança como algo benéfico.', 335, 'dfzthw', 'QuirkyQuoll', 1),
 ('b81135d142fa11ec9bc200155d06d18e', 'like', 343, 'dfzthw', 'HotHamadryad', 1),
@@ -7514,7 +7532,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b839e1be42fa11ec9bc200155d06d18e', 'like', 208, 'yXgtqV', 'SteelLemming', 1),
 ('b83a000842fa11ec9bc200155d06d18e', 'like', 207, 'yXgtqV', 'CommonYellowBelliedMarmot', 1),
 ('b83a1b4342fa11ec9bc200155d06d18e', 'like', 231, 'yXgtqV', 'CommonYellowBelliedMarmot', 1),
-('b83a3aae42fa11ec9bc200155d06d18e', 'like', 254, 'yXgtqV', 'CommonYellowBelliedMarmot', 1),
+('b83a3aae42fa11ec9bc200155d06d18e', 'like', 254, 'yXgtqV', 'CommonYellowBelliedMarmot', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b83a561942fa11ec9bc200155d06d18e', 'like', 272, 'yXgtqV', 'SteelLemming', 1),
 ('b83a751d42fa11ec9bc200155d06d18e', 'like', 288, 'yXgtqV', 'CommonYellowBelliedMarmot', 1),
 ('b83a8f3242fa11ec9bc200155d06d18e', 'like', 287, 'yXgtqV', 'SteelLemming', 1),
@@ -7549,8 +7568,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b83dba7b42fa11ec9bc200155d06d18e', 'like', 779, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
 ('b83dd19c42fa11ec9bc200155d06d18e', 'like', 2346, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
 ('b83dec7042fa11ec9bc200155d06d18e', 'like', 2744, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
-('b83e06f242fa11ec9bc200155d06d18e', 'like', 4339, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b83e06f242fa11ec9bc200155d06d18e', 'like', 4339, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
 ('b83e25a942fa11ec9bc200155d06d18e', 'like', 4899, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
 ('b83e3e8e42fa11ec9bc200155d06d18e', 'like', 5267, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
 ('b83e5d4e42fa11ec9bc200155d06d18e', 'like', 5267, 'VNpT1h', 'andrea1.santi@mail.polimi.it', 1),
@@ -7872,7 +7890,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b862373e42fa11ec9bc200155d06d18e', 'quizlet looks very old here! PZ-NS', 2017, 'VPLqD0', 'VapidLonghornBeetle', 1),
 ('b862518342fa11ec9bc200155d06d18e', 'like', 208, 'frkjPi', 'ScientificAsiaticLesserFreshwaterClam', 1),
 ('b8626e7c42fa11ec9bc200155d06d18e', 'This video was useful because I got to know about issues with listening and I believe that a good teacher should know what can be difficult for students ( especially when it comes to listening)/ JC RAF 2 ', 383, 'frkjPi', 'ScientificAsiaticLesserFreshwaterClam', 1),
-('b8628d2242fa11ec9bc200155d06d18e', 'Due domande: 1) La probabilità di passaggio da uno stato (puro o combinazione lineare) ad un altro dipende da tutta la \"storia\" della particella? O solo dall\'ultimo salto? 2) In altri corsi abbiamo visto come modelli dinamici con passaggi tra stati \"singoli\" siano modellizzabili come catene di Markov, sotto opportune ipotesi. C\'è un modello matematico standard che si applica anche in casi come questi, dove gli stati possibili sono dati anche da tutte le combinazioni lineari degli stati singoli?', 2818, 'qxd8ic', 'paolojoseph.baioni@mail.polimi.it', 1),
+('b8628d2242fa11ec9bc200155d06d18e', 'Due domande: 1) La probabilità di passaggio da uno stato (puro o combinazione lineare) ad un altro dipende da tutta la \"storia\" della particella? O solo dall\'ultimo salto? 2) In altri corsi abbiamo visto come modelli dinamici con passaggi tra stati \"singoli\" siano modellizzabili come catene di Markov, sotto opportune ipotesi. C\'è un modello matematico standard che si applica anche in casi come questi, dove gli stati possibili sono dati anche da tutte le combinazioni lineari degli stati singoli?', 2818, 'qxd8ic', 'paolojoseph.baioni@mail.polimi.it', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b862ae0b42fa11ec9bc200155d06d18e', 'Bei esempi, soprattutto nel caso dell\'idrogeno si capisce molto bene cosa possano rappresentare gli elementi dello spettro di un operatore. Colgo l\'occasione per chiederle un approfondimento: se ho ben capito, possiamo dividere lo spettro di un operatore T in: valori x t.c. il risolvente non è iniettivo, e questi sono gli autovalori, che corrispondono agli stati legati; valori x t.c. il risolvente non è suriettivo, e questi corrispondono agli stati liberi. Cambia qualcosa se questi ultimi li divido ulteriormente in valori t.c. il risolvente non è suriettivo, ma ha comunque immagine densa, e valori t.c. il risolvente non ha nemmeno immagine densa? Rappresentano entrambi stati liberi? Infine, mi aspetto fisicamente che gli stati legati siano discreti - quantizzati, e quindi che la parte di spettro costituita da autovalori sia discreta, e che gli stati liberi siano continui, e quindi che lo spettro restante se presente sia continuo. E\' effettivamente sempre così? Lo si può mostrare matema', 5325, 'qxd8ic', 'paolojoseph.baioni@mail.polimi.it', 1),
 ('b862c77742fa11ec9bc200155d06d18e', 'Molto chiarificatore questo punto di vista \"alla probabilità condizionata\"', 6452, 'qxd8ic', 'paolojoseph.baioni@mail.polimi.it', 1),
 ('b862e24542fa11ec9bc200155d06d18e', 'Prof, le vorrei segnalare che il codice da inserire su questa piattaforma per il terzo video (terza lezione) non è funzionante', 6551, 'rgF7fI', 'fabio1.carletti@mail.polimi.it', 1),
@@ -7896,8 +7915,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b864e75e42fa11ec9bc200155d06d18e', 'like', 23, 'cadiz', 'WorrisomeSouthernHairyNosedWombat', 1),
 ('b86505fd42fa11ec9bc200155d06d18e', 'Mi ricorda molto il teorema di \"Indeterminazione di Heisenberg\" nel suo libro tra una funzione e la sua trasformata di fourier (in S), solo che qui il formalismo è più astratto e compatto, mi sbaglio?', 5370, 'MIfGGr', 'fabio1.carletti@mail.polimi.it', 1),
 ('b86523c742fa11ec9bc200155d06d18e', 'like', 2082, 'DnXHo6', 'MixedHerald', 1),
-('b8653bb442fa11ec9bc200155d06d18e', 'dislike', 6540, '8wpt9G', 'JointHawk', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b8653bb442fa11ec9bc200155d06d18e', 'dislike', 6540, '8wpt9G', 'JointHawk', 1),
 ('b865567442fa11ec9bc200155d06d18e', 'Se la configurazione deformata è instabile, non potrebbe tornare spontaneamente alla configurazione iniziale indeformata?', 1689, '8wpt9G', 'JointHawk', 1),
 ('b8656fb842fa11ec9bc200155d06d18e', 'Ek per gli esempi?', 3647, '8wpt9G', 'JointHawk', 1),
 ('b8658bb542fa11ec9bc200155d06d18e', 'Segno opposto?', 4946, '8wpt9G', 'JointHawk', 1),
@@ -8326,7 +8344,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b895bce642fa11ec9bc200155d06d18e', 'like', 228, 'fGTac7', 'gianluigi.baiardi@mail.polimi.it', 1),
 ('b895d89742fa11ec9bc200155d06d18e', 'like', 26, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('b895f75942fa11ec9bc200155d06d18e', 'like', 0, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
-('b896130a42fa11ec9bc200155d06d18e', 'dislike', 41, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
+('b896130a42fa11ec9bc200155d06d18e', 'dislike', 41, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b89637dd42fa11ec9bc200155d06d18e', 'like', 39, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('b89653e142fa11ec9bc200155d06d18e', 'dislike', 34, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('b896743542fa11ec9bc200155d06d18e', 'dislike', 0, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
@@ -8383,8 +8402,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b89f10c842fa11ec9bc200155d06d18e', 'like', 31, 'o4Psr9', 'RipeAmazonTreeBoa', 1),
 ('b89f2a0d42fa11ec9bc200155d06d18e', 'like', 48, 'o4Psr9', 'RipeAmazonTreeBoa', 1),
 ('b89f468142fa11ec9bc200155d06d18e', 'like', 81, '0W4ftg', 'rafael.gervasone@mail.polimi.it', 1),
-('b89f5e8a42fa11ec9bc200155d06d18e', 'like', 21, '0W4ftg', 'MountainousThrush', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b89f5e8a42fa11ec9bc200155d06d18e', 'like', 21, '0W4ftg', 'MountainousThrush', 1),
 ('b89f7aff42fa11ec9bc200155d06d18e', 'like', 38, '0W4ftg', 'MountainousThrush', 1),
 ('b89f99ac42fa11ec9bc200155d06d18e', 'like', 66, '0W4ftg', 'MountainousThrush', 1),
 ('b89fbb2442fa11ec9bc200155d06d18e', 'like', 92, '0W4ftg', 'MountainousThrush', 1),
@@ -8879,7 +8897,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b8d6529c42fa11ec9bc200155d06d18e', 'like', 256, 'Q3d36P', 'PotableBluebottle', 1),
 ('b8d66fdf42fa11ec9bc200155d06d18e', 'So in other words we can say linguistic competence means correctness?', 73, 'Q3d36P', 'PotableBluebottle', 1),
 ('b8d68c7d42fa11ec9bc200155d06d18e', 'like', 248, 'Q3d36P', 'ThisEkaltadeta', 1),
-('b8d6a7d242fa11ec9bc200155d06d18e', 'The example presented here is perfectly showing how important the linguistic competences are. (pc)', 126, 'Q3d36P', 'ThisEkaltadeta', 1),
+('b8d6a7d242fa11ec9bc200155d06d18e', 'The example presented here is perfectly showing how important the linguistic competences are. (pc)', 126, 'Q3d36P', 'ThisEkaltadeta', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b8d6c4ae42fa11ec9bc200155d06d18e', 'like', 252, 'Q3d36P', 'ConsiderateStinkpot', 1),
 ('b8d6dbb242fa11ec9bc200155d06d18e', 'Is it really important to use grammar correctly ? DK', 89, 'Q3d36P', 'ConsiderateStinkpot', 1),
 ('b8d6fac342fa11ec9bc200155d06d18e', 'What if we use informal language in a formal situation ? DK', 158, 'Q3d36P', 'ConsiderateStinkpot', 1),
@@ -8931,8 +8950,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b8dc64e342fa11ec9bc200155d06d18e', 'like', 40, 'Nf1tE3', 'WavyAnophelesMosquito', 1),
 ('b8dc878e42fa11ec9bc200155d06d18e', 'dislike', 248, 'Nf1tE3', 'WavyAnophelesMosquito', 1),
 ('b8dca73d42fa11ec9bc200155d06d18e', 'Say what?', 402, 'Nf1tE3', 'WavyAnophelesMosquito', 1),
-('b8dcc62842fa11ec9bc200155d06d18e', 'like', 58, 'Nf1tE3', 'PeriodicEasteuropeanshepherd', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b8dcc62842fa11ec9bc200155d06d18e', 'like', 58, 'Nf1tE3', 'PeriodicEasteuropeanshepherd', 1),
 ('b8dce5ca42fa11ec9bc200155d06d18e', 'like', 120, 'Nf1tE3', 'QuerulousBass', 1),
 ('b8dd01c042fa11ec9bc200155d06d18e', 'like', 21, 'Nf1tE3', 'InconsequentialXenurine', 1),
 ('b8dd20e742fa11ec9bc200155d06d18e', 'dislike', 177, 'Nf1tE3', 'QuerulousBass', 1),
@@ -9409,7 +9427,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b911b33a42fa11ec9bc200155d06d18e', 'like', 756, 'K6ldqA', 'AttentiveEmeraldTreeSkink', 1),
 ('b911c9b642fa11ec9bc200155d06d18e', 'like', 804, 'K6ldqA', 'AttentiveEmeraldTreeSkink', 1),
 ('b911e8b642fa11ec9bc200155d06d18e', 'like', 819, 'K6ldqA', 'AttentiveEmeraldTreeSkink', 1),
-('b912001742fa11ec9bc200155d06d18e', 'like', 55, 'K6ldqA', 'ImpureFlamingo', 1),
+('b912001742fa11ec9bc200155d06d18e', 'like', 55, 'K6ldqA', 'ImpureFlamingo', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b9121b4142fa11ec9bc200155d06d18e', 'like', 176, 'K6ldqA', 'ImpureFlamingo', 1),
 ('b91233e542fa11ec9bc200155d06d18e', 'like', 282, 'K6ldqA', 'ImpureFlamingo', 1),
 ('b91252c942fa11ec9bc200155d06d18e', 'like', 339, 'K6ldqA', 'ImpureFlamingo', 1),
@@ -9470,8 +9489,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b918516542fa11ec9bc200155d06d18e', 'like', 2232, 'D9Yaie', 'sylwias822@wp.pl', 1),
 ('b918678342fa11ec9bc200155d06d18e', 'like', 2355, 'D9Yaie', 'sylwias822@wp.pl', 1),
 ('b918881742fa11ec9bc200155d06d18e', 'like', 2468, 'D9Yaie', 'sylwias822@wp.pl', 1),
-('b918a60542fa11ec9bc200155d06d18e', 'dislike', 737, 'D9Yaie', 'sylwias822@wp.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b918a60542fa11ec9bc200155d06d18e', 'dislike', 737, 'D9Yaie', 'sylwias822@wp.pl', 1),
 ('b918c27542fa11ec9bc200155d06d18e', 'Mi se pare o metodă foarte bună aceea de a face cititori să se atașeze emoțional de personaje prin caracterizarea indirectă, sau cea făcută de alte personaje. ', 48, 'K6ldqA', 'PopularBluejay', 1),
 ('b918de6542fa11ec9bc200155d06d18e', 'Mă întreb dacă filmul e inspirat de această carte.', 74, 'K6ldqA', 'PopularBluejay', 1),
 ('b918fb2642fa11ec9bc200155d06d18e', 'Îmi place că se atrage atenția asupra rasismului și misoginismuluui, violenței domestice prezente în carte. ', 86, 'K6ldqA', 'PopularBluejay', 1),
@@ -9870,7 +9888,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b947696842fa11ec9bc200155d06d18e', 'like', 243, 'TCK5NI', 'SecretVelvetCrab', 1),
 ('b94782a642fa11ec9bc200155d06d18e', 'like', 261, 'TCK5NI', 'SecretVelvetCrab', 1),
 ('b947a11642fa11ec9bc200155d06d18e', 'like', 264, 'TCK5NI', 'SecretVelvetCrab', 1),
-('b947bfdc42fa11ec9bc200155d06d18e', 'like', 274, 'TCK5NI', 'SecretVelvetCrab', 1),
+('b947bfdc42fa11ec9bc200155d06d18e', 'like', 274, 'TCK5NI', 'SecretVelvetCrab', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b947d97142fa11ec9bc200155d06d18e', '1)La 160 de ani de la înfiinţarea primului teatru naţional din România în casa lui Vasile Alecsandri se deschidea muzeul teatrului.', 42, 'TCK5NI', 'SecretVelvetCrab', 1),
 ('b947f2b742fa11ec9bc200155d06d18e', '2)Muzeul ,,Mihail Eminescu \" are o colecţie de peste 36 de mii de piese.', 62, 'TCK5NI', 'SecretVelvetCrab', 1),
 ('b9480df142fa11ec9bc200155d06d18e', '3)Vasile Alecsandri,Mihail Kogălniceanu şi Constantin Negruzzi au fost primii directori ai primului teatru naţional cu titulatura de teatru naţional.', 113, 'TCK5NI', 'SecretVelvetCrab', 1),
@@ -9902,8 +9921,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b94ae50742fa11ec9bc200155d06d18e', 'like', 652, 'pUhRUg', 'AggressiveRabbit', 1),
 ('b94b0f4d42fa11ec9bc200155d06d18e', 'Mi-a plăcut mult implicarea lui Spongebob.', 36, 'pUhRUg', 'AggressiveRabbit', 1),
 ('b94b2b2742fa11ec9bc200155d06d18e', 'Extrem de amuzantă comparația!', 68, 'pUhRUg', 'AggressiveRabbit', 1),
-('b94b46a642fa11ec9bc200155d06d18e', 'Pun pariu că oița nu are mai mult de douăzeci de ani.', 168, 'pUhRUg', 'AggressiveRabbit', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b94b46a642fa11ec9bc200155d06d18e', 'Pun pariu că oița nu are mai mult de douăzeci de ani.', 168, 'pUhRUg', 'AggressiveRabbit', 1),
 ('b94b664f42fa11ec9bc200155d06d18e', 'Îmi plac mult imaginile folosite! Parcă schimbă puțin viziunea asupra personajelor, și te lasă să ieși din zona de confort a imaginației.', 243, 'pUhRUg', 'AggressiveRabbit', 1),
 ('b94b7fda42fa11ec9bc200155d06d18e', 'Nu prea îmi place mămăliga, așa că m-aș descurca cam greu pe vremea aceea. ', 524, 'pUhRUg', 'AggressiveRabbit', 1),
 ('b94b99c442fa11ec9bc200155d06d18e', 'E interesant cum superstițiile se pot schimba drastic odată cu avansarea tehnologiei.', 543, 'pUhRUg', 'AggressiveRabbit', 1),
@@ -10259,7 +10277,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b971766e42fa11ec9bc200155d06d18e', 'The best exercises are those that partly refer to a student. Thanks to such exercises a student will get to know the language faster. ', 918, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
 ('b9718f4242fa11ec9bc200155d06d18e', 'This is not true. Some students show more language skills and others less. We cannot demand everything from a student. On the other hand, the teacher will not always give everything to the students. ', 1113, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
 ('b971a83642fa11ec9bc200155d06d18e', 'Students will make mistakes, this is what learning a language is all about. The task of the teacher is to catch these mistakes and draw attention to them. My elementary school teacher always said that you can\'t make mistakes, that we should say everything right away without any mistakes, and because of one mistake in the speech she immediately gave a bad grade. Because of such teaching, I was afraid to speak English. ', 1181, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
-('b971c56e42fa11ec9bc200155d06d18e', 'I will agree on writing and reading. However, I think that listening is also very helpful. ', 1263, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
+('b971c56e42fa11ec9bc200155d06d18e', 'I will agree on writing and reading. However, I think that listening is also very helpful. ', 1263, 'D9Yaie', 'aleksandraci90@gmail.com', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b971e17042fa11ec9bc200155d06d18e', 'I agree that exercises that motivate and encourage students are valuable. ', 1323, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
 ('b971f7f842fa11ec9bc200155d06d18e', 'A nice solution is when the teacher pulls out the most important elements from the book and uses the language not only when it is necessary to do so in a task. It is really interesting when the teacher motivates students to use the language outside the classroom. ', 1343, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
 ('b972170742fa11ec9bc200155d06d18e', 'The teacher should direct students, show them which way to go. The teacher should be a guide, not an executioner. This is combined with CLT, it can use this idea for some communicative exercises, but certainly not for the whole lesson. ', 1355, 'D9Yaie', 'aleksandraci90@gmail.com', 1),
@@ -10310,8 +10329,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b977011342fa11ec9bc200155d06d18e', 'like', 340, '1uKDeA', 'TwinSnowGeese', 1),
 ('b9771f6042fa11ec9bc200155d06d18e', 'like', 107, 'hT65VX', 'adam.dekowski@o2.pl', 1),
 ('b977386f42fa11ec9bc200155d06d18e', 'like', 139, 'hT65VX', 'adam.dekowski@o2.pl', 1),
-('b977573842fa11ec9bc200155d06d18e', 'like', 336, 'hT65VX', 'adam.dekowski@o2.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b977573842fa11ec9bc200155d06d18e', 'like', 336, 'hT65VX', 'adam.dekowski@o2.pl', 1),
 ('b977754442fa11ec9bc200155d06d18e', 'like', 404, 'hT65VX', 'adam.dekowski@o2.pl', 1),
 ('b9778dd742fa11ec9bc200155d06d18e', 'like', 470, 'hT65VX', 'adam.dekowski@o2.pl', 1),
 ('b977ac9642fa11ec9bc200155d06d18e', 'like', 498, 'hT65VX', 'adam.dekowski@o2.pl', 1),
@@ -10769,7 +10787,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b9a9457e42fa11ec9bc200155d06d18e', 'like', 268, '6MAK75', 'PrizeBison', 1),
 ('b9a9634842fa11ec9bc200155d06d18e', 'like', 258, '6MAK75', 'kristina.krecu51@e-uvt.ro', 1),
 ('b9a9829942fa11ec9bc200155d06d18e', 'like', 258, '6MAK75', 'kristina.krecu51@e-uvt.ro', 1),
-('b9a99de742fa11ec9bc200155d06d18e', 'dislike', 137, '6MAK75', 'BubblyFlycatcher', 1),
+('b9a99de742fa11ec9bc200155d06d18e', 'dislike', 137, '6MAK75', 'BubblyFlycatcher', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b9a9bb8642fa11ec9bc200155d06d18e', 'like', 255, '6MAK75', 'StarchyCatbird', 1),
 ('b9a9d93d42fa11ec9bc200155d06d18e', 'dislike', 0, '6MAK75', 'GrimXantus', 1),
 ('b9a9f48442fa11ec9bc200155d06d18e', 'dislike', 0, '6MAK75', 'GrimXantus', 1),
@@ -10815,8 +10834,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b9ae420042fa11ec9bc200155d06d18e', 'mam takie same problemy z moimi bracmki', 1376, '3Lckr4', 'NauticalIncatern', 1),
 ('b9ae637b42fa11ec9bc200155d06d18e', 'like', 1045, '3Lckr4', 'piokub1@st.amu.edu.pl', 1),
 ('b9ae7d0542fa11ec9bc200155d06d18e', 'like', 1498, '3Lckr4', 'piokub1@st.amu.edu.pl', 1),
-('b9ae9a1d42fa11ec9bc200155d06d18e', 'like', 3032, '3Lckr4', 'piokub1@st.amu.edu.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b9ae9a1d42fa11ec9bc200155d06d18e', 'like', 3032, '3Lckr4', 'piokub1@st.amu.edu.pl', 1),
 ('b9aeb94b42fa11ec9bc200155d06d18e', 'like', 32, 'TrFxCe', '18061368@stu.mmu.ac.uk', 1),
 ('b9aed86642fa11ec9bc200155d06d18e', 'like', 48, 'TrFxCe', '18061368@stu.mmu.ac.uk', 1),
 ('b9aef99442fa11ec9bc200155d06d18e', 'like', 85, 'TrFxCe', '18061368@stu.mmu.ac.uk', 1),
@@ -11277,7 +11295,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b9e4d36c42fa11ec9bc200155d06d18e', 'Who are you? Why I\'m here?', 30, 'nViW2P', 'CoolCopepod', 1),
 ('b9e4f2d042fa11ec9bc200155d06d18e', 'like', 1185, 'ZOD9Bv', 'ConventionalSugarglider', 1),
 ('b9e50c6c42fa11ec9bc200155d06d18e', 'like', 345, 'GQfP2R', 'JointBlueShark', 1),
-('b9e5261242fa11ec9bc200155d06d18e', 'like', 585, 'GQfP2R', 'JointBlueShark', 1),
+('b9e5261242fa11ec9bc200155d06d18e', 'like', 585, 'GQfP2R', 'JointBlueShark', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('b9e5447b42fa11ec9bc200155d06d18e', 'like', 985, 'GQfP2R', 'JointBlueShark', 1),
 ('b9e5605d42fa11ec9bc200155d06d18e', 'Is it the time btw two \"random\" failures of the component or the two failures have to be the same ?', 246, 'GQfP2R', 'JointBlueShark', 1),
 ('b9e57ac642fa11ec9bc200155d06d18e', 'dislike', 802, 'nViW2P', 'ApprehensiveJanenschia', 1),
@@ -11332,8 +11351,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('b9eb161d42fa11ec9bc200155d06d18e', 'like', 717, 'ZOD9Bv', 'AlienatedAchillesTang', 1),
 ('b9eb35a042fa11ec9bc200155d06d18e', 'like', 745, 'ZOD9Bv', 'AlienatedAchillesTang', 1),
 ('b9eb4eaf42fa11ec9bc200155d06d18e', 'like', 789, 'ZOD9Bv', 'AlienatedAchillesTang', 1),
-('b9eb6e1a42fa11ec9bc200155d06d18e', 'like', 199, 'nViW2P', 'FoolhardyGreatdane', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('b9eb6e1a42fa11ec9bc200155d06d18e', 'like', 199, 'nViW2P', 'FoolhardyGreatdane', 1),
 ('b9eb8cd342fa11ec9bc200155d06d18e', 'like', 406, 'nViW2P', 'FoolhardyGreatdane', 1),
 ('b9eba60042fa11ec9bc200155d06d18e', 'like', 643, 'nViW2P', 'FoolhardyGreatdane', 1),
 ('b9ebc2b542fa11ec9bc200155d06d18e', 'like', 992, 'nViW2P', 'FoolhardyGreatdane', 1),
@@ -11817,7 +11835,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba20413442fa11ec9bc200155d06d18e', 'like', 734, 'nViW2P', 'DearestAlligatorGar', 1),
 ('ba205b1642fa11ec9bc200155d06d18e', 'like', 728, 'WCAK5J', 'Quick-wittedAstrangiaCoral', 1),
 ('ba2077a942fa11ec9bc200155d06d18e', 'like', 1910, 'WCAK5J', 'Quick-wittedAstrangiaCoral', 1),
-('ba20947142fa11ec9bc200155d06d18e', 'like', 467, 'nViW2P', 'NastyBasenji', 1),
+('ba20947142fa11ec9bc200155d06d18e', 'like', 467, 'nViW2P', 'NastyBasenji', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('ba20b32442fa11ec9bc200155d06d18e', 'like', 42, 'GQfP2R', 'FrostyMastodon', 1),
 ('ba20d1ae42fa11ec9bc200155d06d18e', 'like', 204, 'GQfP2R', 'FrostyMastodon', 1),
 ('ba20eaa042fa11ec9bc200155d06d18e', 'like', 248, 'GQfP2R', 'FrostyMastodon', 1),
@@ -11873,8 +11892,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba266c7242fa11ec9bc200155d06d18e', 'dislike', 2344, 'WCAK5J', 'MountainousPlover', 1),
 ('ba2688c742fa11ec9bc200155d06d18e', 'like', 529, 'GQfP2R', 'OrderlyMammoth', 1),
 ('ba26a7d742fa11ec9bc200155d06d18e', 'like', 838, 'GQfP2R', 'OrderlyMammoth', 1),
-('ba26c72642fa11ec9bc200155d06d18e', 'dislike', 265, 'GQfP2R', 'OrderlyMammoth', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('ba26c72642fa11ec9bc200155d06d18e', 'dislike', 265, 'GQfP2R', 'OrderlyMammoth', 1),
 ('ba26e8b642fa11ec9bc200155d06d18e', 'dislike', 333, 'GQfP2R', 'OrderlyMammoth', 1),
 ('ba2704ce42fa11ec9bc200155d06d18e', 'dislike', 952, 'GQfP2R', 'OrderlyMammoth', 1),
 ('ba27216d42fa11ec9bc200155d06d18e', 'like', 161, 'ZOD9Bv', 'MysteriousConey', 1),
@@ -12302,7 +12320,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba567cea42fa11ec9bc200155d06d18e', 'This will improve their pronunciation skills, which are essential. ', 1673, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
 ('ba5698ff42fa11ec9bc200155d06d18e', 'This way, the method appeals more to the learner because it considers their language learning needs.', 1839, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
 ('ba56b71342fa11ec9bc200155d06d18e', 'By repeating the statement, students will remember it better, linking to the audio-lingual method.', 286, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
-('ba56d2ff42fa11ec9bc200155d06d18e', 'Through such statements, students will better remember the use of a given grammatical structure.', 469, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
+('ba56d2ff42fa11ec9bc200155d06d18e', 'Through such statements, students will better remember the use of a given grammatical structure.', 469, 'PZpaq5', 'aleksandraci90@gmail.com', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('ba56f2ea42fa11ec9bc200155d06d18e', 'Practice makes perfect. The more practice, the better the results.', 734, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
 ('ba570dc242fa11ec9bc200155d06d18e', 'Good for quiet teachers who prefer to have everything in order and don\'t want unexpected situations when it comes to language learning.', 803, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
 ('ba57285a42fa11ec9bc200155d06d18e', 'And so in my opinion, this is the best way and the most structured and logical way to learn a language.', 945, 'PZpaq5', 'aleksandraci90@gmail.com', 1),
@@ -12352,8 +12371,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba5c150d42fa11ec9bc200155d06d18e', 'like', 2063, 'qNdn7P', 'HeftyZethusWasp', 1),
 ('ba5c2f1b42fa11ec9bc200155d06d18e', 'like', 2064, 'qNdn7P', 'HeftyZethusWasp', 1),
 ('ba5c4e6342fa11ec9bc200155d06d18e', 'like', 1482, 'WCAK5J', 'UnimportantEyelashPitViper', 1),
-('ba5c6cc542fa11ec9bc200155d06d18e', 'like', 1911, 'WCAK5J', 'UnimportantEyelashPitViper', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('ba5c6cc542fa11ec9bc200155d06d18e', 'like', 1911, 'WCAK5J', 'UnimportantEyelashPitViper', 1),
 ('ba5c86ff42fa11ec9bc200155d06d18e', 'dislike', 208, 'WCAK5J', 'DiligentArcherfish', 1),
 ('ba5c9d9b42fa11ec9bc200155d06d18e', 'like', 194, 'qNdn7P', 'paolo.carpinteri@mail.polimi.it', 1),
 ('ba5cba5242fa11ec9bc200155d06d18e', 'like', 498, 'qNdn7P', 'paolo.carpinteri@mail.polimi.it', 1),
@@ -12798,7 +12816,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba91103342fa11ec9bc200155d06d18e', 'I think that deductive approach is useful to explain the grammar. Students will know the rules and then they can try to use it in sentences.', 59, 'gUegJA', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('ba912aed42fa11ec9bc200155d06d18e', 'It might be confusing sometimes.', 102, 'gUegJA', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('ba914afb42fa11ec9bc200155d06d18e', 'I feel like this grammar lecture might be helpful sometimes.', 204, 'gUegJA', 'agnieszka.abramkiewicz@gmail.com', 1),
-('ba91658d42fa11ec9bc200155d06d18e', 'I absolutely agree. ', 234, 'gUegJA', 'agnieszka.abramkiewicz@gmail.com', 1),
+('ba91658d42fa11ec9bc200155d06d18e', 'I absolutely agree. ', 234, 'gUegJA', 'agnieszka.abramkiewicz@gmail.com', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('ba91843542fa11ec9bc200155d06d18e', 'like', 201, 'iuwOat', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('ba919afa42fa11ec9bc200155d06d18e', 'like', 468, 'iuwOat', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('ba91bcdc42fa11ec9bc200155d06d18e', 'like', 505, 'iuwOat', 'agnieszka.abramkiewicz@gmail.com', 1),
@@ -12851,8 +12870,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('ba970c7642fa11ec9bc200155d06d18e', 'dislike', 251, '7ukOFq', 'edoardo.putti@mail.polimi.it', 1),
 ('ba97257442fa11ec9bc200155d06d18e', 'dislike', 322, '7ukOFq', 'edoardo.putti@mail.polimi.it', 1),
 ('ba97470542fa11ec9bc200155d06d18e', 'wtf?', 325, '7ukOFq', 'edoardo.putti@mail.polimi.it', 1),
-('ba9765a242fa11ec9bc200155d06d18e', 'like', 1433, 'iuwOat', 'w.ostrycharczyk@op.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('ba9765a242fa11ec9bc200155d06d18e', 'like', 1433, 'iuwOat', 'w.ostrycharczyk@op.pl', 1),
 ('ba9784a642fa11ec9bc200155d06d18e', 'The task itself has a very interesting form but i don\'t like the fact that students only get an answer when they ask the question completely correctly. This may discourage students from speaking English and make them feel less confident.', 820, 'iuwOat', 'w.ostrycharczyk@op.pl', 1),
 ('ba979c5d42fa11ec9bc200155d06d18e', 'It is learning in the form of fun and students are much more engaged in such tasks. They use different structures, but they mainly focus on guessing. Additionally, they can learn new things in the field of culture and politics.', 1004, 'iuwOat', 'w.ostrycharczyk@op.pl', 1),
 ('ba97b70442fa11ec9bc200155d06d18e', 'Odd, colourful pictures draw the students\' attention the most. They like to make up stories about it and later they can compare them with real facts. Showing abstract pictures at the beginning of the lesson is a good idea to make students focused more', 1334, 'iuwOat', 'w.ostrycharczyk@op.pl', 1),
@@ -13335,7 +13353,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bacc32ae42fa11ec9bc200155d06d18e', 'like', 188, 'o4UxX6', 'ScientificJay', 1),
 ('bacc498f42fa11ec9bc200155d06d18e', 'like', 307, 'o4UxX6', 'ScientificJay', 1),
 ('bacc63cc42fa11ec9bc200155d06d18e', 'like', 391, 'o4UxX6', 'ScientificJay', 1),
-('bacc810e42fa11ec9bc200155d06d18e', 'like', 511, 'o4UxX6', 'ScientificJay', 1),
+('bacc810e42fa11ec9bc200155d06d18e', 'like', 511, 'o4UxX6', 'ScientificJay', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('bacc978842fa11ec9bc200155d06d18e', 'like', 87, 'RCb32H', 'OvercookedHornedViper', 1),
 ('baccb2e542fa11ec9bc200155d06d18e', 'like', 153, 'RCb32H', 'OvercookedHornedViper', 1),
 ('baccd1b142fa11ec9bc200155d06d18e', 'like', 190, 'RCb32H', 'OvercookedHornedViper', 1),
@@ -13391,8 +13410,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bad256a942fa11ec9bc200155d06d18e', 'dislike', 804, 'PE6GDY', 'matteo.catalani@studenti.unitus.it', 1),
 ('bad2756042fa11ec9bc200155d06d18e', 'dislike', 931, 'PE6GDY', 'matteo.catalani@studenti.unitus.it', 1),
 ('bad2926c42fa11ec9bc200155d06d18e', 'dislike', 1130, 'PE6GDY', 'matteo.catalani@studenti.unitus.it', 1),
-('bad2ab8442fa11ec9bc200155d06d18e', 'like', 142, 'hVi9Me', 'matteo.catalani@studenti.unitus.it', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('bad2ab8442fa11ec9bc200155d06d18e', 'like', 142, 'hVi9Me', 'matteo.catalani@studenti.unitus.it', 1),
 ('bad2c9d542fa11ec9bc200155d06d18e', 'like', 650, 'hVi9Me', 'matteo.catalani@studenti.unitus.it', 1),
 ('bad2e84642fa11ec9bc200155d06d18e', 'like', 750, 'hVi9Me', 'matteo.catalani@studenti.unitus.it', 1),
 ('bad3090e42fa11ec9bc200155d06d18e', 'like', 843, 'hVi9Me', 'matteo.catalani@studenti.unitus.it', 1),
@@ -13868,7 +13886,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb07a42742fa11ec9bc200155d06d18e', 'like', 109, 'YSvwQo', 'rossi.andrea@istitutoeinaudimagenta.it', 1),
 ('bb0802c842fa11ec9bc200155d06d18e', 'like', 242, 'YSvwQo', 'rossi.andrea@istitutoeinaudimagenta.it', 1),
 ('bb082d9b42fa11ec9bc200155d06d18e', 'dislike', 369, 'YSvwQo', 'rossi.andrea@istitutoeinaudimagenta.it', 1),
-('bb0855b242fa11ec9bc200155d06d18e', 'dislike', 486, 'YSvwQo', 'rossi.andrea@istitutoeinaudimagenta.it', 1),
+('bb0855b242fa11ec9bc200155d06d18e', 'dislike', 486, 'YSvwQo', 'rossi.andrea@istitutoeinaudimagenta.it', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('bb08935542fa11ec9bc200155d06d18e', 'like', 0, 'YSvwQo', 'ursoandrea21@gmail.com', 1),
 ('bb08bef642fa11ec9bc200155d06d18e', 'Salve ', 0, 'YSvwQo', 'PointlessEyelashPitViper', 1),
 ('bb08e82742fa11ec9bc200155d06d18e', 'like', 147, 'YSvwQo', 'guadrini.matteo@istitutoeinaudimagenta.it', 1),
@@ -13924,8 +13943,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb0f581342fa11ec9bc200155d06d18e', 'dislike', 427, 'M2Sr0z', 'DirectIndianRingneckParakeet', 1),
 ('bb0f76f142fa11ec9bc200155d06d18e', 'Ce alte influențe expresioniste apar?', 85, 'M2Sr0z', 'DirectIndianRingneckParakeet', 1),
 ('bb0f952742fa11ec9bc200155d06d18e', 'Poezia are un ton sumbru.', 307, 'M2Sr0z', 'DirectIndianRingneckParakeet', 1),
-('bb0fad9542fa11ec9bc200155d06d18e', 'Aș dori mai multe explicații referitoare la sugestia morții iubirii', 323, 'M2Sr0z', 'DirectIndianRingneckParakeet', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('bb0fad9542fa11ec9bc200155d06d18e', 'Aș dori mai multe explicații referitoare la sugestia morții iubirii', 323, 'M2Sr0z', 'DirectIndianRingneckParakeet', 1),
 ('bb0fcc4642fa11ec9bc200155d06d18e', 'like', 52, 'FasKpi', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('bb0fea5942fa11ec9bc200155d06d18e', 'like', 60, 'FasKpi', 'agnieszka.abramkiewicz@gmail.com', 1),
 ('bb1004a642fa11ec9bc200155d06d18e', 'like', 162, 'FasKpi', 'agnieszka.abramkiewicz@gmail.com', 1),
@@ -14400,7 +14418,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb51e54d42fa11ec9bc200155d06d18e', 'like', 55, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1),
 ('bb5206a942fa11ec9bc200155d06d18e', 'like', 61, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1),
 ('bb52280a42fa11ec9bc200155d06d18e', 'like', 67, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1),
-('bb52612742fa11ec9bc200155d06d18e', 'like', 81, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1),
+('bb52612742fa11ec9bc200155d06d18e', 'like', 81, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('bb528d9742fa11ec9bc200155d06d18e', 'Ce inseamna parnasianism?', 18, 'f5W1Yz', 'damaris.parasca5@gmail.com', 1),
 ('bb52b3c642fa11ec9bc200155d06d18e', 'like', 15, 'f5W1Yz', 'colceriu_bogdan10@yahoo.ro', 1),
 ('bb52d74f42fa11ec9bc200155d06d18e', 'like', 24, 'f5W1Yz', 'colceriu_bogdan10@yahoo.ro', 1),
@@ -14458,8 +14477,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb597c7242fa11ec9bc200155d06d18e', 'like', 52, 'f5W1Yz', 'oana.lol3@gmail.com', 1),
 ('bb5995a142fa11ec9bc200155d06d18e', 'like', 58, 'f5W1Yz', 'oana.lol3@gmail.com', 1),
 ('bb59b47842fa11ec9bc200155d06d18e', 'cum adica raportul dintre simbol si eulpoetic nu este exprimat ,ci sugerat? putin ambiguu', 56, 'f5W1Yz', 'oana.lol3@gmail.com', 1),
-('bb59d41442fa11ec9bc200155d06d18e', 'muzicalitatea?', 61, 'f5W1Yz', 'oana.lol3@gmail.com', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('bb59d41442fa11ec9bc200155d06d18e', 'muzicalitatea?', 61, 'f5W1Yz', 'oana.lol3@gmail.com', 1),
 ('bb59fc6942fa11ec9bc200155d06d18e', 'like', 83, 'f5W1Yz', 'claumona04@yahoo.com', 1),
 ('bb5a266942fa11ec9bc200155d06d18e', 'like', 18, 'f5W1Yz', 'claumona04@yahoo.com', 1),
 ('bb5a495242fa11ec9bc200155d06d18e', 'like', 415, 'o4UxX6', 'elisa.ponti@libero.it', 1),
@@ -14889,7 +14907,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb8ce7d142fa11ec9bc200155d06d18e', 'dislike', 165, 'yXgtqV', 'BackAardvark', 1),
 ('bb8d083d42fa11ec9bc200155d06d18e', 'like', 192, 'yXgtqV', 'CleanAmazonDolphin', 1),
 ('bb8d26e442fa11ec9bc200155d06d18e', 'like', 211, 'yXgtqV', 'DismalDarklingBeetle', 1),
-('bb8d424d42fa11ec9bc200155d06d18e', 'like', 194, 'yXgtqV', 'CleanAmazonDolphin', 1),
+('bb8d424d42fa11ec9bc200155d06d18e', 'like', 194, 'yXgtqV', 'CleanAmazonDolphin', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('bb8d62f042fa11ec9bc200155d06d18e', 'like', 194, 'yXgtqV', 'CleanAmazonDolphin', 1),
 ('bb8d83af42fa11ec9bc200155d06d18e', 'Sunt total de acord cu ce spune domnul Mihăilescu. O singură observație aș vrea să fac, care e mai mult un crez al meu, după care m-am ghidat întotdeauna: Când ai profesori fascinanți, ai și lecturi de neuitat. ', 85, 'yXgtqV', 'InfiniteBeagle', 1),
 ('bb8da35642fa11ec9bc200155d06d18e', 'dislike', 220, 'yXgtqV', 'DismalDarklingBeetle', 1),
@@ -14948,8 +14967,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bb94172a42fa11ec9bc200155d06d18e', 'like', 24, 'WQgWFS', 'FrostyApatosaurus', 1),
 ('bb9435f442fa11ec9bc200155d06d18e', 'like', 25, 'WQgWFS', 'FrostyApatosaurus', 1),
 ('bb94541342fa11ec9bc200155d06d18e', 'like', 25, 'WQgWFS', 'FrostyApatosaurus', 1),
-('bb947c6342fa11ec9bc200155d06d18e', 'like', 25, 'WQgWFS', 'FrostyApatosaurus', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('bb947c6342fa11ec9bc200155d06d18e', 'like', 25, 'WQgWFS', 'FrostyApatosaurus', 1),
 ('bb949dcb42fa11ec9bc200155d06d18e', 'like', 342, 'WQgWFS', 'FrostyApatosaurus', 1),
 ('bb94ba7d42fa11ec9bc200155d06d18e', 'like', 1376, 'WQgWFS', 'FrostyApatosaurus', 1),
 ('bb94db7942fa11ec9bc200155d06d18e', 'like', 1376, 'WQgWFS', 'FrostyApatosaurus', 1),
@@ -15435,7 +15453,8 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bbce39cb42fa11ec9bc200155d06d18e', 'The teacher can create a situation where the student corrects himself, the student will know himself where he went wrong. Just because someone has made a mistake doesn\'t mean he can\' t do it.', 552, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
 ('bbce55ab42fa11ec9bc200155d06d18e', 'By using their own experiences in examples, students can better express how they feel and what they want to say.', 599, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
 ('bbce732642fa11ec9bc200155d06d18e', 'The teacher must help the student focus and develop their thoughts and speech. Teachers must push students forward but not force them.', 729, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
-('bbce91d442fa11ec9bc200155d06d18e', 'learning vocabulary together with speech ', 1223, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
+('bbce91d442fa11ec9bc200155d06d18e', 'learning vocabulary together with speech ', 1223, 'xXBqGU', 'aleksandraci90@gmail.com', 1);
+INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
 ('bbceab2742fa11ec9bc200155d06d18e', 'This allows students to better imagine a given grammatical structure.', 1374, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
 ('bbcec43942fa11ec9bc200155d06d18e', 'Learning how to accent a sentence correctly.', 1569, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
 ('bbcedbd042fa11ec9bc200155d06d18e', 'Through short answers, students will later be able to create longer statements.', 1921, 'xXBqGU', 'aleksandraci90@gmail.com', 1),
@@ -15474,8 +15493,7 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bbd2a48c42fa11ec9bc200155d06d18e', 'like', 1760, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
 ('bbd2bf9942fa11ec9bc200155d06d18e', 'like', 1927, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
 ('bbd2df2b42fa11ec9bc200155d06d18e', 'like', 1986, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
-('bbd2f8af42fa11ec9bc200155d06d18e', 'like', 2043, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1);
-INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `visible`) VALUES
+('bbd2f8af42fa11ec9bc200155d06d18e', 'like', 2043, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
 ('bbd3170742fa11ec9bc200155d06d18e', 'like', 2200, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
 ('bbd32ff542fa11ec9bc200155d06d18e', 'like', 2344, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
 ('bbd34e0a42fa11ec9bc200155d06d18e', 'like', 2407, 'xXBqGU', 'wikkar4@st.amu.edu.pl', 1),
@@ -15631,38 +15649,43 @@ INSERT INTO `reaction` (`rid`, `type`, `at_second`, `video_code`, `user_name`, `
 ('bbe3a48842fa11ec9bc200155d06d18e', 'like', 492, 'rMNwFL', 'WarpedBanteng', 1),
 ('bbe3c44b42fa11ec9bc200155d06d18e', 'like', 521, 'rMNwFL', 'WarpedBanteng', 1),
 ('bbe3dd9442fa11ec9bc200155d06d18e', 'like', 509, 'rMNwFL', 'DeliciousBlackbear', 1),
+('bd8839b4b7ff424d942f9d6776aa39c7', 'dislike', 41, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('c0e620dea6c14064bd309a09762da9f3', 'like', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('c35504a872b049069041597a20824d41', 'dislike', 199, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
 ('c3c33ae4e4444f77a028a4dbabcbe316', 'dislike', 0, 'AW7MHU', 'edoardo.putti@mail.polimi.it', 1),
-('ec4492512fdc4df58857876de0a3b40f', 'dislike', 0, 'AW7MHU', 'Graceful-Squirrel', 1);
+('c98c1498cd09444f8be34dbb3475241b', 'dislike', 0, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('ca1e06e3846d45f4bf2f15627464af97', 'dislike', 199, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('d6ca269860a942e6b7e68d4117adaba3', 'ygh', 7, 'test', 'Continuous-Rooster', 1),
+('d8a13385211043baa2145c58cd29fbb3', 'like', 53, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('db325b9d3e3f4470b85c3089522d9f9a', 'like', 55, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('e0fa47d12ac947c387ec0efeaeb13efe', 'like', 40, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('e1c7220a90be4ed991e49a8abc576690', 'like', 53, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('e2d184752fd440e098e9674cf083d0ea', 'like', 10, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('e2ed224abdc0461c9bf7e64a0d5a46d0', 'dislike', 199, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('e5ee772ef2f2457a83198b54bff81f23', 'like', 179, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('ea3e5c0edb774ad5bb009c81632ee405', 'like', 179, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('ec4492512fdc4df58857876de0a3b40f', 'dislike', 0, 'AW7MHU', 'Graceful-Squirrel', 1),
+('f4a17ca7a0084ac78c13526e8ed6ffdb', 'dislike', 158, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('f51cc29b0b1c4256a9c234481510c9ed', 'dislike', 98, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('f9c7304037e34ed592ed6ec013a4d6ec', 'like', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('fbf793640dcb4f6a9db628f8a05d4db3', 'like', 123, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `resettokens`
---
-
-CREATE TABLE `resettokens` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `resettokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
   `expiration` datetime DEFAULT NULL,
   `used` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sequelizemeta`
---
-
-CREATE TABLE `sequelizemeta` (
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+CREATE TABLE IF NOT EXISTS `sequelizemeta` (
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `sequelizemeta`
---
 
 INSERT INTO `sequelizemeta` (`name`) VALUES
 ('1-create-teacher-table.js'),
@@ -15674,46 +15697,29 @@ INSERT INTO `sequelizemeta` (`name`) VALUES
 ('20211026084113-create-student-table.js'),
 ('20211026084133-create-video-table.js');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sessions`
---
-
-CREATE TABLE `sessions` (
+CREATE TABLE IF NOT EXISTS `sessions` (
   `session_id` varchar(128) NOT NULL,
   `expires` int(10) UNSIGNED NOT NULL,
-  `data` text DEFAULT NULL
+  `data` text DEFAULT NULL,
+  PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `sessions`
---
-
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('PgVmywt0an2QMQ1BEfhEqsIjQdsoT9ia', 1639270865, '{\"cookie\":{\"originalMaxAge\":2628000000,\"expires\":\"2021-12-12T01:01:05.128Z\",\"httpOnly\":true,\"path\":\"/\"},\"teacherId\":\"677289c442fa11ec9bc200155d06d18e\",\"teacher\":\"edoardo.putti@mail.polimi.it\",\"email\":\"edoardo.putti@mail.polimi.it\",\"loggedin\":true,\"code\":\"AW7MHU  \"}');
+('FB2Yp6vK3dv4r3kCLmxAzqAz_PdTt9Mm', 1639603704, '{\"cookie\":{\"originalMaxAge\":2628000000,\"expires\":\"2021-12-15T20:32:52.225Z\",\"httpOnly\":true,\"path\":\"/\"},\"teacherId\":\"677289c442fa11ec9bc200155d06d18e\",\"teacher\":\"edoardo.putti@mail.polimi.it\",\"email\":\"Healthy-Roundworm\",\"code\":\"test\",\"url\":\"aPb-slJH9Vs\",\"title\":\"Test Video\"}');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `slider`
---
-
-CREATE TABLE `slider` (
+CREATE TABLE IF NOT EXISTS `slider` (
   `sid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `appreciation` int(11) DEFAULT NULL,
   `understanding` int(11) DEFAULT NULL,
   `video_code` varchar(20) DEFAULT NULL,
   `user_name` varchar(100) DEFAULT NULL,
-  `visible` smallint(6) DEFAULT NULL
+  `visible` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `slider`
---
 
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
 ('08b5a7ac41fb47e8b3f507c149ef844d', 43, 81, 'AW7MHU', 'edoardo.putti@mail.polimi.it', 1),
+('2252914545f711ec856d00155d2f54d2', 94, 80, 'test', 'Continuous-Rooster', 1),
 ('b9d354c442ff11ec9bc200155d06d18e', 65, 81, 'AW7MHU', 'Graceful-Squirrel', 1),
 ('bbe3fc8042fa11ec9bc200155d06d18e', 34, 73, 'test', 'CarefreeDegus', 1),
 ('bbe418e642fa11ec9bc200155d06d18e', 50, 50, 'test', 'FrailIberianLynx', 1),
@@ -16348,9 +16354,9 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bc2992d542fa11ec9bc200155d06d18e', 97, 94, 'o4UxX6', 'AnguishedSparrow', 1),
 ('bc29b16842fa11ec9bc200155d06d18e', 94, 92, 'RCb32H', 'ExaltedArchaeopteryx', 1),
 ('bc29cf6f42fa11ec9bc200155d06d18e', 71, 69, 'BHyoGQ', 'HuskyMinibeast', 1),
-('bc29e8cc42fa11ec9bc200155d06d18e', 50, 50, '2H6rDB', 'ParallelHog', 1),
-('bc2a157d42fa11ec9bc200155d06d18e', 92, 92, 'BHyoGQ', 'ProudAntelope', 1);
+('bc29e8cc42fa11ec9bc200155d06d18e', 50, 50, '2H6rDB', 'ParallelHog', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bc2a157d42fa11ec9bc200155d06d18e', 92, 92, 'BHyoGQ', 'ProudAntelope', 1),
 ('bc2a2ee042fa11ec9bc200155d06d18e', 50, 50, '2H6rDB', 'EnergeticCicada', 1),
 ('bc2a4d2042fa11ec9bc200155d06d18e', 97, 92, '2H6rDB', 'TerrificXantusMurrelet', 1),
 ('bc2a683c42fa11ec9bc200155d06d18e', 95, 95, '1uKDeA', 'BestChickadee', 1),
@@ -16985,9 +16991,9 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bc72339b42fa11ec9bc200155d06d18e', 100, 100, 'otflit', 'DifficultQueenConch', 1),
 ('bc724f0f42fa11ec9bc200155d06d18e', 100, 100, 'otflit', 'NonstopSolitaire', 1),
 ('bc726ccc42fa11ec9bc200155d06d18e', 50, 60, 'XaHZ8I', 'HummingLlama', 1),
-('bc7284c542fa11ec9bc200155d06d18e', 50, 70, 'XaHZ8I', 'GrowingKite', 1),
-('bc72a29e42fa11ec9bc200155d06d18e', 100, 97, 'XaHZ8I', 'MerryIndochineseTiger', 1);
+('bc7284c542fa11ec9bc200155d06d18e', 50, 70, 'XaHZ8I', 'GrowingKite', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bc72a29e42fa11ec9bc200155d06d18e', 100, 97, 'XaHZ8I', 'MerryIndochineseTiger', 1),
 ('bc72bac042fa11ec9bc200155d06d18e', 74, 100, 'XaHZ8I', 'WarpedDromedary', 1),
 ('bc72d30242fa11ec9bc200155d06d18e', 100, 100, 'XaHZ8I', 'BuzzingAlbino', 1),
 ('bc72f10742fa11ec9bc200155d06d18e', 100, 100, 'otflit', 'SuperbTarantula', 1),
@@ -17593,9 +17599,9 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bcb5d96842fa11ec9bc200155d06d18e', 37, 43, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('bcb5efb142fa11ec9bc200155d06d18e', 86, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('bcb609b842fa11ec9bc200155d06d18e', 50, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
-('bcb626da42fa11ec9bc200155d06d18e', 50, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
-('bcb63fcf42fa11ec9bc200155d06d18e', 50, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1);
+('bcb626da42fa11ec9bc200155d06d18e', 50, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bcb63fcf42fa11ec9bc200155d06d18e', 50, 50, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('bcb65b3742fa11ec9bc200155d06d18e', 70, 70, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('bcb676d542fa11ec9bc200155d06d18e', 31, 83, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
 ('bcb68e1842fa11ec9bc200155d06d18e', 50, 76, 'cadiz', 'etuthihouywubvfwsy@awdrt.org', 1),
@@ -18215,10 +18221,10 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bcff5f8f42fa11ec9bc200155d06d18e', 70, 85, 'nViW2P', 'UntidyUintaGroundSquirrel', 1),
 ('bcff7a5542fa11ec9bc200155d06d18e', 79, 63, 'WCAK5J', 'andrea20.riva@mail.polimi.it', 1),
 ('bcff94d642fa11ec9bc200155d06d18e', 100, 100, 'nViW2P', 'ReasonableIriomoteCat', 1),
-('bcffaf2842fa11ec9bc200155d06d18e', 50, 60, 'ZOD9Bv', 'StainedGoldenRetriever', 1),
-('bcffcc1942fa11ec9bc200155d06d18e', 75, 85, 'ZOD9Bv', 'JudiciousToucan', 1),
-('bcffe62e42fa11ec9bc200155d06d18e', 50, 100, 'ZOD9Bv', 'LoudDachshund', 1);
+('bcffaf2842fa11ec9bc200155d06d18e', 50, 60, 'ZOD9Bv', 'StainedGoldenRetriever', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bcffcc1942fa11ec9bc200155d06d18e', 75, 85, 'ZOD9Bv', 'JudiciousToucan', 1),
+('bcffe62e42fa11ec9bc200155d06d18e', 50, 100, 'ZOD9Bv', 'LoudDachshund', 1),
 ('bd00009242fa11ec9bc200155d06d18e', 70, 80, 'nViW2P', 'IncomparableHapuka', 1),
 ('bd001e5442fa11ec9bc200155d06d18e', 89, 83, 'ZOD9Bv', 'BlandGroundhog', 1),
 ('bd003b6142fa11ec9bc200155d06d18e', 90, 90, 'nViW2P', 'DopeyEskimoDog', 1),
@@ -18839,10 +18845,10 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bd465eac42fa11ec9bc200155d06d18e', 50, 50, 'ZOD9Bv', 'DirtyCatfish', 1),
 ('bd4677a542fa11ec9bc200155d06d18e', 50, 50, 'ZOD9Bv', 'DirtyCatfish', 1),
 ('bd46968642fa11ec9bc200155d06d18e', 50, 50, 'ZOD9Bv', 'DirtyCatfish', 1),
-('bd46aff342fa11ec9bc200155d06d18e', 100, 100, 'PZpaq5', 'jamsha@st.amu.edu.pl', 1),
-('bd46d1c542fa11ec9bc200155d06d18e', 93, 85, 'nViW2P', 'ShamelessBaldEagle', 1),
-('bd46e86542fa11ec9bc200155d06d18e', 75, 79, 'nViW2P', 'ArcticGrunion', 1);
+('bd46aff342fa11ec9bc200155d06d18e', 100, 100, 'PZpaq5', 'jamsha@st.amu.edu.pl', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bd46d1c542fa11ec9bc200155d06d18e', 93, 85, 'nViW2P', 'ShamelessBaldEagle', 1),
+('bd46e86542fa11ec9bc200155d06d18e', 75, 79, 'nViW2P', 'ArcticGrunion', 1),
 ('bd4703dc42fa11ec9bc200155d06d18e', 80, 70, 'ZOD9Bv', 'QuickLeafwing', 1),
 ('bd471f8942fa11ec9bc200155d06d18e', 90, 95, 'qNdn7P', 'gianluca.carta@mail.polimi.it', 1),
 ('bd47365e42fa11ec9bc200155d06d18e', 70, 70, 'ZOD9Bv', 'andres.loaiza@mail.polimi.it', 1),
@@ -19457,9 +19463,9 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bd91582f42fa11ec9bc200155d06d18e', 100, 90, 'nkgK8L', 'SecondChrysalis', 1),
 ('bd91762842fa11ec9bc200155d06d18e', 65, 80, '8leZ7X', 'HelplessStarling', 1),
 ('bd91906042fa11ec9bc200155d06d18e', 100, 80, '8leZ7X', 'RobustBoutu', 1),
-('bd91ae2442fa11ec9bc200155d06d18e', 50, 50, 'pnOchZ', 'YellowLeopard', 1),
-('bd91cc0f42fa11ec9bc200155d06d18e', 50, 50, 'pnOchZ', 'AttentiveAustralianKestrel', 1);
+('bd91ae2442fa11ec9bc200155d06d18e', 50, 50, 'pnOchZ', 'YellowLeopard', 1);
 INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `user_name`, `visible`) VALUES
+('bd91cc0f42fa11ec9bc200155d06d18e', 50, 50, 'pnOchZ', 'AttentiveAustralianKestrel', 1),
 ('bd91e9fb42fa11ec9bc200155d06d18e', 50, 50, 'test', 'putti.edoardo@gmail.com', 1),
 ('bd9204c542fa11ec9bc200155d06d18e', 50, 50, 'yXgtqV', 'VirtualSiamang', 1),
 ('bd921d9442fa11ec9bc200155d06d18e', 100, 100, 'yXgtqV', 'GiantMuskrat', 1),
@@ -19874,7 +19880,7 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bdbeffa842fa11ec9bc200155d06d18e', 100, 100, 'WQgWFS', 'EsteemedAnemone', 1),
 ('bdbf1e0342fa11ec9bc200155d06d18e', 100, 100, 'WQgWFS', 'VigilantEyas', 1),
 ('bdbf3c2a42fa11ec9bc200155d06d18e', 100, 95, 'WQgWFS', 'ArcticHammerkop', 1),
-('bdbf5a0d42fa11ec9bc200155d06d18e', 50, 50, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
+('bdbf5a0d42fa11ec9bc200155d06d18e', 93, 100, '4AnDy1', 'edoardo.putti@mail.polimi.it', 1),
 ('bdbf705742fa11ec9bc200155d06d18e', 100, 100, 'RIZDBY', 'HideousStonefly', 1),
 ('bdbf8ae242fa11ec9bc200155d06d18e', 100, 100, '3P9eyS', 'ExpertBackswimmer', 1),
 ('bdbfa1b342fa11ec9bc200155d06d18e', 68, 69, 'LikYJr', 'DamagedDutchShepherdDog', 1),
@@ -20032,10 +20038,6 @@ INSERT INTO `slider` (`sid`, `appreciation`, `understanding`, `video_code`, `use
 ('bdcfc9e042fa11ec9bc200155d06d18e', 50, 50, 'rMNwFL', 'CuteWillet', 1),
 ('bdcfe1c842fa11ec9bc200155d06d18e', 100, 80, 'rMNwFL', 'WarpedBanteng', 1),
 ('bdcffbb142fa11ec9bc200155d06d18e', 100, 97, 'rMNwFL', 'FewTench', 1);
-
---
--- Triggers `slider`
---
 DELIMITER $$
 CREATE TRIGGER `update_feedback` AFTER INSERT ON `slider` FOR EACH ROW IF (new.visible = 1) THEN
 UPDATE video set new = new + 1 WHERE video_code = new.video_code;
@@ -20049,22 +20051,13 @@ END IF
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `student`
---
-
-CREATE TABLE `student` (
+CREATE TABLE IF NOT EXISTS `student` (
   `uid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `email` varchar(255) DEFAULT NULL,
   `hash` varchar(100) DEFAULT NULL,
-  `salt` varchar(40) DEFAULT NULL
+  `salt` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `student`
---
 
 INSERT INTO `student` (`uid`, `email`, `hash`, `salt`) VALUES
 ('66dc718942fa11ec9bc200155d06d18e', 'fabio1.vanoni@mail.polimi.it', '8YcFWIZFBxqDqtO69xJ7eoHuIbMYV-1GiKFwMrF6ge5qqdmYAfGcKrJQogRkZzfJsgKUxHNtj4nCpqmi1JhdEw==', 'evVkXoghr6Wq8Q=='),
@@ -21063,22 +21056,13 @@ INSERT INTO `student` (`uid`, `email`, `hash`, `salt`) VALUES
 ('6773f05b42fa11ec9bc200155d06d18e', 'wuskyjian@gmail.com', 'ObjvQjE87gJZQacrczUop6hVAmp807ldkLTXFTnQyWS95_xRpB_cbZPiKwwkNk-SY6x4xSYo98gFSgyOJ0mqgg==', 'VMTHRsBh15PM3g=='),
 ('d2b46f3b42ff11ec9bc200155d06d18e', 'edoardo.putti@mail.polimi.it', 'iMMK0nFg7cf1vQailOh39pIVF/bpMIFT7HwqutUJXz7G7DQT3KI9SNPfbid2vkZrwFnUrwVXbiTWFFFnP7rJ8g==', 'JValVdAH/I+3vtvCCPWveA==');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `teacher`
---
-
-CREATE TABLE `teacher` (
+CREATE TABLE IF NOT EXISTS `teacher` (
   `uid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `email` varchar(255) DEFAULT NULL,
   `hash` varchar(100) DEFAULT NULL,
-  `salt` varchar(40) DEFAULT NULL
+  `salt` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `teacher`
---
 
 INSERT INTO `teacher` (`uid`, `email`, `hash`, `salt`) VALUES
 ('66e22f9042fa11ec9bc200155d06d18e', 'lveronica87@yahoo.it', 'fWQ0Vy-er10NFFSTBD0xZq9jMAA25LizWs3mAUskVPGloB-lQBknUgK-KHxkoY81cKWqAaDqNs51N9FgmdfJNg==', '_OlQ8XaMr3yZww=='),
@@ -21314,13 +21298,7 @@ INSERT INTO `teacher` (`uid`, `email`, `hash`, `salt`) VALUES
 ('677289c442fa11ec9bc200155d06d18e', 'edoardo.putti@mail.polimi.it', 'zjknBuZm2jTuRWsoMwh9E6VWHNdPKAgxHOrQjanlVVZMsgnl5zAnYcZaw_CZ-ZzXNC_toh8wf7xJd_KqfE-Wxg==', 'QlfvErAmphVfPw=='),
 ('6773922d42fa11ec9bc200155d06d18e', 'ewa.kowalska896@gmail.com', 'O0j7ZcRGyVmXlZOT9oUL6qS3l6OaAVnWGmxLKzgzeX4l83-BBBel2gbyKtp3QeKGCcTwsOyjR8HTVo84esJ0dg==', 'DuGFUdmpAwZk-Q==');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `video`
---
-
-CREATE TABLE `video` (
+CREATE TABLE IF NOT EXISTS `video` (
   `vid` varchar(32) NOT NULL DEFAULT replace(uuid(),'-',''),
   `title` varchar(255) DEFAULT NULL,
   `duration` int(11) DEFAULT NULL,
@@ -21329,15 +21307,13 @@ CREATE TABLE `video` (
   `uid` varchar(32) DEFAULT NULL,
   `video_code` varchar(20) DEFAULT NULL,
   `comment` varchar(600) DEFAULT '''''',
-  `new` int(11) DEFAULT 0
+  `new` int(11) DEFAULT 0,
+  PRIMARY KEY (`vid`),
+  KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `video`
---
-
 INSERT INTO `video` (`vid`, `title`, `duration`, `folder`, `url`, `uid`, `video_code`, `comment`, `new`) VALUES
-('bdd015fc42fa11ec9bc200155d06d18e', 'Test Video', 275, 'root', 'aPb-slJH9Vs', '6702085142fa11ec9bc200155d06d18e', 'test', 'Amazing', 0),
+('bdd015fc42fa11ec9bc200155d06d18e', 'Test Video', 275, 'root', 'aPb-slJH9Vs', '6702085142fa11ec9bc200155d06d18e', 'test', 'Amazing', 1),
 ('bdd03a6642fa11ec9bc200155d06d18e', 'Classical music from ancient times up to Romanticism ', 286, 'root', 'b_cheDLyDHU', '675962ce42fa11ec9bc200155d06d18e', 'EPVp9T', ' ', 0),
 ('bdd055b342fa11ec9bc200155d06d18e', 'The Importance Of Didactics In Mathematics', 117, 'cherry', 'ZDGvz_QJ4Sw', '6702085142fa11ec9bc200155d06d18e', 'cadiz', '2nd Year class', 0),
 ('bdd06e8942fa11ec9bc200155d06d18e', 'Zizek', 667, 'root', 'kZJSmUExU6M', '671cb97f42fa11ec9bc200155d06d18e', 'wKFHy1', ' ', 0),
@@ -22040,97 +22016,15 @@ INSERT INTO `video` (`vid`, `title`, `duration`, `folder`, `url`, `uid`, `video_
 ('be262d1042fa11ec9bc200155d06d18e', 'The Life and Work\n', 1757, 'postmodernliterature', '4NlOI5Q-ar0', '6723e71d42fa11ec9bc200155d06d18e', 'LhctoQ', 'The writer\'s life and work', 0),
 ('be26564c42fa11ec9bc200155d06d18e', 'In Our Time: Beckett\n', 2909, 'postmodernliterature', '1o6zC16zJE0', '6723e71d42fa11ec9bc200155d06d18e', 'Al9ET6', '', 0);
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `folder`
---
-ALTER TABLE `folder`
-  ADD PRIMARY KEY (`fid`),
-  ADD KEY `uid` (`uid`);
-
---
--- Indexes for table `reaction`
---
-ALTER TABLE `reaction`
-  ADD PRIMARY KEY (`rid`);
-
---
--- Indexes for table `resettokens`
---
-ALTER TABLE `resettokens`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `sequelizemeta`
---
-ALTER TABLE `sequelizemeta`
-  ADD PRIMARY KEY (`name`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `sessions`
---
-ALTER TABLE `sessions`
-  ADD PRIMARY KEY (`session_id`);
-
---
--- Indexes for table `slider`
---
-ALTER TABLE `slider`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `student`
---
-ALTER TABLE `student`
-  ADD PRIMARY KEY (`uid`);
-
---
--- Indexes for table `teacher`
---
-ALTER TABLE `teacher`
-  ADD PRIMARY KEY (`uid`);
-
---
--- Indexes for table `video`
---
-ALTER TABLE `video`
-  ADD PRIMARY KEY (`vid`),
-  ADD KEY `uid` (`uid`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `resettokens`
---
-ALTER TABLE `resettokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `folder`
---
 ALTER TABLE `folder`
   ADD CONSTRAINT `folder_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `teacher` (`uid`);
 
---
--- Constraints for table `video`
---
 ALTER TABLE `video`
   ADD CONSTRAINT `video_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `teacher` (`uid`);
+USE `phpmyadmin`;
 
 DELIMITER $$
---
--- Events
---
 CREATE DEFINER=`root`@`localhost` EVENT `remove used tokens` ON SCHEDULE EVERY 1 DAY STARTS '2021-11-11 00:00:00' ON COMPLETION PRESERVE ENABLE DO DELETE FROM resettokens WHERE expiration < NOW() OR used = 1$$
 
 DELIMITER ;

@@ -2,7 +2,7 @@ extends layout
 
 block content 
     body(class="feedback")
-        #seeFullFeadback(class="modal fade")
+        #seeFullFeadback(class="modal fade feedbackText")
             div(class="modal-dialog modal-dialog-centered ")
                 div(class="modal-content")
                     div(class="modal-header")
@@ -53,11 +53,11 @@ block content
                             p Assessment
                         div(class="row d-flex justify-content-center")
                             div(class="col-6 ")
-                                div(style="cursor: auto;" class="btn roundStat ")
-                                    i(class="fa fa-lg fa-lightbulb-o" aria-hidden="true")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip" data-placement="bottom" title="Student\'s average understanding of the video")
+                                    i(class="fa fa-lg fa-lightbulb-o")
                                 p#avgUnderstanding
                             div(class="col-5 ")
-                                div(style="cursor: auto;" class="btn roundStat ")
+                                div(style="cursor: auto;" class="btn roundStat " data-toggle="tooltip" data-placement="bottom" title="Student\'s average appreciation of the video")
                                     i(class="fa fa-lg fa-thumbs-up" aria-hidden="true")
                                 p#avgAppreciation
                     div(class="col-4 ")
@@ -65,15 +65,15 @@ block content
                             p#reacTot Reactions: 
                         div(class="row d-flex justify-content-center")
                             div(class="col-3 ")
-                                div(style="cursor: auto;" class="btn roundStat")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip" data-placement="bottom" title="number of I get it received from the students")
                                     img(src="../images/happy3.png" height="50px" style="margin-bottom: 5px;")
                                 p#getIt
                             div(class="col-4 ")
-                                div(class="btn roundStat")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip" data-placement="bottom" title="number of I don\'t get it received from the students")
                                     img(src="../images/sad3.png" height="50px" style="margin-bottom: 5px;")
                                 p#dGetIt(style="white-space: nowrap;")
                             div(class="col-3 ")
-                                div(class="btn roundStat")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip" data-placement="bottom" title="number of Comments received from the students")
                                     img(src="../images/question.png" height="50px" style="margin-bottom: 5px;")
                                 p#comm
                     div(class="col-3 ")
@@ -81,49 +81,52 @@ block content
                             p#studTot Students: 
                         div(class="row d-flex justify-content-center")
                             div(class="col-5 ")
-                                div(style="cursor: auto;" class="btn roundStat")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip" data-placement="bottom" title="number of students that logged-in to watch the video")
                                     i(class="fa fa-lg fa-user" aria-hidden="true")
                                 p#logged
                             div(class="col-5 ")
-                                div(style="cursor: auto;" class="btn roundStat")
+                                div(style="cursor: auto;" class="btn roundStat" data-toggle="tooltip"  title="number of students that access in anoymous mode to watch the video")
                                     i(class="fa fa-lg fa-user-secret" aria-hidden="true")
                                 p#anonym
                     div(class="col-1 ")
                         div(class="row d-flex justify-content-center")
                             p Download
                         div(class="row d-flex justify-content-center ")
-                            div(class=" btn roundStat" onclick="downloadUniqueFile()")
+                            div(class=" btn roundStat dwSt" onclick="downloadUniqueFile()" style="border-radius: 20px;" data-toggle="tooltip"  title="Download a unique excel file containing the chart the statistics and the comments")
                                 i(class="fa fa-lg fa-download" aria-hidden="true")
                             p#statTxt(style="line-height: 1; margin-top: 10px;") Stats, Chart & Comments 
-        div(class="row d-flex  ")
-            div(class="col-12 col-lg-8 " style="padding: 25px")
-                div(class="row")
-                    #chartRow(class="col-12")
-                        #legend(style="background: rgba(161, 158, 158, 0.555); padding-right: 10px")
-                        canvas#chart
-                        #chartControl(class="btn-group-vertical" role="group" )
-                            button(type="button" class="btn btn-logOut zoomIn" onclick="zoomInChart()" style="border-top-left-radius: 40px; border-top-right-radius: 40px;")
-                                i(class="fa fa-search-plus")
-                            button(type="button" class="btn btn-logOut" onclick="returnFirstChart()") reset
-                            button(type="button" class="btn btn-logOut zoomOut" onclick="zoomOutChart()" style="border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;")
-                                i(class="fa fa-search-minus")
-                    div(class="col-12  d-flex justify-content-center")
-                        #player(class="videoPlayerRec" style="margin-right: 0px; margin-left: 10px; width: 100%; height: 42vh;")
-            div(class="col-12 col-lg-4 d-flex justify-content-center" style='padding-top: 25px')
-                table#commentsTable(class="table  table-hover " style="max-width: 95%; max-height: 60vh; margin-top: 0;")
+        div(class="row d-flex  justify-content-center")
+            div(class="col-12 col-lg-5 d-flex justify-content-center" style="padding-top: 15px; padding-bottom: 10px;")
+                #player(class="videoPlayerRec" style="margin-right: 0px; margin-left: 10px; width: 100%; height: 60vh;")
+            div( class="col-12 col-lg-7 d-flex justify-content-center" style=" padding-bottom: 10px;")
+                table#commentsTable(class="table  table-hover " )
                     thead
                         tr
                             th(style="padding-top: 10px; padding-bottom: 3px; ")
                                 h3(style="margin-bottom:0px") Comment
-                            th(style="padding-top: 10px; padding-bottom: 3px; ")
+                            th(colspan=6 style="padding-top: 10px; padding-bottom: 3px; ")
                                 h3(style="margin-bottom:0px;") Minute
                     tbody
+            
+                
+            #chartRow(class="col-12 col-lg-10")
+                #legend(style="background: rgba(161, 158, 158, 0.555); padding-right: 10px")
+                canvas#chart(height="95%")
+                #chartControl(class="btn-group-vertical" role="group" )
+                    button(type="button" class="btn btn-logOut zoomIn" onclick="zoomInChart()" style="border-top-left-radius: 40px; border-top-right-radius: 40px;")
+                        i(class="fa fa-search-plus")
+                    button(type="button" class="btn btn-logOut" onclick="returnFirstChart()") reset
+                    button(type="button" class="btn btn-logOut zoomOut" onclick="zoomOutChart()" style="border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;")
+                        i(class="fa fa-search-minus")
+                    
+                        
+            
+                
         #loading
             img(src="../images/loadingProf.gif" alt="loading")
     script(src="../javascripts/feedbacks.js") 
     script(src="../javascripts/node_modules/patternomaly/dist/patternomaly.js") 
     script(src="../javascripts/node_modules/html2canvas/dist/html2canvas.js")
-    script(src="../javascripts/node_modules/html-to-image/dist/html-to-image.js") 
     script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")  
     script(src="https://cdn.jsdelivr.net/npm/chart.js")
     script(src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8")

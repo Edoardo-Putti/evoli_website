@@ -24,6 +24,15 @@ router.get('/statistics', function(req, res, next) {
 
 });
 
+router.get('/aggStats', function(req, res, next) {
+    if (req.session.teacher) {
+        res.render('aggStat', { title: 'Aggregated Stats', name: req.session.teacher });
+    } else {
+        res.render('teacherAuth', { title: 'Auth' })
+    }
+
+});
+
 router.post('/login', teacherController.logIn);
 
 router.post('/signup', teacherController.signUp);
@@ -59,6 +68,8 @@ router.post('/retriveFeedbacks', teacherController.retriveFeedbacks)
 router.post('/saveImage', teacherController.saveImage);
 
 router.post('/download', teacherController.download);
+
+router.post('/retriveAggStats', teacherController.aggStats);
 
 router.get('/logout', teacherController.logOut);
 

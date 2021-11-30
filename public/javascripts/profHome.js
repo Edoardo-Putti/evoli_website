@@ -158,13 +158,13 @@ function deleteFolder(tr) {
 
 function confirmDeleteFolder() {
     var folder = $('#confirmDelFolder').attr('value');
-    var codes = folders2code[folder];
+    var codes = (folders2code[folder]) ? folders2code[folder] : [];
     $.ajax({
-        url: '.teacher/deleteFolder',
+        url: './teacher/deleteFolder',
         type: 'post',
         data: {
             folder: folder,
-            videoCodes: JSON.stringify(codes),
+            codes: JSON.stringify(codes),
         },
         success: function(data) {
             videos.forEach((video, i) => {
@@ -185,6 +185,7 @@ function confirmDeleteFolder() {
 
         },
         error: function(data, status) {
+            console.log(data)
             var errorMessage = JSON.parse(data.responseText).msg;
             $('#folderError').val(errorMessage)
         },
@@ -329,6 +330,7 @@ function uploadFolder() {
             success: function(data) {
                 name2id[data.name] = 'a' + folders.length
                 folders.push(data);
+                folders2code[name] = []
                 displayFolders(folders)
                 changeCurrentPath($('#' + name2id[data.name])[0])
                 $(".showfo").trigger('click');
@@ -505,6 +507,36 @@ function moveVideo() {
         }
     }
 }
+
+function showAggStats() {
+    if ($("input:checkbox:checked").length != 0) {
+        var codes = []
+        $("input:checkbox:checked").each(function() {
+            codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
+        })
+        localStorage.setItem('codes', JSON.stringify(codes))
+        window.location.href = 'teacher/aggStats'
+    } else {
+        if ($('#editButtons').is(':visible')) {
+            $('#editButtons .stat').popover({
+                placement: "top",
+                content: 'Please select at least one video!'
+            }).popover('show')
+            setTimeout(function() {
+                $('#editButtons .stat').popover('hide')
+            }, 2000);
+        } else {
+            $('#editBottonsSmall .stat').popover({
+                placement: "top",
+                content: 'Please select at least one video!'
+            }).popover('show')
+            setTimeout(function() {
+                $('#editBottonsSmall .stat').popover('hide')
+            }, 2000);
+        }
+    }
+}
+
 
 function confirmMoveVideo() {
     var codes = []
@@ -772,7 +804,7 @@ function copyFunction(id) {
     $temp.remove();
     $(id).popover({
         placement: "right",
-        content: 'Code copied!'
+        content: 'Code copied! Now share it with the students'
     }).popover('show')
     setTimeout(function() {
         $(id).popover('hide')

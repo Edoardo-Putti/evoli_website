@@ -1375,7 +1375,8 @@ td .endsession {
 
 #commentsTable {
     display: block;
-    max-height: 40vh;
+    max-height: 60vh;
+    max-width: 95%;
     overflow-y: auto;
     background: transparent;
     border-bottom-left-radius: 20px;
@@ -1519,6 +1520,45 @@ tr:last-child td:last-child {
     position: absolute;
     display: flex;
     justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.mouse {
+    animation: mouse 6s infinite;
+}
+
+@keyframes mouse {
+    0% {
+        transform: rotate(15deg) translateX(50%)
+    }
+    10% {
+        transform: rotate(15deg) translateX(25%)
+    }
+    20% {
+        transform: rotate(-15deg) translateX(-50%)
+    }
+    30% {
+        transform: rotate(-15deg) translateX(-25%)
+    }
+    50% {
+        transform: rotate(15deg) translateX(50%)
+    }
+    60% {
+        transform: rotate(15deg) translateX(25%)
+    }
+    70% {
+        transform: rotate(-15deg) translateX(-50%)
+    }
+    80% {
+        transform: rotate(-15deg) translateX(-25%)
+    }
+    100% {
+        transform: rotate(15deg)
+    }
 }
 
 .check:hover {
@@ -1589,6 +1629,11 @@ tr:last-child td:last-child {
 
 .roundStat:hover {
     color: #ffb30d;
+}
+
+.dwSt:hover {
+    color: #243d70;
+    background: #ffb30d;
 }
 
 .avg {
@@ -1699,4 +1744,11 @@ input:checked+.slider:before {
 .iconShow {
     vertical-align: middle;
     color: black;
+}
+
+.feedbackText {
+    top: 38vh;
+    left: 50vw;
+    width: fit-content;
+    height: fit-content;
 }

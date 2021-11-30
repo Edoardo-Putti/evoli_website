@@ -9,7 +9,7 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var compression = require('compression');
 require('dotenv').config();
-console.log(config)
+
 
 let sequelize = new Sequelize(config.database, config.username, config.password, config);
 

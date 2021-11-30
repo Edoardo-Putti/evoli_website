@@ -3,6 +3,7 @@ window.onload = function() {
     $('#loading').css({
         top: $('#navbarCont').outerHeight()
     })
+    $('[data-toggle="tooltip"]').tooltip()
 }
 
 
@@ -106,15 +107,7 @@ function retriveData() {
 }
 
 
-function downloadChart() {
-    html2canvas($('#chartRow')[0]).then(canvas => {
-        var a = document.createElement('a');
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-        a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-        a.download = 'EVOLI_' + video.title + '.jpeg';
-        a.click();
-    });
-}
+
 
 
 
@@ -206,9 +199,10 @@ function goToSecond(second) {
 
 function addText(key) {
     $("#fedbackBox").attr('name', key);
-    $('#timeFeed strong').empty();
-    $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+    $('#timeFeed button').remove();
+    $('#timeFeed').append('<button class="btn btn-md endsession">' + secondsToMinutes(co[key].at_second) + "</button>")
     $("#fedbackBox").val(htmlEntities(co[key].type));
+
     if (key == 0) {
         $('#prev').hide()
     }
@@ -223,13 +217,13 @@ function prevComment() {
     if (key > 0) {
         $('#next').show()
         $("#fedbackBox").attr('name', key);
-        $('#timeFeed strong').empty();
-        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $('#timeFeed button').remove();
+        $('#timeFeed').append('<button class="btn btn-md endsession">' + secondsToMinutes(co[key].at_second) + "</button>")
         $("#fedbackBox").val(htmlEntities(co[key].type));
     } else {
         $("#fedbackBox").attr('name', key);
-        $('#timeFeed strong').empty();
-        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $('#timeFeed button').remove();
+        $('#timeFeed').append('<button class="btn btn-md endsession">' + secondsToMinutes(co[key].at_second) + "</button>")
         $("#fedbackBox").val(htmlEntities(co[key].type));
         $('#prev').hide()
     }
@@ -241,17 +235,29 @@ function nextComment() {
     if (key < co.length - 1) {
         $('#prev').show()
         $("#fedbackBox").attr('name', key);
-        $('#timeFeed strong').empty();
-        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $('#timeFeed button').remove();
+        $('#timeFeed').append('<button class="btn btn-md endsession">' + secondsToMinutes(co[key].at_second) + "</button>")
         $("#fedbackBox").val(htmlEntities(co[key].type));
     } else {
         $("#fedbackBox").attr('name', key);
-        $('#timeFeed strong').empty();
-        $('#timeFeed').append('<strong>' + secondsToMinutes(co[key].at_second) + "</strong>")
+        $('#timeFeed button').remove();
+        $('#timeFeed').append('<button class="btn btn-md endsession">' + secondsToMinutes(co[key].at_second) + "</button>")
         $("#fedbackBox").val(htmlEntities(co[key].type));
         $('#next').hide()
     }
 }
+
+$('#timeFeed').on('click', () => {
+    goToSecond(co[$("#fedbackBox").attr('name')].at_second)
+})
+
+
+$('#seeFullFeadback').modal({
+    backdrop: false,
+    show: false
+})
+
+
 
 function createConfig(l, d, c, duration) {
     segmentsLength = Math.ceil(duration / numSegments);
@@ -718,34 +724,23 @@ function zoomInChart() {
         chart.destroy();
         generateChart(l, d, c, duration);
         var chartPos = $("#chart").position();
-        $('#chartRow').append('<div class="chartInfo cirigth" ><span style="margin: auto"><img src="../images/right-chevron.png" height="50px" width="50px"> </span></div>')
-        $('.cirigth').css({ top: chartPos.top, right: chartPos.left, width: '80px', height: '85%' })
-        $('#chartRow').append('<div class="chartInfo cirleft" ><span style="margin: auto"><img src="../images/chevron-left.png" height="50px" width="50px"> </span></div>')
-        $('.cirleft').css({ top: chartPos.top, left: chartPos.left, width: '80px', height: '85%' })
+        $('#chartRow').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+        $('.cirigth').css({ top: chartPos.top, rigth: '3.5vw', width: '85%', height: '85%' })
         setTimeout(function() {
             $('.chartInfo').remove()
         }, 2000);
     } else {
 
-        if ($('#chartControl').is(':visible')) {
 
-            $('#chartControl .zoomIn').popover({
-                placement: "top",
-                content: 'Maximum reached'
-            }).popover('show')
-            setTimeout(function() {
-                $('#chartControl .zoomIn').popover('dispose')
-            }, 2000);
-        } else {
-            $('#smallChart .zoomIn').popover({
-                placement: "auto",
-                content: 'Maximum reached'
-            }).popover('show')
-            setTimeout(function() {
-                $('#smallChart .zoomIn').popover('dispose')
 
-            }, 2000);
-        }
+        $('#chartControl .zoomIn').popover({
+            placement: "top",
+            content: 'Maximum reached'
+        }).popover('show')
+        setTimeout(function() {
+            $('#chartControl .zoomIn').popover('dispose')
+        }, 2000);
+
     }
 }
 
@@ -763,31 +758,21 @@ function zoomOutChart() {
         chart.destroy();
         generateChart(l, d, c, duration);
         var chartPos = $("#chart").position();
-        $('#chartRow').append('<div class="chartInfo cirigth" ><span style="margin: auto"><img src="../images/right-chevron.png" height="50px" width="50px"> </span></div>')
-        $('.cirigth').css({ top: chartPos.top, right: chartPos.left, width: '80px', height: '85%' })
-        $('#chartRow').append('<div class="chartInfo cirleft" ><span style="margin: auto"><img src="../images/chevron-left.png" height="50px" width="50px"> </span></div>')
-        $('.cirleft').css({ top: chartPos.top, left: chartPos.left, width: '80px', height: '85%' })
+        $('#chartRow').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+        $('.cirigth').css({ top: chartPos.top, rigth: '3.5vw', width: '85%', height: '85%' })
         setTimeout(function() {
             $('.chartInfo').remove()
         }, 2000);
     } else {
-        if ($('#chartControl').is(':visible')) {
-            $('#chartControl .zoomOut').popover({
-                placement: "top",
-                content: 'Maximum reached '
-            }).popover('show')
-            setTimeout(function() {
-                $('#chartControl .zoomOut').popover('dispose')
-            }, 2000);
-        } else {
-            $('#smallChart .zoomOut').popover({
-                placement: "auto",
-                content: 'Maximum reached '
-            }).popover('show')
-            setTimeout(function() {
-                $('#smallChart .zoomOut').popover('dispose')
-            }, 2000);
-        }
+
+        $('#chartControl .zoomOut').popover({
+            placement: "top",
+            content: 'Maximum reached '
+        }).popover('show')
+        setTimeout(function() {
+            $('#chartControl .zoomOut').popover('dispose')
+        }, 2000);
+
     }
 }
 

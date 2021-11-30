@@ -1,0 +1,52 @@
+extends layout 
+
+block content 
+    body(class="feedback")
+        header
+            nav#navbarCont(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-md p-2 px-md-4 ")
+                button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                    span(class="navbar-toggler-icon")
+                div(class="d-flex d-none d-lg-block" style="color: whitesmoke; text-align: center; font-size:calc(10px + .6vw); margin-right: 20px;")
+                    p#teachersName(style="color: whitesmoke; text-align: center; font-size: calc(10px + .8vw); margin: auto;")
+                        i(class="fa fa-user")
+                        | Logged in as: 
+                        != name
+                #Navbar(class="collapse navbar-collapse justify-content-end")
+                    ul(class="navbar-nav ml-auto" style="margin-left: 0!important;")
+                        li(class="nav-item ")
+                            a(class="nav-link" href="/")
+                                span(class="fa fa-home fa-lg")
+                                | Home
+                        li(class="nav-item")
+                            a(class="nav-link" href="/teacher")
+                                span
+                                    img#teachersLogo(src="../images/chalkboard.png" height="30px" width="30px")
+                                | My videos
+                        li(class="nav-item active")
+                            a(class="nav-link")
+                                span(class="fa fa-bar-chart fa-lg")
+                                | Statistics
+                a(role="button" class="btn  btn-logOut  rounded-pill" href='../teacher/logout')
+                    | Log
+                    | Out
+        div(class="row d-flex justify-content-center")
+            div(class="col-6")
+                div(class="row d-flex justify-content-center")
+                    div(class="col-8")
+                        canvas#chartAssesment
+                div(class="row d-flex justify-content-center" )
+                    div(class="col-8")
+                        canvas#chartReactions
+                div(class="row d-flex justify-content-center" )
+                    div(class="col-8")
+                        canvas#chartStudents
+            div(class="col-6")
+        #loading
+            img(src="../images/Ellipsis.gif" alt="loading")
+    script(src="../javascripts/aggStats.js") 
+    script(src="../javascripts/node_modules/patternomaly/dist/patternomaly.js") 
+    script(src="../javascripts/node_modules/html2canvas/dist/html2canvas.js")
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")  
+    script(src="https://cdn.jsdelivr.net/npm/chart.js")
+    script(src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8")
+    script(src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next")

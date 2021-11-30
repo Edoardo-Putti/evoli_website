@@ -228,6 +228,7 @@ exports.renameFolder = (req, res) => {
 }
 
 exports.deleteFolder = (req, res) => {
+    console.log(req.body)
     async.parallel({
         folders: function(callback) {
             db.Folder.destroy({
@@ -236,6 +237,9 @@ exports.deleteFolder = (req, res) => {
                 }
             }).then(data => {
                 callback(null, data);
+            }).catch(err => {
+                console.log(err)
+                callback(err, null);
             })
 
 
@@ -247,16 +251,22 @@ exports.deleteFolder = (req, res) => {
                 }
             }).then(data => {
                 callback(null, data);
+            }).catch(err => {
+                console.log(err)
+                callback(err, null);
             })
 
         },
         reactions: function(callback) {
             db.Reaction.destroy({
                 where: {
-                    video_code: JSON.parse(req.body.videoCodes)
+                    video_code: JSON.parse(req.body.codes)
                 }
             }).then(data => {
                 callback(null, data);
+            }).catch(err => {
+                console.log(err)
+                callback(err, null);
             })
 
 
@@ -264,10 +274,13 @@ exports.deleteFolder = (req, res) => {
         sliders: function(callback) {
             db.Slider.destroy({
                 where: {
-                    video_code: JSON.parse(req.body.videoCodes)
+                    video_code: JSON.parse(req.body.codes)
                 }
             }).then(data => {
                 callback(null, data);
+            }).catch(err => {
+
+                callback(err, null);
             })
 
 
@@ -276,6 +289,7 @@ exports.deleteFolder = (req, res) => {
     }).then(results => {
         res.status(200).send(results)
     }).catch(err => {
+        console.log(err)
         res.status(500).json({ msg: err })
     })
 }
@@ -561,4 +575,49 @@ exports.download = (req, res) => {
     wb.write('EVOLI_' + req.body.name.replace(/\s/g, '') + '_data', res)
     setTimeout(() => { fs.unlinkSync('canvas/' + req.body.name.replace(/\s/g, '') + '.jpeg'); }, 200)
 
+}
+
+exports.aggStats = (req, res) => {
+    var codes = JSON.parse(req.body.codes)
+    async.parallel({
+        videos: function(callback) {
+            db.Video.findAll({
+                attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new'],
+                where: {
+                    [Op.and]: [{ video_code: codes }, { uid: req.session.teacherId }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+        },
+        reactions: function(callback) {
+            db.Reaction.findAll({
+                attributes: ['type', 'at_second', 'user_name', 'video_code'],
+                where: {
+                    [Op.and]: [{ video_code: codes }, { visible: 1 }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+        sliders: function(callback) {
+            db.Slider.findAll({
+                attributes: ['appreciation', 'understanding', 'user_name', 'video_code'],
+                where: {
+                    [Op.and]: [{ video_code: codes }, { visible: 1 }]
+                }
+            }).then(data => {
+                callback(null, data);
+            })
+
+
+        },
+
+    }).then(results => {
+        res.status(200).send(results)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
 }

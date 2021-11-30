@@ -4,6 +4,7 @@ window.onload = function() {
     $('.scrollbar').css({
         height: window.innerHeight / 2.2
     })
+    $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' })
 }
 
 var folders;

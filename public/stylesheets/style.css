@@ -573,6 +573,26 @@ a[href*="#pencil"]::before {
     border-color: #243d70;
 }
 
+.btn-logOut-group {
+    color: #ffb40d;
+    font-weight: bolder;
+    background-color: #243d70;
+    border-color: #ffb40d;
+    white-space: nowrap
+}
+
+.btn-logOut-group:hover {
+    color: #243d70;
+    background-color: #ffb40d;
+    border-color: #243d70;
+}
+
+.btn-logOut-group:focus {
+    color: #243d70;
+    background-color: #ffb40d;
+    border-color: #243d70;
+}
+
 .btn-danger {
     color: whitesmoke;
     background-color: gray;
@@ -1371,6 +1391,12 @@ td .endsession {
 
 .no-boxshadow:focus {
     box-shadow: none;
+}
+
+#tableStats {
+    display: block;
+    max-height: 45vh;
+    overflow-y: auto;
 }
 
 #commentsTable {

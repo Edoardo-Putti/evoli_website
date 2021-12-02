@@ -33,6 +33,24 @@ router.get('/aggStats', function(req, res, next) {
 
 });
 
+router.get('/compare', function(req, res, next) {
+    if (req.session.teacher) {
+        res.render('compare', { title: 'Aggregated Stats', name: req.session.teacher });
+    } else {
+        res.render('teacherAuth', { title: 'Auth' })
+    }
+
+});
+
+router.get('/studentStats', function(req, res, next) {
+    if (req.session.teacher) {
+        res.render('studentStats', { title: 'Aggregated Stats', name: req.session.teacher });
+    } else {
+        res.render('teacherAuth', { title: 'Auth' })
+    }
+
+});
+
 router.post('/login', teacherController.logIn);
 
 router.post('/signup', teacherController.signUp);
@@ -70,6 +88,8 @@ router.post('/saveImage', teacherController.saveImage);
 router.post('/download', teacherController.download);
 
 router.post('/retriveAggStats', teacherController.aggStats);
+
+
 
 router.get('/logout', teacherController.logOut);
 

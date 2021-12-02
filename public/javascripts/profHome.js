@@ -483,6 +483,8 @@ function confirmDeleteVideo() {
     })
 }
 
+
+
 function moveVideo() {
     if ($("input:checkbox:checked").length != 0) {
         $('#move').modal('show')
@@ -509,34 +511,100 @@ function moveVideo() {
     }
 }
 
-function showAggStats() {
-    if ($("input:checkbox:checked").length != 0) {
-        var codes = []
-        $("input:checkbox:checked").each(function() {
-            codes.push($(this).parent().prev().prev()[0].innerText.replace(/ /g, ''))
-        })
-        localStorage.setItem('codes', JSON.stringify(codes))
-        window.location.href = 'teacher/aggStats'
+function aggStats() {
+    var tableStats = $('#tableStats > tbody').empty();
+
+    videos.forEach((video, i) => {
+        var code = 'a' + video.video_code
+        var newContent = '<tr id="' + code + '"> \
+                    <td colspan=1><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
+                    <td colspan=2 class=" hoverEffect" onclick="changeCurrentPath(' + name2id[video.folder] + ')" ><div class="noteTxt" > ' + video.folder + '</div></td>\
+                    <td colspan=1 class="editing" ><input  type="checkbox" value="' + i + '"></td>\
+                  </tr>';
+        tableStats.prepend(newContent);
+    })
+    $('#aggStats').modal('show')
+}
+
+function compare() {
+    var tableStats = $('#tableStats > tbody tr')
+    if ($('#tableStats > thead th').length < 4) {
+
+        $('#tableStats > thead tr').append('<th class="editing" ></th>')
+
+        tableStats.append('<td class="editing second" ><input  type="checkbox" ></td>');
     } else {
-        if ($('#editButtons').is(':visible')) {
-            $('#editButtons .stat').popover({
-                placement: "top",
-                content: 'Please select at least one video!'
-            }).popover('show')
-            setTimeout(function() {
-                $('#editButtons .stat').popover('hide')
-            }, 2000);
+        $('#tableStats > thead tr').children().last().remove()
+        $('#tableStats > tbody .second').remove()
+    }
+
+}
+
+$('#b1').on('click', () => {
+    $('#ConfirmStats').attr('value', 'b1');
+})
+
+$('#b2').on('click', () => {
+    $('#ConfirmStats').attr('value', 'b2');
+})
+
+$('#b3').on('click', () => {
+    $('#ConfirmStats').attr('value', 'b3');
+})
+
+function delCol() {
+    var tableStats = $('#tableStats > tbody tr')
+    if ($('#tableStats > thead th').length >= 4) {
+        $('#tableStats > thead tr').children().last().remove()
+        $('#tableStats > tbody .second').remove()
+    }
+
+}
+
+// 
+function confirmAggStast() {
+    if ($("#tableStats input:checkbox:checked").length != 0) {
+        if ($('#ConfirmStats').attr('value') == 'b1') {
+            var group1 = []
+            var group2 = []
+            $("#tableStats input:checkbox:checked").each(function() {
+                if ($(this).val() != 'on') {
+                    group1.push($(this).parent().parent().attr("id").substring(1))
+                } else {
+                    group2.push($(this).parent().parent().attr("id").substring(1))
+                }
+
+            })
+            localStorage.setItem('group1', JSON.stringify(group1))
+            localStorage.setItem('group2', JSON.stringify(group2))
+            window.location.href = 'teacher/compare'
+
+        } else if ($('#ConfirmStats').attr('value') == 'b2') {
+            var codes = []
+            $("#tableStats input:checkbox:checked").each(function() {
+                codes.push($(this).parent().parent().attr("id").substring(1))
+            })
+            localStorage.setItem('codes', JSON.stringify(codes))
+            window.location.href = 'teacher/aggStats'
         } else {
-            $('#editBottonsSmall .stat').popover({
-                placement: "top",
-                content: 'Please select at least one video!'
-            }).popover('show')
-            setTimeout(function() {
-                $('#editBottonsSmall .stat').popover('hide')
-            }, 2000);
+            var codes = []
+            $("#tableStats input:checkbox:checked").each(function() {
+                codes.push($(this).parent().parent().attr("id").substring(1))
+            })
+            localStorage.setItem('codes', JSON.stringify(codes))
+            window.location.href = 'teacher/studentStats'
         }
+    } else {
+        $('#ConfirmStats').popover({
+            placement: "top",
+            content: 'Please select at least one video!'
+        }).popover('show')
+        setTimeout(function() {
+            $('#ConfirmStats').popover('hide')
+        }, 2000);
     }
 }
+
 
 
 function confirmMoveVideo() {

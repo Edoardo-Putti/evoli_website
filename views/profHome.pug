@@ -83,6 +83,31 @@ block content
                     div(class="modal-footer")
                         button#confirmMovVideo(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmMoveVideo()")  Confirm 
                         button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
+        #aggStats(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title") How you want to Aggregate the stats ?
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        div(class="row justify-content-center" style="margin-bottom: 10px")
+                            div(class="btn-group" role="group" style="margin-bottom: 10px")
+                                button#b1(type="button" class="btn btn-logOut-group" onclick="compare()" style="border-bottom-left-radius:20px; border-top-left-radius:20px") Compare video
+                                button#b2(type="button" class="btn btn-logOut-group" onclick=" delCol()") Unique Agg. Stats 
+                                button#b3(type="button" class="btn btn-logOut-group" onclick=" delCol()" style="border-bottom-right-radius:20px; border-top-right-radius:20px") Students
+                            | Select the videos for wich you want to see the aggregated stats
+                        table#tableStats(class="table  table-hover my-table " style="margin: 0%; ")
+                            thead
+                                tr
+                                    th(colspan=1 scope="col") Title
+                                    th(colspan=2 scope="col")
+                                        i(class="fa fa-folder fa-lg" aria-hidden="true")
+                                        | Folder
+                                    th(colspan=1 scope="col" class="editing")
+                            tbody
+                    div(class="modal-footer")
+                        button#ConfirmStats(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmAggStast()")  Confirm 
+                        button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
         #renameFolder(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
                 div(class="modal-content")
@@ -192,7 +217,7 @@ block content
                             button(class="w-50 btn btn-lg btn-primary " onclick="uploadFolder()") Create
             div(class="row d-flex justify-content-center" style="margin-top: 4vw;")
                 #editBottonsSmall(style="margin-top: 5px; display: none; padding: 5px; background-color: #243d70; border-top-left-radius: 20px; border-top-right-radius: 20px;")
-                    button(class="btn btn-circle  btn-logOut stat" onclick="showAggStats()")
+                    button(class="btn btn-circle  btn-logOut stat" onclick="aggStats()")
                         i(class="fa fa-pie-chart fa-lg" title="move"   aria-hidden="true")
                     button(class="btn btn-circle  btn-logOut move"  style="margin-left: 5px;" onclick="moveVideo()" data-toggle="tooltip"  title="Move the selected videos in another folder")
                         i(class="fa fa-exchange fa-lg" aria-hidden="true")
@@ -210,7 +235,7 @@ block content
                             li#actual(class="list-unstyled" href="#")
                         div(class="d-flex ml-auto")
                             #editButtons(style="display: none;")
-                                button(class="btn btn-circle  btn-logOut stat" onclick="showAggStats()")
+                                button(class="btn btn-circle  btn-logOut stat" onclick="aggStats()")
                                     i(class="fa fa-pie-chart fa-lg" title="move"   aria-hidden="true")
                                 button(class="btn btn-circle  btn-logOut move"  style="margin-left: 5px;" onclick="moveVideo()" data-toggle="tooltip"  title="Move the selected videos in another folder")
                                     i(class="fa fa-exchange fa-lg" aria-hidden="true")

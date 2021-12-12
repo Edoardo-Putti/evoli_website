@@ -4,6 +4,11 @@ window.onload = function() {
 
 const labels = []
 const labels2 = []
+const labelCompar = ['Group 1', 'Group 2']
+const compareUnderstanding = $('#compareUnderstanding');
+const compareAppreciation = $('#compareAppreciation');
+const compareReactions = $('#compareReactions');
+const compareStudents = $('#compareStudents');
 const Chartunderstanding = $('#chartUnderstanding');
 const Chartunderstanding1 = $('#chartUnderstanding1');
 const ChartAppreciation = $('#chartAppreciation');
@@ -85,6 +90,11 @@ function retriveData() {
 
 
                 })
+                var resCompReaction = { l: [], d: [], c: [] }
+                resCompReaction.l.push(res1.l1, res2.l1)
+                resCompReaction.d.push(res1.d1, res2.d1)
+                resCompReaction.c.push(res1.c1, res2.c1)
+                displayReactions(resCompReaction, compareReactions, labelCompar)
                 $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
                 $('#r2').append(' ' + (res2.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res2.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res2.d1 + ', <img src="../images/question.png" height="25px">: ' + res2.c1 + ' )')
 
@@ -141,7 +151,15 @@ function retriveData() {
 
 
                 })
-
+                var resCompStud = { anonim: [], logged: [] }
+                resCompStud.logged.push(logged1, logged2)
+                resCompStud.anonim.push((totStud1 - logged1), (totStud2 - logged2))
+                displayStudents(resCompStud, compareStudents, labelCompar)
+                var resCompSlide = { appreciation: [], understanding: [] }
+                resCompSlide.understanding.push(average(res.understanding.map(Number)).toFixed(2), average(res3.understanding.map(Number)).toFixed(2))
+                resCompSlide.appreciation.push(average(res.appreciation.map(Number)).toFixed(2), average(res3.appreciation.map(Number)).toFixed(2))
+                displayUnderstanding(resCompSlide, compareUnderstanding, labelCompar)
+                displayAppreciation(resCompSlide, compareAppreciation, labelCompar)
                 $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res.appreciation.map(Number)).toFixed(2))
                 $('#u2').append(' ' + average(res3.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res3.appreciation.map(Number)).toFixed(2))
                 $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
@@ -191,10 +209,7 @@ function displayUnderstanding(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Avg Understanding'
-                // },
+
             },
             responsive: true,
             scales: {
@@ -225,10 +240,7 @@ function displayAppreciation(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Avg Appreciations'
-                // },
+
             },
             responsive: true,
             scales: {
@@ -267,10 +279,7 @@ function displayStudents(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Students tha watched the videos'
-                // },
+
             },
             responsive: true,
             scales: {
@@ -320,10 +329,7 @@ function displayReactions(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Student\'s reactions'
-                // },
+
             },
             responsive: true,
             scales: {

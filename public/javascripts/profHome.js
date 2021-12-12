@@ -593,18 +593,23 @@ function selectAll(folder) {
 
         $("#tableStats tbody:nth-child(2) tr").filter(function() {
             if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
-                elements.push($(this))
+                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim()) {
+                    elements.push($(this))
+                }
             }
         });
         $('#whichGroup').modal('show');
     } else {
         $("#tableStats tbody:nth-child(2) tr").filter(function() {
             if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
-                if ($(this).children(".editing").children().prop("checked")) {
-                    $(this).children(".editing").children().prop("checked", false)
-                } else {
-                    $(this).children(".editing").children().prop("checked", true)
+                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim()) {
+                    if ($(this).children(".editing").children().prop("checked")) {
+                        $(this).children(".editing").children().prop("checked", false)
+                    } else {
+                        $(this).children(".editing").children().prop("checked", true)
+                    }
                 }
+
 
             }
         });

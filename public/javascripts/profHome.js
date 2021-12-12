@@ -515,16 +515,42 @@ function aggStats() {
     var tableStats = $('#tableStats > tbody').empty();
 
     videos.forEach((video, i) => {
-        var code = 'a' + video.video_code
-        var newContent = '<tr id="' + code + '"> \
+        $.ajax({
+            url: 'teacher/checkOne',
+            type: 'post',
+            data: {
+                code: video.video_code
+            },
+            success: function(data) {
+                if (data) {
+                    var code = 'a' + video.video_code
+                    var newContent = '<tr id="' + code + '"> \
                     <td colspan=1><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
                     <td colspan=2 class=" hoverEffect" onclick="selectAll(this)" name="' + video.folder + '" data-toggle="tooltip"  title="Click to select/deselect all the video in this folder" ><div class="noteTxt" > ' + video.folder + '</div></td>\
                     <td colspan=1 class="editing" ><input class="check"  type="checkbox" value="' + i + '"></td>\
                   </tr>';
-        tableStats.prepend(newContent);
+                    tableStats.prepend(newContent);
+                } else {
+                    var code = 'a' + video.video_code
+                    var newContent = '<tr id="' + code + '"> \
+                    <td colspan=1><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
+                    <td colspan=2 class=" hoverEffect" onclick="selectAll(this)" name="' + video.folder + '" data-toggle="tooltip"  title="Click to select/deselect all the video in this folder" ><div class="noteTxt" > ' + video.folder + '</div></td>\
+                    <td colspan=1 class="editing" data-toggle="tooltip"  title="This video has no feedback yet"><input class="check"  type="checkbox" value="' + i + '" disabled></td>\
+                  </tr>';
+                    tableStats.prepend(newContent);
+                }
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' })
+            },
+            error: function(data, status) {
+                var errorMessage = JSON.parse(data.responseText).msg;
+                console.log(errorMessage);
+
+            },
+        })
+
     })
     $('#aggStats').modal('show')
-    $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' })
+        // $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' })
 }
 
 
@@ -593,7 +619,7 @@ function selectAll(folder) {
 
         $("#tableStats tbody:nth-child(2) tr").filter(function() {
             if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
-                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim()) {
+                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim() && !$(this).children(".editing").children().attr('disabled')) {
                     elements.push($(this))
                 }
             }
@@ -602,7 +628,7 @@ function selectAll(folder) {
     } else {
         $("#tableStats tbody:nth-child(2) tr").filter(function() {
             if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
-                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim()) {
+                if ($(this).children('.hoverEffect').text().replace(/\s+/g, ' ').trim() === $(folder).attr("name").replace(/\s+/g, ' ').trim() && !$(this).children(".editing").children().attr('disabled')) {
                     if ($(this).children(".editing").children().prop("checked")) {
                         $(this).children(".editing").children().prop("checked", false)
                     } else {

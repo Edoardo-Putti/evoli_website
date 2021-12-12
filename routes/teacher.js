@@ -89,7 +89,7 @@ router.post('/download', teacherController.download);
 
 router.post('/retriveAggStats', teacherController.aggStats);
 
-
+router.post('/checkOne', teacherController.checkOne);
 
 router.get('/logout', teacherController.logOut);
 

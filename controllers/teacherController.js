@@ -621,3 +621,17 @@ exports.aggStats = (req, res) => {
         res.status(500).json({ msg: err })
     })
 }
+
+
+exports.checkOne = (req, res) => {
+    db.Slider.findOne({
+        where: {
+            [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
+        }
+    }).then(data => {
+        res.status(200).send(data)
+    }).catch(err => {
+        res.status(500).json({ msg: err })
+    })
+
+}

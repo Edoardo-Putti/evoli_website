@@ -114,14 +114,17 @@ function retriveData() {
                     }
                 });
             })
-
+            var totStud1 = 0;
+            var logged1 = 0;
             var res = { 'anonim': [], 'logged': [] }
             Object.entries(studentDistribution).forEach(([key, value]) => {
                 res.logged.push(value.logged);
                 res.anonim.push(value.anonim);
+                totStud1 += value.logged + value.anonim;
+                logged1 += value.logged
             })
             displayStudents(res, ChartStudent, labels)
-
+            $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
             $('#loading').hide()
         },
         error: function(data, status) {
@@ -131,10 +134,11 @@ function retriveData() {
 }
 
 function showDetail(e) {
-    console.log($(e).attr('name'))
+    $('#n').empty()
+    $('#r1').empty()
     $('.modal-title').empty().append('Student ' + $(e).attr('name'))
     l = []
-    res = { 'l': [], 'd': [], 'c': [] }
+    res = { 'l': [], 'd': [], 'c': [], total: 0, l1: 0, d1: 0, c1: 0 }
     try {
         chartReaction.destroy()
     } catch (error) {
@@ -147,12 +151,18 @@ function showDetail(e) {
         res.l.push(value.l)
         res.d.push(value.d)
         res.c.push(value.c);
+        res.total += (value.l + value.d + value.c)
+        res.l1 += value.l
+        res.d1 += value.d
+        res.c1 += value.c
         value.comment.forEach((c, i) => {
             $('#tableComment tbody').append('<tr><td colspan=1 scope="col">' + c + ' </td><td colspan=2 scope="col" style="vertical-align: middle;">' + code2tiltle[key] + ' </td></tr>')
         })
 
 
     })
+    $('.modal-title').append(' watched ' + l.length + ' videos');
+    $('#r1').append('The student gave a total of ' + (res.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res.d1 + ', <img src="../images/question.png" height="25px">: ' + res.c1 + ' )')
     displayReactions(res, chartReactions, l)
     $('#aggStats').modal('show')
 }

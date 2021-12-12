@@ -50,14 +50,18 @@ function retriveData() {
 
                     }
                 })
-                var res1 = { 'l': [], 'd': [], 'c': [] }
+                var res1 = { 'l': [], 'd': [], 'c': [], total: 0, l1: 0, d1: 0, c1: 0 }
                 Object.entries(code2reaction).forEach(([key, value]) => {
                     res1.l.push(value.l)
                     res1.d.push(value.d)
                     res1.c.push(value.c);
+                    res1.total += (value.l + value.d + value.c)
+                    res1.l1 += value.l
+                    res1.d1 += value.d
+                    res1.c1 += value.c
 
                 })
-
+                $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
             }
             if (sliders) {
                 sliders.forEach(slider => {
@@ -80,12 +84,16 @@ function retriveData() {
                             code2slider[slider.video_code].anonim++;
                     }
                 })
+                var totStud1 = 0;
+                var logged1 = 0;
                 var res = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
                 Object.entries(code2slider).forEach(([key, value]) => {
                     res.understanding.push(average(value.understanding).toFixed(2))
                     res.appreciation.push(average(value.appreciation).toFixed(2))
                     res.logged.push(value.logged);
                     res.anonim.push(value.anonim)
+                    totStud1 += value.logged + value.anonim;
+                    logged1 += value.logged
                 })
 
             }
@@ -93,7 +101,9 @@ function retriveData() {
                 if (!labels.includes(code2tiltle[key]))
                     labels.push(code2tiltle[key])
             })
-
+            $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2))
+            $('#a1').append(' ' + average(res.appreciation.map(Number)).toFixed(2))
+            $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
             displayUnderstanding(res, Chartunderstanding, labels)
             displayAppreciation(res, ChartAppreciation, labels)
             displayStudents(res)
@@ -123,10 +133,7 @@ function displayUnderstanding(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Avg Understanding'
-                // },
+
             },
             responsive: true,
             scales: {
@@ -157,10 +164,7 @@ function displayAppreciation(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Avg Appreciations'
-                // },
+
             },
             responsive: true,
             scales: {
@@ -199,10 +203,7 @@ function displayStudents(data) {
                 legend: {
                     position: 'top',
                 },
-                title: {
-                    display: true,
-                    text: 'Students tha watched the videos'
-                },
+
             },
             responsive: true,
             scales: {
@@ -216,7 +217,7 @@ function displayStudents(data) {
             }
         }
     };
-    var chart = new Chart(ctx1, config);
+    var chart = new Chart(ctx2, config);
 }
 
 function displayReactions(data) {
@@ -252,10 +253,7 @@ function displayReactions(data) {
                 legend: {
                     position: 'top',
                 },
-                title: {
-                    display: true,
-                    text: 'Student\'s reactions'
-                },
+
             },
             responsive: true,
             scales: {
@@ -269,5 +267,5 @@ function displayReactions(data) {
             }
         }
     };
-    var chart = new Chart(ctx2, config);
+    var chart = new Chart(ctx1, config);
 }

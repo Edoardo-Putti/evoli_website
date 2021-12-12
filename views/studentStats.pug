@@ -40,6 +40,8 @@ block content
                         button(type="button" class="close" data-dismiss="modal") &times;
                     div(class="modal-body " style="margin-bottom: 10px;")
                         div(class="row justify-content-center" style="margin-bottom: 10px")
+                            div(class="col-12 d-flex justify-content-center") 
+                                h4#r1 
                             div(class="col-10")
                                 canvas#chartReactions 
                             div(class="col-10")
@@ -54,10 +56,12 @@ block content
                         button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
             
         div(class="row d-flex justify-content-center")
+            div(class="col-12 col-lg-8 d-flex justify-content-center" style="margin-top:10px")
+                h4#s1 The videos were watched by 
             div(class="col-12 col-lg-8")
                 canvas#chartStudent(height="95%")
             div(class="col-12 col-lg-8")
-                table#tableStats(class="table  table-hover my-table " style="margin: 0%; ")
+                table#tableStats(class="table  table-hover my-table " style="margin: 0%; margin-top:20px")
                     thead
                         tr
                             th(colspan=2 scope="col") Student

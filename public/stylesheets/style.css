@@ -587,7 +587,7 @@ a[href*="#pencil"]::before {
     border-color: #243d70;
 }
 
-.btn-logOut-group:focus {
+.selected {
     color: #243d70;
     background-color: #ffb40d;
     border-color: #243d70;
@@ -1443,6 +1443,20 @@ td .endsession {
     background-color: #dde6ed;
 }
 
+#tableComment {
+    display: block;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+#tableComment tbody tr td {
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; */
+    max-width: 100px;
+    background-color: #dde6ed;
+}
+
 #commentsTable tbody tr td:first-child:hover {
     background-color: #b3d1e9d3;
 }
@@ -1614,6 +1628,16 @@ tr:last-child td:last-child {
     border-width: 8px;
     border-style: solid;
     border-color: transparent #484847 transparent transparent;
+}
+
+.stat {
+    position: absolute;
+    border-radius: 30px;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    margin-right: 0px;
 }
 
 .stats {

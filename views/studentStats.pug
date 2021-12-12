@@ -1,0 +1,76 @@
+extends layout 
+
+block content 
+    body(class="feedback")
+        header
+            nav(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-md p-2 px-md-4 ")
+                div(class="row")
+                    a(class="navbar-brand d-md-none d-block my-0 mr-md-auto" href="index.html" style="margin-left: 10px;")
+                        img(src="/images/logo_polimi_mobile.png" alt="Polimi Logo" height="60px")
+                div(style="color: whitesmoke; text-align: center; font-size:calc(10px + .8vw); margin-left: 2vw;")
+                    p#teachersName(style="color: whitesmoke; text-align: center; font-size: calc(10px + .8vw); margin: auto;")
+                        i(class="fa fa-user")
+                        | Logged in as: 
+                        != name
+                button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                    span(class="navbar-toggler-icon")
+                #Navbar(class="collapse navbar-collapse justify-content-stretch")
+                    ul(class="navbar-nav ml-auto principal")
+                        li(class="nav-item ")
+                            a(class="nav-link" href="/")
+                                span(class="fa fa-home fa-lg")
+                                | Home
+                        li(class="nav-item")
+                            a(class="nav-link" href="/teacher")
+                                span
+                                    img#teachersLogo(src="../images/chalkboard.png" height="30px" width="30px")
+                                | My videos
+                        li(class="nav-item active")
+                            a(class="nav-link")
+                                span(class="fa fa-bar-chart fa-lg")
+                                | Statistics
+                    a(role="button" class="btn  btn-logOut  rounded-pill" href='../teacher/logout')
+                        | Log
+                        | Out
+        #aggStats(class="modal fade bd-example-modal-lg")
+            div(class="modal-dialog modal-dialog-centered modal-lg")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title") 
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        div(class="row justify-content-center" style="margin-bottom: 10px")
+                            div(class="col-10")
+                                canvas#chartReactions 
+                            div(class="col-10")
+                                table#tableComment(class="table  table-hover my-table " style="margin: 0%; ")
+                                    thead
+                                        tr
+                                            th(colspan=1 scope="col") Comment
+                                            th(colspan=2 scope="col") Video   
+                                    tbody   
+                    div(class="modal-footer")
+                        button(class="btn btn-logOut " style="margin-right: 20px;" onclick="")  Confirm 
+                        button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
+            
+        div(class="row d-flex justify-content-center")
+            div(class="col-12 col-lg-8")
+                canvas#chartStudent(height="95%")
+            div(class="col-12 col-lg-8")
+                table#tableStats(class="table  table-hover my-table " style="margin: 0%; ")
+                    thead
+                        tr
+                            th(colspan=2 scope="col") Student
+                           
+                             
+                    tbody
+                        
+        #loading
+            img(src="../images/Ellipsis.gif" alt="loading")
+    script(src="../javascripts/studentStats.js") 
+    script(src="../javascripts/node_modules/patternomaly/dist/patternomaly.js") 
+    script(src="../javascripts/node_modules/html2canvas/dist/html2canvas.js")
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")  
+    script(src="https://cdn.jsdelivr.net/npm/chart.js")
+    script(src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8")
+    script(src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next")

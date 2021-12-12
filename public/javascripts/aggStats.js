@@ -3,7 +3,8 @@ window.onload = function() {
 }
 
 const labels = []
-const ctx = $('#chartAssesment');
+const Chartunderstanding = $('#chartUnderstanding');
+const ChartAppreciation = $('#chartAppreciation');
 const ctx1 = $('#chartReactions');
 const ctx2 = $('#chartStudents');
 var code2tiltle = {}
@@ -93,7 +94,8 @@ function retriveData() {
                     labels.push(code2tiltle[key])
             })
 
-            displayAssessment(res)
+            displayUnderstanding(res, Chartunderstanding, labels)
+            displayAppreciation(res, ChartAppreciation, labels)
             displayStudents(res)
             displayReactions(res1)
             $('#loading').hide()
@@ -104,35 +106,61 @@ function retriveData() {
     });
 }
 
-function displayAssessment(data) {
+function displayUnderstanding(data, ctx, labels) {
     const config = {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                    label: 'Average Understanding',
-                    data: data.understanding,
-                    borderColor: '#0072B2',
-                    backgroundColor: pattern.draw('dash', 'rgba(0, 114, 178, 0.9)'),
-                },
-                {
-                    label: 'Average Appreciation',
-                    data: data.appreciation,
-                    borderColor: '#D55E00',
-                    backgroundColor: pattern.draw('weave', 'rgba(213, 94, 0, 0.9)'),
-
-                }
-            ]
+                label: 'Average Understanding',
+                data: data.understanding,
+                borderColor: '#0072B2',
+                backgroundColor: pattern.draw('dash', 'rgba(0, 114, 178, 0.9)'),
+            }]
         },
         options: {
             plugins: {
                 legend: {
                     position: 'top',
                 },
-                title: {
-                    display: true,
-                    text: 'Overall Assessment'
+                // title: {
+                //     display: true,
+                //     text: 'Avg Understanding'
+                // },
+            },
+            responsive: true,
+            scales: {
+                y: {
+                    max: 100
+                }
+            }
+        }
+    };
+    var chart = new Chart(ctx, config);
+}
+
+function displayAppreciation(data, ctx, labels) {
+    const config = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Appreciation',
+                data: data.appreciation,
+                borderColor: '#D55E00',
+                backgroundColor: pattern.draw('weave', 'rgba(213, 94, 0, 0.9)'),
+
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'top',
                 },
+                // title: {
+                //     display: true,
+                //     text: 'Avg Appreciations'
+                // },
             },
             responsive: true,
             scales: {

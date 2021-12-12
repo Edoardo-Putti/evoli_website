@@ -518,19 +518,21 @@ function aggStats() {
         var code = 'a' + video.video_code
         var newContent = '<tr id="' + code + '"> \
                     <td colspan=1><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
-                    <td colspan=2 class=" hoverEffect" onclick="changeCurrentPath(' + name2id[video.folder] + ')" ><div class="noteTxt" > ' + video.folder + '</div></td>\
-                    <td colspan=1 class="editing" ><input  type="checkbox" value="' + i + '"></td>\
+                    <td colspan=2 class=" hoverEffect" onclick="selectAll(this)" name="' + video.folder + '" data-toggle="tooltip"  title="Click to select/deselect all the video in this folder" ><div class="noteTxt" > ' + video.folder + '</div></td>\
+                    <td colspan=1 class="editing" ><input class="check"  type="checkbox" value="' + i + '"></td>\
                   </tr>';
         tableStats.prepend(newContent);
     })
     $('#aggStats').modal('show')
+    $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover', placement: 'auto' })
 }
+
 
 function compare() {
     var tableStats = $('#tableStats > tbody tr')
     if ($('#tableStats > thead th').length < 4) {
-
-        $('#tableStats > thead tr').append('<th class="editing" ></th>')
+        $('#tableStats > thead tr th').last().append('G.1')
+        $('#tableStats > thead tr').append('<th class="editing" >G.2</th>')
 
         tableStats.append('<td class="editing second" ><input  type="checkbox" ></td>');
     } else {
@@ -540,28 +542,99 @@ function compare() {
 
 }
 
+$('#aggStats').on('hidden.bs.modal', function(event) {
+    $('#ConfirmStats').attr('value', 'b2');
+    $('#b2').addClass("selected")
+    $('#b1').removeClass("selected")
+    $('#b3').removeClass("selected")
+    if ($('#tableStats > thead th').length >= 4) {
+        $('#tableStats > thead tr').children().last().remove()
+        $('#tableStats > thead tr').children().last().empty()
+        $('#tableStats > tbody .second').remove()
+    }
+})
+
 $('#b1').on('click', () => {
     $('#ConfirmStats').attr('value', 'b1');
+    $('#b1').addClass("selected")
+    $('#b2').removeClass("selected")
+    $('#b3').removeClass("selected")
 })
 
 $('#b2').on('click', () => {
     $('#ConfirmStats').attr('value', 'b2');
+    $('#b2').addClass("selected")
+    $('#b1').removeClass("selected")
+    $('#b3').removeClass("selected")
 })
 
 $('#b3').on('click', () => {
     $('#ConfirmStats').attr('value', 'b3');
+    $('#b3').addClass("selected")
+    $('#b2').removeClass("selected")
+    $('#b1').removeClass("selected")
 })
 
 function delCol() {
     var tableStats = $('#tableStats > tbody tr')
     if ($('#tableStats > thead th').length >= 4) {
         $('#tableStats > thead tr').children().last().remove()
+        $('#tableStats > thead tr').children().last().empty()
         $('#tableStats > tbody .second').remove()
     }
 
 }
 
-// 
+var elem = '<div class="row justify-content-center "><div class="col-12 d-flex justify-content-center"><p class="btn btn-logOut pop" >Group 1</p><p class="btn btn-logOut pop" > Group 2</p></div></div>'
+var elements = []
+
+function selectAll(folder) {
+    if ($('#ConfirmStats').attr('value') == 'b1') {
+
+        $("#tableStats tbody:nth-child(2) tr").filter(function() {
+            if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
+                elements.push($(this))
+            }
+        });
+        $('#whichGroup').modal('show');
+    } else {
+        $("#tableStats tbody:nth-child(2) tr").filter(function() {
+            if ($(this).children('.hoverEffect').text().toLowerCase().indexOf($(folder).attr("name")) > -1) {
+                if ($(this).children(".editing").children().prop("checked")) {
+                    $(this).children(".editing").children().prop("checked", false)
+                } else {
+                    $(this).children(".editing").children().prop("checked", true)
+                }
+
+            }
+        });
+    }
+}
+
+function group(val) {
+    if ($(val).attr('name') == 1) {
+        elements.forEach((elem) => {
+            if ($(elem).children(".editing").children().first().prop("checked")) {
+                $(elem).children(".editing").children().first().prop("checked", false)
+            } else {
+                $(elem).children(".editing").children().first().prop("checked", true)
+            }
+
+        })
+    } else {
+        elements.forEach((elem) => {
+            if ($(elem).children(".editing").children().last().prop("checked")) {
+                $(elem).children(".editing").children().last().prop("checked", false)
+            } else {
+                $(elem).children(".editing").children().last().prop("checked", true)
+            }
+
+        })
+    }
+    $('#whichGroup').modal('hide');
+    elements = []
+}
+
 function confirmAggStast() {
     if ($("#tableStats input:checkbox:checked").length != 0) {
         if ($('#ConfirmStats').attr('value') == 'b1') {
@@ -829,6 +902,33 @@ function edit() {
         }
     }
 }
+
+
+
+
+$("#searchstats").on("keyup", function(e) {
+    var value = $(this).val().toLowerCase();
+    $("#tableStats tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    if (e.key == 'Enter') {
+        $("#searchstats").val('');
+        var value = "";
+        $("#tableStats tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        return false;
+    }
+});
+
+$('#searchstats').on("search", function(e) {
+    var value = $(this).val().toLowerCase();
+    $("#tableStats tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    return false;
+
+});
 
 var searching = false
 

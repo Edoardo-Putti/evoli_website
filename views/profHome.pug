@@ -93,9 +93,12 @@ block content
                         div(class="row justify-content-center" style="margin-bottom: 10px")
                             div(class="btn-group" role="group" style="margin-bottom: 10px")
                                 button#b1(type="button" class="btn btn-logOut-group" onclick="compare()" style="border-bottom-left-radius:20px; border-top-left-radius:20px") Compare video
-                                button#b2(type="button" class="btn btn-logOut-group" onclick=" delCol()") Unique Agg. Stats 
+                                button#b2(type="button" class="btn btn-logOut-group selected" onclick=" delCol()") Unique Agg. Stats 
                                 button#b3(type="button" class="btn btn-logOut-group" onclick=" delCol()" style="border-bottom-right-radius:20px; border-top-right-radius:20px") Students
                             | Select the videos for wich you want to see the aggregated stats
+                        div(class="form-inline mt-2 mt-md-0")
+                            input#searchstats(class="form-control mt-2 mt-md-0" type="search" placeholder="Search" aria-label="Search" style="margin-bottom:5px; width: 60%; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px;"  )
+                            //- button(class="btn btn-logOut " style="margin-right:auto; border-bottom-right-radius: 20px; border-top-right-radius: 20px;") Search
                         table#tableStats(class="table  table-hover my-table " style="margin: 0%; ")
                             thead
                                 tr
@@ -106,7 +109,7 @@ block content
                                     th(colspan=1 scope="col" class="editing")
                             tbody
                     div(class="modal-footer")
-                        button#ConfirmStats(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmAggStast()")  Confirm 
+                        button#ConfirmStats(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmAggStast()" value="b2")  Confirm 
                         button(type="button" class="btn btn-secondary " data-dismiss="modal") Close
         #renameFolder(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
@@ -148,6 +151,16 @@ block content
                     div(class="modal-footer")
                         button#confirmModNote(class="btn btn-logOut" style="margin-right: 20px;" onclick="editNote()")  Confirm 
                         button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        #whichGroup(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") In which group you whant to put the videos?
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body d-flex justify-content-around" style="margin-bottom: 10px;")
+                        button(class="btn btn-logOut" onclick="group(this)" name="1") Group 1
+                        button(class="btn btn-logOut" onclick="group(this)" name="2") Group 2
+                    
         #SeeNote(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
                 div(class="modal-content")
@@ -235,8 +248,7 @@ block content
                             li#actual(class="list-unstyled" href="#")
                         div(class="d-flex ml-auto")
                             #editButtons(style="display: none;")
-                                button(class="btn btn-circle  btn-logOut stat" onclick="aggStats()")
-                                    i(class="fa fa-pie-chart fa-lg" title="move"   aria-hidden="true")
+                                
                                 button(class="btn btn-circle  btn-logOut move"  style="margin-left: 5px;" onclick="moveVideo()" data-toggle="tooltip"  title="Move the selected videos in another folder")
                                     i(class="fa fa-exchange fa-lg" aria-hidden="true")
                                 button(class="btn btn-circle btn-logOut delete" style="margin-left: 5px;" onclick="deleteVideo()" data-toggle="tooltip"  title="Delete the selected videos and all their reactions")
@@ -280,4 +292,6 @@ block content
                                         i(class="fa fa-folder fa-lg" aria-hidden="true")
                                         | Folder
                             tbody
+        button(class="btn btn-circle btn-logOut stat" onclick="aggStats()")
+            i(class="fa fa-pie-chart fa-lg" title="move"   aria-hidden="true")
     script(src="javascripts/profHome.js") 

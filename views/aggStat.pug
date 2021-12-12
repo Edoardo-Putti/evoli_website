@@ -30,17 +30,21 @@ block content
                     | Log
                     | Out
         div(class="row d-flex justify-content-center")
-            div(class="col-6")
+            div(class="col-12 col-lg-6 ")
                 div(class="row d-flex justify-content-center")
-                    div(class="col-8")
-                        canvas#chartAssesment
+                    div(class="col-10 align-self-center")
+                        canvas#chartUnderstanding
                 div(class="row d-flex justify-content-center" )
-                    div(class="col-8")
+                    div(class="col-10 align-self-center")
                         canvas#chartReactions
+                
+            div(class="col-12 col-lg-6")
+                div(class="row d-flex justify-content-center")
+                    div(class="col-10 align-self-center")
+                        canvas#chartAppreciation
                 div(class="row d-flex justify-content-center" )
-                    div(class="col-8")
+                    div(class="col-10 align-self-center")
                         canvas#chartStudents
-            div(class="col-6")
         #loading
             img(src="../images/Ellipsis.gif" alt="loading")
     script(src="../javascripts/aggStats.js") 

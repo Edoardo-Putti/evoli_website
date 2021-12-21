@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         sequelize,
-        tableName: 'Video',
+        tableName: 'video',
         timestamps: false,
         indexes: [{
                 name: "PRIMARY",

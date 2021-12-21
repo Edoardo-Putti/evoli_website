@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         sequelize,
-        tableName: 'Student',
+        tableName: 'student',
         timestamps: false,
         indexes: [{
             name: "PRIMARY",

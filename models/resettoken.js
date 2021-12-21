@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         used: DataTypes.INTEGER
     }, {
         sequelize,
-        modelName: 'ResetToken',
+        tableName: 'resettokens',
     });
     return ResetToken;
 };

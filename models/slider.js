@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         sequelize,
-        tableName: 'Slider',
+        tableName: 'slider',
         timestamps: false,
         indexes: [{
                 name: "PRIMARY",

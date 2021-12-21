@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         sequelize,
-        tableName: 'Folder',
+        tableName: 'folder',
         timestamps: false,
         indexes: [{
                 name: "PRIMARY",

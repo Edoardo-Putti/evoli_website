@@ -345,13 +345,14 @@ exports.moveVideo = (req, res) => {
 }
 
 exports.removeFeedback = (req, res) => {
+    var codes = JSON.parse(req.body.codes)
     async.parallel({
         videos: function(callback) {
             var res = []
-            codes.forEach((codes, index) => {
+            codes.forEach((elem, index) => {
                 db.Video.update({ new: 0 }, {
                     where: {
-                        [Op.and]: [{ video_code: codes[index] }, { uid: req.session.teacherId }]
+                        [Op.and]: [{ video_code: elem }, { uid: req.session.teacherId }]
                     }
                 }).then(data => {
                     res.push(data)

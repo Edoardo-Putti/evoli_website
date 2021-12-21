@@ -133,7 +133,10 @@ function retriveData() {
     });
 }
 
+var actual;
+
 function showDetail(e) {
+    actual = e;
     $('#n').empty()
     $('#r1').empty()
     $('.modal-title').empty().append('Student ' + $(e).attr('name'))
@@ -158,13 +161,44 @@ function showDetail(e) {
         value.comment.forEach((c, i) => {
             $('#tableComment tbody').append('<tr><td colspan=1 scope="col">' + c + ' </td><td colspan=2 scope="col" style="vertical-align: middle;">' + code2tiltle[key] + ' </td></tr>')
         })
-
-
     })
+    if ($('#tableComment tbody').children().length == 0) {
+        $('#tableComment').hide()
+    } else {
+        $('#tableComment').show()
+    }
     $('.modal-title').append(' watched ' + l.length + ' videos');
     $('#r1').append('The student gave a total of ' + (res.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res.d1 + ', <img src="../images/question.png" height="25px">: ' + res.c1 + ' )')
     displayReactions(res, chartReactions, l)
     $('#aggStats').modal('show')
+}
+
+function nextStud() {
+    if ($(actual).next().attr('name')) {
+        showDetail($(actual).next())
+    } else {
+        $('#next').popover({
+            placement: "auto",
+            content: 'There are no next student'
+        }).popover('show')
+        setTimeout(function() {
+            $('#next').popover('hide')
+        }, 2000);
+    }
+}
+
+function prevStud() {
+    if ($(actual).prev().attr('name')) {
+        showDetail($(actual).prev())
+    } else {
+        $('#prev').popover({
+            placement: "auto",
+            content: 'There are no previous student'
+        }).popover('show')
+        setTimeout(function() {
+            $('#prev').popover('hide')
+        }, 2000);
+    }
 }
 
 function displayStudents(data, ctx, labels) {

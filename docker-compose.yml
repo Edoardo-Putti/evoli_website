@@ -1,6 +1,6 @@
+version: "2"
 services:
   evolidb:
-    #image: mariadb
     restart: always
     env_file: ./.env
     container_name: evolidb

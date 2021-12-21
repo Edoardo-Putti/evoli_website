@@ -467,10 +467,10 @@ function confirmDeleteVideo() {
             codes: JSON.stringify(codes)
         },
         success: function(data) {
-            videos.forEach(video => {
+            videos.forEach((video, index) => {
                 var y = codes.indexOf(video.video_code)
                 if (y != -1)
-                    videos.splice(y, 1);
+                    videos.splice(index, 1);
             })
             displayVideos(videos)
             $('#cancel').modal('hide');

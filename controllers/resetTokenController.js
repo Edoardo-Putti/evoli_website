@@ -7,13 +7,8 @@ const nodemailer = require('nodemailer');
 const { body, validationResult } = require('express-validator');
 
 const transport = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'evoli.polimi@gmail.com',
-        pass: 'Evoli-poli1'
-    }
+    host: 'smtp.polimi.it',
+    port: 25,
 });
 
 exports.create = [
@@ -32,12 +27,12 @@ exports.create = [
                         const token = {
                             email: req.body.email,
                             expiration: expireDate,
-                            token: crypto.randomBytes(64).toString('base64'),
+                            token: crypto.randomBytes(64).toString('base64').replace('+', 'K'),
                             used: 0
                         }
                         db.ResetToken.create(token).then(data => {
                             const message = {
-                                from: 'evoli.polimi@gmail.com',
+                                from: 'evoli-noreply@polimi.it',
                                 to: req.body.email,
                                 replyTo: 'noreply',
                                 subject: 'Reset password',
@@ -71,7 +66,7 @@ exports.create = [
                         }
                         db.ResetToken.create(token).then(data => {
                             const message = {
-                                from: 'evoli.polimi@gmail.com',
+                                from: 'evoli-noreply@polimi.it',
                                 to: req.body.email,
                                 replyTo: 'noreply',
                                 subject: 'Reset password',

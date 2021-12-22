@@ -101,16 +101,11 @@ router.post('/reset-password', async function(req, res, next) {
                         }
                     })
 
-                },
-                function(err, result) {
-                    if (err) {
-                        err.status = 404;
-                        return next(err);
-                    } else {
-                        res.json({ status: 'ok', message: 'Password reset. Please login with your new password.' });
-                    }
-
                 }
+            }).then(results => {
+                res.json({ status: 'ok', message: 'Password changed. Please login with your new password.' });
+            }).catch(err => {
+                res.json({ status: 'error', message: err })
             })
         } else {
             return res.json({ status: 'error', message: 'Token not found or already used Please try the reset password process again.' });

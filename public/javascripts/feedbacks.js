@@ -257,7 +257,30 @@ $('#seeFullFeadback').modal({
     show: false
 })
 
-
+if ($(window).width() < 850) {
+    $('#seeFullFeadback').css({
+        top: window.screen.height / 3,
+        left: window.screen.width / 4,
+    })
+} else {
+    $('#seeFullFeadback').css({
+        top: window.screen.height / 3,
+        left: window.screen.width / 1.8,
+    })
+}
+$(window).resize(() => {
+    if ($(window).width() < 850) {
+        $('#seeFullFeadback').css({
+            top: window.screen.height / 3,
+            left: window.screen.width / 4,
+        })
+    } else {
+        $('#seeFullFeadback').css({
+            top: window.screen.height / 3,
+            left: window.screen.width / 1.8,
+        })
+    }
+})
 
 function createConfig(l, d, c, duration) {
     segmentsLength = Math.ceil(duration / numSegments);

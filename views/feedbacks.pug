@@ -108,7 +108,24 @@ block content
                                 h3(style="margin-bottom:0px;") Minute
                     tbody
             
-                
+            #chRow(class="col-12" style="overflow-x: auto; margin-top: 10px; margin-bottom: 10px; ")
+                #chapters(class='row d-flex justify-content-center' )
+            div(class="col-12 d-flex justify-content-center")
+                h3(id="intError")
+            div(class="interval" style="white-space: nowrap;") Focus on the interval from 
+                input#sh(type="text"  placeholder="HH") 
+                |:
+                input#sm(type="text"  placeholder="MM") 
+                |:
+                input#ss(type="text"  placeholder="SS") 
+                | to 
+                input#endh(type="text"  placeholder="HH") 
+                |:
+                input#endm(type="text"  placeholder="MM") 
+                |:
+                input#ends(type="text"  placeholder="SS") 
+                text#seconds 
+                btn(class="btn btn-md endsession" onclick="customFocus()") GO
             #chartRow(class="col-12 col-lg-10")
                 #legend(style="background: rgba(161, 158, 158, 0.555); padding-right: 10px")
                 canvas#chart(height="95%")

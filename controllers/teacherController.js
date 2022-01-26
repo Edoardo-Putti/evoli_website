@@ -130,7 +130,7 @@ exports.retriveData = (req, res) => {
 
         },
         videos: function(callback) {
-            db.Video.findAll({ attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new'], where: { uid: req.session.teacherId } }).then(data => {
+            db.Video.findAll({ attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new', 'chapters'], where: { uid: req.session.teacherId } }).then(data => {
                 callback(null, data);
             })
 
@@ -156,6 +156,7 @@ exports.newVideo = (req, res) => {
         folder: req.body.folder,
         url: req.body.id,
         uid: req.session.teacherId,
+        chapters: req.body.chapters,
         video_code: crypto.randomBytes(4).toString('base64').slice(0, -2),
         comment: req.body.comment
     }
@@ -460,7 +461,7 @@ exports.retriveFeedbacks = (req, res) => {
     async.parallel({
         video: function(callback) {
             db.Video.findOne({
-                attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new'],
+                attributes: ['title', 'duration', 'folder', 'url', 'video_code', 'comment', 'new', 'chapters'],
                 where: {
                     [Op.and]: [{ video_code: req.session.code }, { uid: req.session.teacherId }]
                 }

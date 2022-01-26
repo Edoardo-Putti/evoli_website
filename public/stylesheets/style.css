@@ -1800,3 +1800,11 @@ input:checked+.slider:before {
     width: fit-content;
     height: fit-content;
 }
+
+.interval input {
+    width: 35px;
+    background: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    text-align: center;
+}

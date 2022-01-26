@@ -7,10 +7,13 @@ window.onload = function() {
 }
 
 
-
+var chapters
 var url;
 var player;
 var video;
+var end;
+var focus = false;
+var start;
 var zoomAtTheMoment = 1;
 var numSegments = 24;
 var feedBackInThatSegment = [];
@@ -55,12 +58,41 @@ function retriveData() {
             $("#classTitle").append(video.title)
             url = video.url
             duration = video.duration
+            if (video.chapters) {
+                chapters = JSON.parse(video.chapters)
+                var n = 1
+                if (Object.keys(chapters).length > 10) {
+                    n = 2
+                }
+                if (Object.keys(chapters).length > 15) {
+                    n = 2.5
+                }
+                if (Object.keys(chapters).length > 20) {
+                    n = 3.5
+                }
+                if (Object.keys(chapters).length > 25) {
+                    n = 4
+                }
+
+                $('#chapters').css({ width: window.screen.width * n })
+                $('#chRow').css({ width: window.screen.width })
+
+            }
+
             YTplayerMaker()
             var avgApp = 0;
             var avgUnd = 0;
             var logged = 0;
 
+            if (chapters) {
+                for (key in chapters) {
+                    var ch = '<div class="btn btn-md endsession" style="white-space: nowrap; margin-bottom: 5px" onclick="goToChapter(' + key + ')">' + chapters[key] + ' ' + secondsToMinutes(key) + '</div>';
+                    $('#chapters').append(ch);
 
+                }
+            }
+
+            $('#seconds').append(' (Max ' + secondsToMinutes(duration) + ')');
             if (sliders) {
                 sliders.forEach((slider, index) => {
                     avgApp += slider.appreciation;
@@ -197,6 +229,207 @@ function goToSecond(second) {
     }
 }
 
+function goToChapter(second) {
+    player.seekTo(second);
+    var keys = Object.keys(chapters);
+    var nextIndex = keys.indexOf(String(second)) + 1;
+    start = second
+    if (keys[nextIndex]) {
+
+        end = Number(keys[nextIndex]);
+    } else {
+        console.log('duration', duration)
+        end = duration;
+    }
+
+
+    focus = true;
+    chart.destroy();
+    focusOnChapter(l, d, c, second, end)
+}
+
+
+
+function customFocus() {
+    start = Number($('#sh').val()) * 3600 + Number($('#sm').val()) * 60 + Number($('#ss').val())
+    end = Number($('#endh').val()) * 3600 + Number($('#endm').val()) * 60 + Number($('#ends').val())
+    if (!Number.isInteger($('#sh').val()) || !Number.isInteger($('#sm').val()) || !Number.isInteger($('#ss').val()) || !Number.isInteger($('#endh').val()) || !Number.isInteger($('#endm').val()) || !Number.isInteger($('#ends').val())) {
+        $('#intError').empty()
+        $('#intError').text('Input must be a number ')
+        $('#sh').val('')
+        $('#sm').val('')
+        $('#ss').val('')
+        $('#endh').val('')
+        $('#endm').val('')
+        $('#ends').val('')
+    } else {
+        if ($('#sh').val() < 0 || $('#sh').val() > 24 || $('#sm').val() < 0 || $('#sm').val() > 60 || $('#ss').val() < 0 || $('#ss').val() > 60 || $('#endh').val() < 0 || $('#endh').val() > 24 || $('#endm').val() < 0 || $('#endm').val() > 60 || $('#ends').val() < 0 || $('#ends').val() > 60) {
+            $('#intError').empty()
+            $('#intError').text('Input out of bound (0<=HH<=24, 0<=MM<=60, 0<=SS<=60 ')
+            $('#sh').val('')
+            $('#sm').val('')
+            $('#ss').val('')
+            $('#endh').val('')
+            $('#endm').val('')
+            $('#ends').val('')
+        } else {
+            if (start < end) {
+                if (end > duration) {
+                    $('#intError').empty()
+                    $('#intError').text('The ending point should be less or equal then the video duration')
+                    $('#sh').val('')
+                    $('#sm').val('')
+                    $('#ss').val('')
+                    $('#endh').val('')
+                    $('#endm').val('')
+                    $('#ends').val('')
+                } else {
+                    focus = true;
+                    chart.destroy();
+                    $('#sh').val('')
+                    $('#sm').val('')
+                    $('#ss').val('')
+                    $('#endh').val('')
+                    $('#endm').val('')
+                    $('#ends').val('')
+                    focusOnChapter(l, d, c, start, end)
+                }
+            } else {
+                $('#intError').empty()
+                $('#intError').text('The starting point should be less then the ending point')
+                $('#sh').val('')
+                $('#sm').val('')
+                $('#ss').val('')
+                $('#endh').val('')
+                $('#endm').val('')
+                $('#ends').val('')
+            }
+        }
+    }
+}
+
+function focusOnChapter(l, d, c, start, end) {
+    var l = l.filter(time => time >= start && time < end);
+    var d = d.filter(time => time >= start && time < end);
+    var c = c.filter(time => time >= start && time < end);
+    var ctx = document.getElementById('chart').getContext('2d');
+    var labels = [];
+    var duration = end - start;
+    segmentsLength = Math.ceil(duration / numSegments);
+    feedBackInThatSegment = []
+    for (var i = start; i < end; i = i + segmentsLength) {
+        feedBackInThatSegment.push(secondsToMinutes(i));
+        var med = Math.round((i + i + segmentsLength) / 2)
+        labels.push(secondsToMinutes(med));
+    }
+    labels.push('zoom');
+    var likesMap = fillMap(l, start, end);
+    var dislikesMap = fillMap(d, start, end);
+    var commentsMap = fillMap(c, start, end);
+    var maxValue = getMaxYValue(likesMap, dislikesMap, commentsMap);
+    likesMap.push({
+        x: end + 100,
+        y: 0,
+        t: ['zoom']
+    })
+    const config = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: '\uf118',
+                    data: likesMap,
+                    fill: false,
+                    borderColor: '#253D70',
+                    backgroundColor: pattern.draw('zigzag', 'rgba(37, 61, 112, 0.9)'),
+                    stack: 'Stack 0',
+
+                },
+                {
+                    label: '\uf119',
+                    data: dislikesMap,
+                    borderColor: '#F1B467',
+                    backgroundColor: pattern.draw('disc', 'rgba(241, 179, 103, 0.9)'),
+                    stack: 'Stack 0',
+                },
+                {
+                    label: '\uf128',
+                    data: commentsMap,
+                    borderColor: '#f01166',
+                    backgroundColor: pattern.draw('diamond', 'rgba(240, 15, 101, 0.75)'),
+                    stack: 'Stack 0',
+                },
+            ],
+        },
+
+        options: {
+            plugins: {
+                htmlLegend: {
+                    // ID of the container to put the legend in
+                    containerID: 'legend',
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    enabled: false,
+                    position: 'nearest',
+                    external: externalTooltipHandler
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+
+                    },
+
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+
+                    stacked: true,
+                    min: 0,
+                    max: 24,
+
+                },
+                y: {
+                    suggestedMax: maxValue + 2,
+                    beginAtZero: true
+                }
+            },
+            interaction: {
+                mode: 'point'
+            },
+            onClick: function(e) {
+                var activePoint = chart.getElementsAtEventForMode(e, 'point', { intersect: true }, false);
+                if (activePoint.length > 0) {
+                    var point = activePoint[0].index;
+                    var label = chart.data.datasets[0].data[point];
+                    var sec = label[Object.keys(label)[0]]
+                    goToSecond(sec);
+                }
+            }
+
+        },
+        plugins: [htmlLegendPlugin],
+    };
+    chart = new Chart(ctx, config);
+}
+
+
 function addText(key) {
     $("#fedbackBox").attr('name', key);
     $('#timeFeed button').remove();
@@ -291,9 +524,9 @@ function createConfig(l, d, c, duration) {
         Xlabels.push(secondsToMinutes(med));
     }
     Xlabels.push('zoom');
-    var likesMap = fillMap(l, duration);
-    var dislikesMap = fillMap(d, duration);
-    var commentsMap = fillMap(c, duration);
+    var likesMap = fillMap(l, 0, duration);
+    var dislikesMap = fillMap(d, 0, duration);
+    var commentsMap = fillMap(c, 0, duration);
     var maxValue = getMaxYValue(likesMap, dislikesMap, commentsMap);
     likesMap.push({
         x: duration + 100,
@@ -675,7 +908,7 @@ function secondsToMinutes(s) {
     }
 }
 
-function fillMap(array, duration) {
+function fillMap(array, start, duration) {
     var map = {};
     var time = {}
     var len = array.length
@@ -683,7 +916,7 @@ function fillMap(array, duration) {
         len = 1;
     }
     for (var i = 0; i < len; i++) {
-        for (var j = 0; j < duration; j += segmentsLength) {
+        for (var j = start; j < duration; j += segmentsLength) {
             if (!map[j]) {
                 map[j] = 0;
                 time[j] = [];
@@ -697,7 +930,7 @@ function fillMap(array, duration) {
     }
 
     var point_data = [];
-    for (var j = 0; j < duration; j += segmentsLength) {
+    for (var j = start; j < duration; j += segmentsLength) {
         point_data.push({
             x: j,
             y: map[j],
@@ -731,6 +964,7 @@ function returnFirstChart() {
     zoomAtTheMoment = 1;
     numSegments = 24;
     chart.destroy();
+    focus = false;
     generateChart(l, d, c, duration);
 }
 
@@ -745,7 +979,12 @@ function zoomInChart() {
         numSegments *= 2;
         zoomAtTheMoment++;
         chart.destroy();
-        generateChart(l, d, c, duration);
+        if (focus) {
+            focusOnChapter(l, d, c, start, end)
+        } else {
+            generateChart(l, d, c, duration);
+        }
+
         var chartPos = $("#chart").position();
         $('#chartRow').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
         $('.cirigth').css({ top: chartPos.top, rigth: '3.5vw', width: '85%', height: '85%' })
@@ -779,7 +1018,11 @@ function zoomOutChart() {
         numSegments /= 2;
         zoomAtTheMoment--;
         chart.destroy();
-        generateChart(l, d, c, duration);
+        if (focus) {
+            focusOnChapter(l, d, c, start, end)
+        } else {
+            generateChart(l, d, c, duration);
+        }
         var chartPos = $("#chart").position();
         $('#chartRow').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
         $('.cirigth').css({ top: chartPos.top, rigth: '3.5vw', width: '85%', height: '85%' })
@@ -802,6 +1045,8 @@ function zoomOutChart() {
 
 
 
+
+
 $(document).ready(() => {
     if ($(window).width() < 1200) {
         $('#content').css({ width: '1200px' })
@@ -815,8 +1060,42 @@ $(window).resize(() => {
     if ($(window).width() < 1200) {
         $('#content').css({ width: '1200px' })
         $('#wrap').css({ width: '1900px' })
+        var n = 1.25
+        if (Object.keys(chapters).length > 10) {
+            n = 2
+        }
+        if (Object.keys(chapters).length > 15) {
+            n = 2.5
+        }
+        if (Object.keys(chapters).length > 20) {
+            n = 3.5
+        }
+        if (Object.keys(chapters).length > 25) {
+            n = 4
+        }
+
+        $('#chapters').css({ width: window.screen.width * n })
+        $('#chRow').css({ width: window.screen.width })
+
     } else {
         $('#content').css({ width: 'auto' })
+        var n = 1
+        if (Object.keys(chapters).length > 10) {
+            n = 2
+        }
+        if (Object.keys(chapters).length > 15) {
+            n = 2.5
+        }
+        if (Object.keys(chapters).length > 20) {
+            n = 3.5
+        }
+        if (Object.keys(chapters).length > 25) {
+            n = 4
+        }
+
+        $('#chapters').css({ width: window.screen.width * n })
+        $('#chRow').css({ width: window.screen.width })
+
     }
 
 

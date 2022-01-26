@@ -372,6 +372,15 @@ function ISO2Second(Isotime) {
     }
 }
 
+function Time2Second(Isotime) {
+    var num = Isotime.split(':');
+    if (num.length > 2) {
+        return Number(num[0]) * 3600 + Number(num[1]) * 60 + Number(num[2])
+    } else {
+        return Number(num[0]) * 60 + Number(num[1])
+    }
+}
+
 async function uploadVideo() {
     var id = getYoutubeIdByUrl($('#link').val())
     var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=contentDetails';
@@ -383,34 +392,56 @@ async function uploadVideo() {
                 var Isotime = response["items"][0]["contentDetails"]["duration"];
                 var duration = ISO2Second(Isotime)
                 if (duration) {
+                    var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=snippet';
                     $.ajax({
-                        url: "teacher/newVideo",
-                        type: 'post',
-                        data: {
-                            title: $('#className').val(),
-                            folder: $('#folder option:selected').val(),
-                            comment: $('#note').val(),
-                            id: id,
-                            seconds: duration
-                        },
-                        success: function(data) {
-                            videos.push(data);
-                            if ($('#folder option:selected').val() != actualFolder)
-                                changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
-                            else
-                                displayVideos(videos)
-                            $(".showup").trigger('click');
-                            $('#link').val('')
-                            $('#note').val('')
-                            $('#className').val('')
+                        url: url,
+                        type: 'get',
+                        success: function(response) {
+                            var description = response['items'][0]['snippet']['description']
+                            var filtered = [...description.matchAll(/.*\d+:\d+(:\d+)?.*/g)]
+                            var chapters = {}
+                            filtered.forEach(str => {
+                                whole = str[0]
+                                time = whole.match(/\d+:\d+(:\d+)?/)[0]
+                                title = whole.replace(time, '')
+                                chapters[Time2Second(time)] = title
+                            })
+                            $.ajax({
+                                url: "teacher/newVideo",
+                                type: 'post',
+                                data: {
+                                    title: $('#className').val(),
+                                    folder: $('#folder option:selected').val(),
+                                    comment: $('#note').val(),
+                                    id: id,
+                                    seconds: duration,
+                                    chapters: JSON.stringify(chapters)
+                                },
+                                success: function(data) {
+                                    videos.push(data);
+                                    if ($('#folder option:selected').val() != actualFolder)
+                                        changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
+                                    else
+                                        displayVideos(videos)
+                                    $(".showup").trigger('click');
+                                    $('#link').val('')
+                                    $('#note').val('')
+                                    $('#className').val('')
 
+                                },
+                                error: function(data, status) {
+                                    var errorMessage = JSON.parse(data.responseText).msg;
+                                    $('#newVideoError').empty()
+                                    $('#newVideoError').text(errorMessage);
+                                },
+                            });
                         },
                         error: function(data, status) {
-                            var errorMessage = JSON.parse(data.responseText).msg;
                             $('#newVideoError').empty()
-                            $('#newVideoError').text(errorMessage);
+                            $('#newVideoError').text('There was an error');
                         },
-                    });
+                    })
+
                 } else {
                     $('#newVideoError').empty()
                     $('#newVideoError').text('There is no video matching this URL');

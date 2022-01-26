@@ -40,6 +40,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             defaultValue: "''"
         },
+        chapters: {
+            type: DataTypes.STRING(6000),
+            allowNull: false,
+            defaultValue: "[]",
+        },
         new: {
             type: DataTypes.INTEGER(11),
             allowNull: true,

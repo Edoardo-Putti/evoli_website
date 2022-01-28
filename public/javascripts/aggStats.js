@@ -50,24 +50,13 @@ function retriveData() {
 
                     }
                 })
-                var res1 = { 'l': [], 'd': [], 'c': [], total: 0, l1: 0, d1: 0, c1: 0 }
-                Object.entries(code2reaction).forEach(([key, value]) => {
-                    res1.l.push(value.l)
-                    res1.d.push(value.d)
-                    res1.c.push(value.c);
-                    res1.total += (value.l + value.d + value.c)
-                    res1.l1 += value.l
-                    res1.d1 += value.d
-                    res1.c1 += value.c
 
-                })
-                $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
             }
             if (sliders) {
                 sliders.forEach(slider => {
                     try {
-                        if (!labels.includes(code2tiltle[slider.video_code]))
-                            labels.push(code2tiltle[slider.video_code])
+                        // if (!labels.includes(code2tiltle[slider.video_code]))
+                        //     labels.push(code2tiltle[slider.video_code])
                         code2slider[slider.video_code].understanding.push(slider.understanding);
                         code2slider[slider.video_code].appreciation.push(slider.appreciation);
                         if (slider.user_name.includes('@'))
@@ -84,23 +73,35 @@ function retriveData() {
                             code2slider[slider.video_code].anonim++;
                     }
                 })
-                var totStud1 = 0;
-                var logged1 = 0;
-                var res = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
-                Object.entries(code2slider).forEach(([key, value]) => {
-                    res.understanding.push(average(value.understanding).toFixed(2))
-                    res.appreciation.push(average(value.appreciation).toFixed(2))
-                    res.logged.push(value.logged);
-                    res.anonim.push(value.anonim)
-                    totStud1 += value.logged + value.anonim;
-                    logged1 += value.logged
-                })
+
 
             }
+            var res1 = { 'l': [], 'd': [], 'c': [], total: 0, l1: 0, d1: 0, c1: 0 }
+            var totStud1 = 0;
+            var logged1 = 0;
+            var res = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
             Object.entries(code2tiltle).forEach(([key, value]) => {
-                if (!labels.includes(code2tiltle[key]))
-                    labels.push(code2tiltle[key])
+
+                labels.push(code2tiltle[key])
+                    //-----------------------------------------
+                res1.l.push(code2reaction[key].l)
+                res1.d.push(code2reaction[key].d)
+                res1.c.push(code2reaction[key].c);
+                res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                res1.l1 += code2reaction[key].l
+                res1.d1 += code2reaction[key].d
+                res1.c1 += code2reaction[key].c
+                    //-----------------------------------------
+                res.understanding.push(average(code2slider[key].understanding).toFixed(2))
+                res.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
+                res.logged.push(code2slider[key].logged);
+                res.anonim.push(code2slider[key].anonim)
+                totStud1 += code2slider[key].logged + code2slider[key].anonim;
+                logged1 += code2slider[key].logged
             })
+
+
+            $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
             $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2))
             $('#a1').append(' ' + average(res.appreciation.map(Number)).toFixed(2))
             $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')

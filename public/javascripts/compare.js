@@ -65,50 +65,13 @@ function retriveData() {
 
                     }
                 })
-                var res1 = { 'l': [], 'd': [], 'c': [], 'total': 0, 'l1': 0, 'd1': 0, 'c1': 0 }
-                var res2 = { 'l': [], 'd': [], 'c': [], 'total': 0, 'l1': 0, 'd1': 0, 'c1': 0 }
-
-
-                Object.entries(code2reaction).forEach(([key, value]) => {
-                    if (group1.includes(key)) {
-                        res1.l.push(value.l)
-                        res1.d.push(value.d)
-                        res1.c.push(value.c);
-                        res1.total += (value.l + value.d + value.c)
-                        res1.l1 += value.l
-                        res1.d1 += value.d
-                        res1.c1 += value.c
-                    } else {
-                        res2.l.push(value.l)
-                        res2.d.push(value.d)
-                        res2.c.push(value.c);
-                        res2.total += (value.l + value.d + value.c)
-                        res2.l1 += value.l
-                        res2.d1 += value.d
-                        res2.c1 += value.c
-                    }
-
-
-                })
-                var resCompReaction = { l: [], d: [], c: [] }
-                resCompReaction.l.push(res1.l1, res2.l1)
-                resCompReaction.d.push(res1.d1, res2.d1)
-                resCompReaction.c.push(res1.c1, res2.c1)
-                displayReactions(resCompReaction, compareReactions, labelCompar)
-                $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
-                $('#r2').append(' ' + (res2.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res2.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res2.d1 + ', <img src="../images/question.png" height="25px">: ' + res2.c1 + ' )')
 
 
             }
             if (sliders) {
                 sliders.forEach(slider => {
                     try {
-                        if (!labels.includes(code2tiltle[slider.video_code]))
-                            if (group1.includes(key)) {
-                                labels.push(code2tiltle[slider.video_code])
-                            } else {
-                                labels2.push(code2tiltle[slider.video_code])
-                            }
+
 
                         code2slider[slider.video_code].understanding.push(slider.understanding);
                         code2slider[slider.video_code].appreciation.push(slider.appreciation);
@@ -126,56 +89,80 @@ function retriveData() {
                             code2slider[slider.video_code].anonim++;
                     }
                 })
-                var res = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
-                var res3 = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
-                var totStud1 = 0;
-                var logged1 = 0;
-                var logged2 = 0;
-                var totStud2 = 0;
-                Object.entries(code2slider).forEach(([key, value]) => {
-                    if (group1.includes(key)) {
-                        res.understanding.push(average(value.understanding).toFixed(2))
-                        res.appreciation.push(average(value.appreciation).toFixed(2))
-                        res.logged.push(value.logged);
-                        res.anonim.push(value.anonim)
-                        totStud1 += value.logged + value.anonim;
-                        logged1 += value.logged
-                    } else {
-                        res3.understanding.push(average(value.understanding).toFixed(2))
-                        res3.appreciation.push(average(value.appreciation).toFixed(2))
-                        res3.logged.push(value.logged);
-                        res3.anonim.push(value.anonim)
-                        totStud2 += value.logged + value.anonim
-                        logged2 += value.logged
-                    }
-
-
-                })
-                var resCompStud = { anonim: [], logged: [] }
-                resCompStud.logged.push(logged1, logged2)
-                resCompStud.anonim.push((totStud1 - logged1), (totStud2 - logged2))
-                displayStudents(resCompStud, compareStudents, labelCompar)
-                var resCompSlide = { appreciation: [], understanding: [] }
-                resCompSlide.understanding.push(average(res.understanding.map(Number)).toFixed(2), average(res3.understanding.map(Number)).toFixed(2))
-                resCompSlide.appreciation.push(average(res.appreciation.map(Number)).toFixed(2), average(res3.appreciation.map(Number)).toFixed(2))
-                displayUnderstanding(resCompSlide, compareUnderstanding, labelCompar)
-                displayAppreciation(resCompSlide, compareAppreciation, labelCompar)
-                $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res.appreciation.map(Number)).toFixed(2))
-                $('#u2').append(' ' + average(res3.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res3.appreciation.map(Number)).toFixed(2))
-                $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
-                $('#s2').append(' ' + totStud2 + ' students ( <i class="fa fa-lg fa-user">: ' + logged2 + ', <i class="fa  fa-user-secret">: ' + (totStud2 - logged2) + ' )')
             }
+            var res1 = { 'l': [], 'd': [], 'c': [], 'total': 0, 'l1': 0, 'd1': 0, 'c1': 0 }
+            var res2 = { 'l': [], 'd': [], 'c': [], 'total': 0, 'l1': 0, 'd1': 0, 'c1': 0 }
+
+
+
+            var resCompReaction = { l: [], d: [], c: [] }
+
+            var res = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
+            var res3 = { 'understanding': [], 'appreciation': [], 'anonim': [], 'logged': [] }
+            var totStud1 = 0;
+            var logged1 = 0;
+            var logged2 = 0;
+            var totStud2 = 0;
+
+            var resCompStud = { anonim: [], logged: [] }
+
+
+            var resCompSlide = { appreciation: [], understanding: [] }
+
+
             Object.entries(code2tiltle).forEach(([key, value]) => {
                 if (group1.includes(key)) {
-                    if (!labels.includes(code2tiltle[key]))
-                        labels.push(code2tiltle[key])
+                    res1.l.push(code2reaction[key].l)
+                    res1.d.push(code2reaction[key].d)
+                    res1.c.push(code2reaction[key].c);
+                    res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                    res1.l1 += code2reaction[key].l
+                    res1.d1 += code2reaction[key].d
+                    res1.c1 += code2reaction[key].c
+                    labels.push(code2tiltle[key])
+                    res.understanding.push(average(code2slider[key].understanding).toFixed(2))
+                    res.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
+                    res.logged.push(code2slider[key].logged);
+                    res.anonim.push(code2slider[key].anonim)
+                    totStud1 += code2slider[key].logged + code2slider[key].anonim;
+                    logged1 += code2slider[key].logged
                 } else {
-                    if (!labels2.includes(code2tiltle[key]))
-                        labels2.push(code2tiltle[key])
+
+                    labels2.push(code2tiltle[key])
+                    res2.l.push(code2reaction[key].l)
+                    res2.d.push(code2reaction[key].d)
+                    res2.c.push(code2reaction[key].c);
+                    res2.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                    res2.l1 += code2reaction[key].l
+                    res2.d1 += code2reaction[key].d
+                    res2.c1 += code2reaction[key].c
+                    res3.understanding.push(average(code2slider[key].understanding).toFixed(2))
+                    res3.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
+                    res3.logged.push(code2slider[key].logged);
+                    res3.anonim.push(code2slider[key].anonim)
+                    totStud2 += code2slider[key].logged + code2slider[key].anonim;
+                    logged2 += code2slider[key].logged
                 }
 
             })
+            resCompSlide.understanding.push(average(res.understanding.map(Number)).toFixed(2), average(res3.understanding.map(Number)).toFixed(2))
+            resCompSlide.appreciation.push(average(res.appreciation.map(Number)).toFixed(2), average(res3.appreciation.map(Number)).toFixed(2))
+            resCompReaction.l.push(res1.l1, res2.l1)
+            resCompReaction.d.push(res1.d1, res2.d1)
+            resCompReaction.c.push(res1.c1, res2.c1)
+            resCompStud.logged.push(logged1, logged2)
+            resCompStud.anonim.push((totStud1 - logged1), (totStud2 - logged2))
+            displayReactions(resCompReaction, compareReactions, labelCompar)
+            $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
+            $('#r2').append(' ' + (res2.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res2.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res2.d1 + ', <img src="../images/question.png" height="25px">: ' + res2.c1 + ' )')
 
+            $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res.appreciation.map(Number)).toFixed(2))
+            $('#u2').append(' ' + average(res3.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res3.appreciation.map(Number)).toFixed(2))
+            $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+            $('#s2').append(' ' + totStud2 + ' students ( <i class="fa fa-lg fa-user">: ' + logged2 + ', <i class="fa  fa-user-secret">: ' + (totStud2 - logged2) + ' )')
+            displayStudents(resCompStud, compareStudents, labelCompar)
+            displayUnderstanding(resCompSlide, compareUnderstanding, labelCompar)
+            displayAppreciation(resCompSlide, compareAppreciation, labelCompar)
             displayUnderstanding(res, Chartunderstanding, labels)
             displayUnderstanding(res3, Chartunderstanding1, labels2)
             displayAppreciation(res, ChartAppreciation, labels)
@@ -209,12 +196,33 @@ function displayUnderstanding(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
                 y: {
                     max: 100
+                },
+                x: {
+                    max: 5
                 }
             }
         }
@@ -240,12 +248,34 @@ function displayAppreciation(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
                 y: {
                     max: 100
+                },
+
+                x: {
+                    max: 5
                 }
             }
         }
@@ -279,7 +309,25 @@ function displayStudents(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
@@ -289,6 +337,9 @@ function displayStudents(data, ctx, labels) {
                     ticks: {
                         stepSize: 1
                     }
+                },
+                x: {
+                    max: 5
                 }
             }
         }
@@ -297,6 +348,8 @@ function displayStudents(data, ctx, labels) {
 }
 
 function displayReactions(data, ctx, labels) {
+
+
     const config = {
         type: 'bar',
         data: {
@@ -306,6 +359,7 @@ function displayReactions(data, ctx, labels) {
                     data: data.l,
                     borderColor: '#253D70',
                     backgroundColor: pattern.draw('zigzag', 'rgba(37, 61, 112, 0.9)'),
+                    stack: 'Stack 0',
 
                 },
                 {
@@ -313,6 +367,7 @@ function displayReactions(data, ctx, labels) {
                     data: data.d,
                     borderColor: '#F1B467',
                     backgroundColor: pattern.draw('disc', 'rgba(241, 179, 103, 0.9)'),
+                    stack: 'Stack 0',
 
                 },
                 {
@@ -320,6 +375,7 @@ function displayReactions(data, ctx, labels) {
                     data: data.c,
                     borderColor: '#f01166',
                     backgroundColor: pattern.draw('diamond', 'rgba(240, 15, 101, 0.75)'),
+                    stack: 'Stack 0',
 
                 }
             ]
@@ -329,17 +385,40 @@ function displayReactions(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
+                x: {
 
+                    min: 0,
+                    max: 5,
+                },
                 y: {
-                    suggestedMax: Math.max(...data.c, ...data.l, ...data.d) + 2,
+                    suggestedMax: Math.max(...data.c) + Math.max(...data.l) + Math.max(...data.d) + 2,
                     ticks: {
                         stepSize: 1
                     }
-                }
+                },
+
             }
         }
     };

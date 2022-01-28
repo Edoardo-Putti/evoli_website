@@ -626,14 +626,43 @@ exports.aggStats = (req, res) => {
 
 
 exports.checkOne = (req, res) => {
-    db.Slider.findOne({
-        where: {
-            [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
-        }
-    }).then(data => {
-        res.status(200).send(data)
-    }).catch(err => {
-        res.status(500).json({ msg: err })
-    })
+    async.parallel({
+            slider: function(callback) {
+                db.Slider.findOne({
+                    where: {
+                        [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
+                    }
+                }).then(data => {
+                    callback(null, data);
+                })
+            },
+            logged: function(callback) {
+                db.Slider.findOne({
+                    where: {
+                        [Op.and]: [{ video_code: req.body.code }, { visible: 1 }, { user_name: {
+                                [Op.like]: '%@%' } }]
+                    }
+                }).then(data => {
+                    callback(null, data);
+                })
+
+
+            },
+
+
+        }).then(results => {
+            res.status(200).send(results)
+        }).catch(err => {
+            res.status(500).json({ msg: err })
+        })
+        // db.Slider.findOne({
+        //     where: {
+        //         [Op.and]: [{ video_code: req.body.code }, { visible: 1 }]
+        //     }
+        // }).then(data => {
+        //     res.status(200).send(data)
+        // }).catch(err => {
+        //     res.status(500).json({ msg: err })
+        // })
 
 }

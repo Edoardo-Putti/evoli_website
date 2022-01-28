@@ -498,11 +498,15 @@ function confirmDeleteVideo() {
             codes: JSON.stringify(codes)
         },
         success: function(data) {
+            var removed = []
             videos.forEach((video, index) => {
                 var y = codes.indexOf(video.video_code)
-                if (y != -1)
-                    videos.splice(index, 1);
+                if (y != -1) {
+                    removed.push(index)
+                }
             })
+            for (var i = removed.length - 1; i >= 0; i--)
+                videos.splice(removed[i], 1);
             displayVideos(videos)
             $('#cancel').modal('hide');
         },
@@ -542,9 +546,13 @@ function moveVideo() {
     }
 }
 
+var logged = [];
+var able = [];
+
 function aggStats() {
     var tableStats = $('#tableStats > tbody').empty();
-
+    logged = [];
+    able = [];
     videos.forEach((video, i) => {
         $.ajax({
             url: 'teacher/checkOne',
@@ -553,7 +561,10 @@ function aggStats() {
                 code: video.video_code
             },
             success: function(data) {
-                if (data) {
+                if (!data.logged)
+                    logged.push(i)
+                if (data.slider) {
+                    able.push(i)
                     var code = 'a' + video.video_code
                     var newContent = '<tr id="' + code + '"> \
                     <td colspan=1><a style="color: black" target="_blank" title="view on YouTube" href="https://youtu.be/' + video.url + '">' + video.title + '</a></td> \
@@ -590,10 +601,10 @@ function compare() {
     if ($('#tableStats > thead th').length < 4) {
         $('#tableStats > thead tr th').last().append('G.1')
         $('#tableStats > thead tr').append('<th class="editing" >G.2</th>')
-
-        tableStats.append('<td class="editing second" ><input  type="checkbox" ></td>');
+        tableStats.append('<td class="editing second" ><input  type="checkbox" disabled></td>');
     } else {
         $('#tableStats > thead tr').children().last().remove()
+        $('#tableStats > thead tr').children().last().empty()
         $('#tableStats > tbody .second').remove()
     }
 
@@ -613,6 +624,11 @@ $('#aggStats').on('hidden.bs.modal', function(event) {
 
 $('#b1').on('click', () => {
     $('#ConfirmStats').attr('value', 'b1');
+    able.forEach(index => {
+        $(':checkbox[value=' + index + ']').attr("disabled", false);
+        $(':checkbox[value=' + index + ']').parent().next().children().attr("disabled", false);
+
+    })
     $('#b1').addClass("selected")
     $('#b2').removeClass("selected")
     $('#b3').removeClass("selected")
@@ -620,6 +636,9 @@ $('#b1').on('click', () => {
 
 $('#b2').on('click', () => {
     $('#ConfirmStats').attr('value', 'b2');
+    able.forEach(index => {
+        $(':checkbox[value=' + index + ']').attr("disabled", false);
+    })
     $('#b2').addClass("selected")
     $('#b1').removeClass("selected")
     $('#b3').removeClass("selected")
@@ -627,6 +646,9 @@ $('#b2').on('click', () => {
 
 $('#b3').on('click', () => {
     $('#ConfirmStats').attr('value', 'b3');
+    logged.forEach(index => {
+        $(':checkbox[value=' + index + ']').attr("disabled", true);
+    })
     $('#b3').addClass("selected")
     $('#b2').removeClass("selected")
     $('#b1').removeClass("selected")
@@ -700,19 +722,45 @@ function group(val) {
 function confirmAggStast() {
     if ($("#tableStats input:checkbox:checked").length != 0) {
         if ($('#ConfirmStats').attr('value') == 'b1') {
-            var group1 = []
-            var group2 = []
-            $("#tableStats input:checkbox:checked").each(function() {
-                if ($(this).val() != 'on') {
-                    group1.push($(this).parent().parent().attr("id").substring(1))
+            if ($("#tableStats .second > input:checkbox:checked").length != 0) {
+                var group1 = []
+                var group2 = []
+                $("#tableStats input:checkbox:checked").each(function() {
+                    if ($(this).val() != 'on') {
+                        group1.push($(this).parent().parent().attr("id").substring(1))
+                    } else {
+                        group2.push($(this).parent().parent().attr("id").substring(1))
+                    }
+
+                })
+
+                if (group1.some(item => group2.includes(item))) {
+                    $('#ConfirmStats').popover('dispose');
+                    $('#ConfirmStats').popover({
+                        placement: "top",
+                        content: 'One or more video are in both groups!'
+                    }).popover('show')
+                    setTimeout(function() {
+                        $('#ConfirmStats').popover('hide')
+                    }, 2000);
                 } else {
-                    group2.push($(this).parent().parent().attr("id").substring(1))
+                    localStorage.setItem('group1', JSON.stringify(group1))
+                    localStorage.setItem('group2', JSON.stringify(group2))
+                    window.location.href = 'teacher/compare'
                 }
 
-            })
-            localStorage.setItem('group1', JSON.stringify(group1))
-            localStorage.setItem('group2', JSON.stringify(group2))
-            window.location.href = 'teacher/compare'
+
+            } else {
+                $('#ConfirmStats').popover('dispose');
+                $('#ConfirmStats').popover({
+                    placement: "top",
+                    content: 'Please select at least one in both group video!'
+                }).popover('show')
+                setTimeout(function() {
+                    $('#ConfirmStats').popover('hide')
+                }, 2000);
+            }
+
 
         } else if ($('#ConfirmStats').attr('value') == 'b2') {
             var codes = []
@@ -730,6 +778,7 @@ function confirmAggStast() {
             window.location.href = 'teacher/studentStats'
         }
     } else {
+        $('#ConfirmStats').popover('dispose');
         $('#ConfirmStats').popover({
             placement: "top",
             content: 'Please select at least one video!'

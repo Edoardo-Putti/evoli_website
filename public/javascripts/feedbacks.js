@@ -253,7 +253,7 @@ function goToChapter(second) {
 function customFocus() {
     start = Number($('#sh').val()) * 3600 + Number($('#sm').val()) * 60 + Number($('#ss').val())
     end = Number($('#endh').val()) * 3600 + Number($('#endm').val()) * 60 + Number($('#ends').val())
-    if (!Number.isInteger($('#sh').val()) || !Number.isInteger($('#sm').val()) || !Number.isInteger($('#ss').val()) || !Number.isInteger($('#endh').val()) || !Number.isInteger($('#endm').val()) || !Number.isInteger($('#ends').val())) {
+    if (isNaN($('#sh').val()) || isNaN($('#sm').val()) || isNaN($('#ss').val()) || isNaN($('#endh').val()) || isNaN($('#endm').val()) || isNaN($('#ends').val())) {
         $('#intError').empty()
         $('#intError').text('Input must be a number ')
         $('#sh').val('')
@@ -284,6 +284,7 @@ function customFocus() {
                     $('#endm').val('')
                     $('#ends').val('')
                 } else {
+                    $('#intError').empty()
                     focus = true;
                     chart.destroy();
                     $('#sh').val('')
@@ -874,25 +875,12 @@ const externalTooltipHandler = (context) => {
 
 };
 
-// function addDownload() {
-//     $('#legend').append('<div id = "download" \
-//                 style = "margin-left: 3vw;" >\
-//                 <button class = "btn btn-logOut"\
-//                 style = "margin-bottom: 5px;"\
-//                 onclick = "downloadChart()" > <span class = "fa fa-download fa-lg" > </span> Chart</button >\
-//                 </div> ')
-// }
+
 
 function generateChart(l, d, c, duration) {
     var ctx = document.getElementById('chart').getContext('2d');
     var config = createConfig(l, d, c, duration);
     chart = new Chart(ctx, config);
-    // if ($('#chartControl').is(':visible')) {
-    //     if (!$('#download').is(':visible')) {
-    //         addDownload();
-    //     }
-
-    // }
 
 }
 

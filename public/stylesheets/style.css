@@ -1677,6 +1677,21 @@ tr:last-child td:last-child {
     color: #ffb30d;
 }
 
+.btn-user {
+    height: 40px;
+    width: 40px;
+    font-size: 18px;
+    background: #243d70;
+    color: #ffb30d;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.btn-user:hover {
+    color: #243d70;
+    background: #ffb30d;
+}
+
 .roundStat:hover {
     color: #ffb30d;
 }

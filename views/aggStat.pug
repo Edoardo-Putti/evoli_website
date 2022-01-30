@@ -29,29 +29,32 @@ block content
                 a(role="button" class="btn  btn-logOut  rounded-pill" href='../teacher/logout')
                     | Log
                     | Out
+        div(class="row d-flex justify-content-center" style="margin-top: 10px; margin-bottom:10px")
+                h4#nvid  
         div(class="row d-flex justify-content-center")
+            
             div(class="col-12 col-lg-6 ")
                 div(class="row d-flex justify-content-center")
                     div(class="col-10 d-flex justify-content-center")
                          h4#u1 The videos have an Avg. Understanding of:
-                    div(class="col-10 align-self-center")
+                    div(class="col-10 align-self-center info")
                         canvas#chartUnderstanding
                 div(class="row d-flex justify-content-center" )
                     div(class="col-12 d-flex justify-content-center")
                         h4#r1 The videos received a total of 
-                    div(class="col-10 align-self-center")
+                    div(class="col-10 align-self-center info")
                         canvas#chartReactions
                 
             div(class="col-12 col-lg-6")
                 div(class="row d-flex justify-content-center")
                     div(class="col-10 d-flex justify-content-center")
                          h4#a1 The videos have an Avg. Appreciation of:
-                    div(class="col-10 align-self-center")
+                    div(class="col-10 align-self-center info")
                         canvas#chartAppreciation
                 div(class="row d-flex justify-content-center" )
                     div(class="col-12 d-flex justify-content-center")
                         h4#s1 The videos were watched by 
-                    div(class="col-10 align-self-center")
+                    div(class="col-10 align-self-center info")
                         canvas#chartStudents
         #loading
             img(src="../images/Ellipsis.gif" alt="loading")

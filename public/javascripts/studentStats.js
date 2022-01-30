@@ -58,8 +58,6 @@ function retriveData() {
 
                 sliders.forEach(slider => {
 
-                    if (!labels.includes(code2tiltle[slider.video_code]))
-                        labels.push(code2tiltle[slider.video_code])
 
                     try {
                         if (slider.user_name.includes('@')) {
@@ -92,12 +90,26 @@ function retriveData() {
                     }
                 })
             }
+
+            var totStud1 = 0;
+            var logged1 = 0;
+            var res = { 'anonim': [], 'logged': [] }
+
             Object.entries(code2tiltle).forEach(([key, value]) => {
-                if (!labels.includes(code2tiltle[key]))
-                    labels.push(code2tiltle[key])
+                res.logged.push(studentDistribution[key].logged);
+                res.anonim.push(studentDistribution[key].anonim);
+                totStud1 += studentDistribution[key].logged + studentDistribution[key].anonim;
+                logged1 += studentDistribution[key].logged
+                labels.push(code2tiltle[key])
                 $('#tableStats thead tr').append('<th colspan=2 scope="col" name="' + key + '">' + value + '</th>')
             })
-
+            if (labels.length > 6) {
+                $('.info').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+                $('.cirigth').css({ top: '0', rigth: '3.5vw', width: '85%', height: '85%' })
+                setTimeout(function() {
+                    $('.chartInfo').remove()
+                }, 2000);
+            }
             Object.entries(code2slider).forEach(([key, value]) => {
                 first = 1
                 $('#tableStats thead tr').children('th').each(function() {
@@ -113,15 +125,6 @@ function retriveData() {
                         }
                     }
                 });
-            })
-            var totStud1 = 0;
-            var logged1 = 0;
-            var res = { 'anonim': [], 'logged': [] }
-            Object.entries(studentDistribution).forEach(([key, value]) => {
-                res.logged.push(value.logged);
-                res.anonim.push(value.anonim);
-                totStud1 += value.logged + value.anonim;
-                logged1 += value.logged
             })
             displayStudents(res, ChartStudent, labels)
             $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
@@ -166,6 +169,13 @@ function showDetail(e) {
         $('#tableComment').hide()
     } else {
         $('#tableComment').show()
+    }
+    if (l.length > 6) {
+        $('.infor').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+        $('.cirigth').css({ top: '0', rigth: '3.5vw', width: '85%', height: '85%' })
+        setTimeout(function() {
+            $('.chartInfo').remove()
+        }, 2000);
     }
     $('.modal-title').append(' watched ' + l.length + ' videos');
     $('#r1').append('The student gave a total of ' + (res.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res.d1 + ', <img src="../images/question.png" height="25px">: ' + res.c1 + ' )')
@@ -228,14 +238,36 @@ function displayStudents(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+
+                    },
+
+                }
             },
             responsive: true,
             scales: {
                 y: {
-                    suggestedMax: Math.max(...data.anonim, ...data.logged) + 2,
+                    suggestedMax: Math.max(...data.anonim) + Math.max(...data.logged) + 2,
                     beginAtZero: true,
                     ticks: {
                         stepSize: 1
+                    },
+                    x: {
+                        max: 5
                     }
                 }
             }
@@ -278,10 +310,26 @@ function displayReactions(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
-                // title: {
-                //     display: true,
-                //     text: 'Student\'s reactions'
-                // },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+
+                    },
+
+                }
+
             },
             responsive: true,
             scales: {
@@ -291,6 +339,9 @@ function displayReactions(data, ctx, labels) {
                     ticks: {
                         stepSize: 1
                     }
+                },
+                x: {
+                    max: 5
                 }
             }
         }

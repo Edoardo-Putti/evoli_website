@@ -10,6 +10,7 @@ const ctx2 = $('#chartStudents');
 var code2tiltle = {}
 var code2reaction = {}
 var code2slider = {}
+var codeLogged = []
 const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 function retriveData() {
@@ -59,9 +60,11 @@ function retriveData() {
                         //     labels.push(code2tiltle[slider.video_code])
                         code2slider[slider.video_code].understanding.push(slider.understanding);
                         code2slider[slider.video_code].appreciation.push(slider.appreciation);
-                        if (slider.user_name.includes('@'))
+                        if (slider.user_name.includes('@')) {
+                            if (!codeLogged.includes(slider.video_code))
+                                codeLogged.push(slider.video_code)
                             code2slider[slider.video_code].logged++;
-                        else
+                        } else
                             code2slider[slider.video_code].anonim++;
                     } catch (error) {
                         code2slider[slider.video_code] = { 'understanding': [], 'appreciation': [], 'anonim': 0, 'logged': 0 }
@@ -104,17 +107,34 @@ function retriveData() {
             $('#r1').append(' ' + (res1.total) + ' reactions ( <img src="../images/happy3.png" height="25px">: ' + res1.l1 + ', <img src="../images/sad3.png" height="25px">: ' + res1.d1 + ', <img src="../images/question.png" height="25px">: ' + res1.c1 + ' )')
             $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2))
             $('#a1').append(' ' + average(res.appreciation.map(Number)).toFixed(2))
-            $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+            if (codeLogged.length) {
+                $('#s1').append(' ' + totStud1 + ' students ( <i onclick="goToStudStats()" class="fa fa-lg fa-user btn btn-user " data-toggle="tooltip"  title="See detail stats on logged students" ></i>: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+            } else {
+                $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+            }
             displayUnderstanding(res, Chartunderstanding, labels)
             displayAppreciation(res, ChartAppreciation, labels)
             displayStudents(res)
             displayReactions(res1)
+            if (labels.length > 6) {
+                $('.info').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+                $('.cirigth').css({ top: '0', rigth: '3.5vw', width: '85%', height: '85%' })
+                setTimeout(function() {
+                    $('.chartInfo').remove()
+                }, 2000);
+            }
+            $('#nvid').text('These are the aggregated stats of the ' + labels.length + ' selected videos')
             $('#loading').hide()
         },
         error: function(data, status) {
             console.log(data);
         },
     });
+}
+
+function goToStudStats() {
+    localStorage.setItem('codes', JSON.stringify(codeLogged))
+    window.location.href = '../teacher/studentStats'
 }
 
 function displayUnderstanding(data, ctx, labels) {
@@ -134,12 +154,34 @@ function displayUnderstanding(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+
+                    },
+
+                }
 
             },
             responsive: true,
             scales: {
                 y: {
                     max: 100
+                },
+                x: {
+                    max: 5
                 }
             }
         }
@@ -165,12 +207,33 @@ function displayAppreciation(data, ctx, labels) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
                 y: {
                     max: 100
+                },
+                x: {
+                    max: 5
                 }
             }
         }
@@ -204,7 +267,25 @@ function displayStudents(data) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
@@ -214,6 +295,9 @@ function displayStudents(data) {
                     ticks: {
                         stepSize: 1
                     }
+                },
+                x: {
+                    max: 5
                 }
             }
         }
@@ -254,7 +338,25 @@ function displayReactions(data) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+                        threshold: 5,
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
 
+                    },
+
+                }
             },
             responsive: true,
             scales: {
@@ -264,6 +366,9 @@ function displayReactions(data) {
                     ticks: {
                         stepSize: 1
                     }
+                },
+                x: {
+                    max: 5
                 }
             }
         }

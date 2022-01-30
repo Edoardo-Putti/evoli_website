@@ -1,6 +1,11 @@
 window.onload = function() {
     retriveData();
+    $('.btn-user').tooltip({ trigger: 'hover', placement: 'auto' })
 }
+
+$(window).scroll(function() {
+    $('.btn-user').tooltip({ trigger: 'hover', placement: 'auto' })
+});
 
 const labels = []
 const labels2 = []
@@ -20,9 +25,25 @@ const ChartStudent1 = $('#chartStudents1');
 var code2tiltle = {}
 var code2reaction = {}
 var code2slider = {}
+codeLogged1 = []
+codeLogged2 = []
 const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
 var group1 = JSON.parse(localStorage.getItem('group1'))
+if (group1.length > 6) {
+    $('.info1').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+    $('.cirigth').css({ top: '0px', rigth: '3.5vw', width: '85%', height: '85%' })
+    setTimeout(function() {
+        $('.chartInfo').remove()
+    }, 2000);
+}
 var group2 = JSON.parse(localStorage.getItem('group2'))
+if (group2.length > 6) {
+    $('.info2').append('<div class="chartInfo cirigth row justify-content-center" ><div class="col-12 d-flex justify-content-center align-items-center"><h2>Click and drag to navigate the chart</h2></div><div class="col-12 d-flex justify-content-center"><span ><img src="../images/left-arrow.png" height="40px" width="40px"><img class="mouse" src="../images/mouse.png" height="80px" width="80px"><img src="../images/right-arrow.png" height="40px" width="40px"> </span></div></div>')
+    $('.cirigth').css({ top: '0px', rigth: '3.5vw', width: '85%', height: '85%' })
+    setTimeout(function() {
+        $('.chartInfo').remove()
+    }, 2000);
+}
 var codes = group1.concat(group2)
 $('#v1').append(' ' + group1.length + ' videos')
 $('#v2').append(' ' + group2.length + ' videos')
@@ -75,9 +96,16 @@ function retriveData() {
 
                         code2slider[slider.video_code].understanding.push(slider.understanding);
                         code2slider[slider.video_code].appreciation.push(slider.appreciation);
-                        if (slider.user_name.includes('@'))
+                        if (slider.user_name.includes('@')) {
                             code2slider[slider.video_code].logged++;
-                        else
+                            if (group1.includes(slider.video_code)) {
+                                if (!codeLogged1.includes(slider.video_code))
+                                    codeLogged1.push(slider.video_code)
+                            } else {
+                                if (!codeLogged2.includes(slider.video_code))
+                                    codeLogged2.push(slider.video_code)
+                            }
+                        } else
                             code2slider[slider.video_code].anonim++;
                     } catch (error) {
                         code2slider[slider.video_code] = { 'understanding': [], 'appreciation': [], 'anonim': 0, 'logged': 0 }
@@ -158,8 +186,20 @@ function retriveData() {
 
             $('#u1').append(' ' + average(res.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res.appreciation.map(Number)).toFixed(2))
             $('#u2').append(' ' + average(res3.understanding.map(Number)).toFixed(2) + ' and an Avg. Appreciation of: ' + average(res3.appreciation.map(Number)).toFixed(2))
-            $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user">: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
-            $('#s2').append(' ' + totStud2 + ' students ( <i class="fa fa-lg fa-user">: ' + logged2 + ', <i class="fa  fa-user-secret">: ' + (totStud2 - logged2) + ' )')
+            if (codeLogged1.length) {
+                $('#s1').append(' ' + totStud1 + ' students ( <i class="fa fa-lg fa-user btn btn-user " data-toggle="tooltip"  title="See detail stats on logged students" onclick="goToStudStats(' + totStud1 + ')" ></i>: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+            } else {
+                $('#s1').append(' ' + totStud1 + ' students ( <i class="fa  fa-user "></i>: ' + logged1 + ', <i class="fa  fa-user-secret">: ' + (totStud1 - logged1) + ' )')
+
+            }
+            if (codeLogged2.length) {
+                $('#s2').append(' ' + totStud2 + ' students ( <i class="fa fa-lg fa-user btn btn-user " data-toggle="tooltip"  title="See detail stats on logged students" onclick="goToStudStats()"></i>: ' + logged2 + ', <i class="fa  fa-user-secret">: ' + (totStud2 - logged2) + ' )')
+
+            } else {
+                $('#s2').append(' ' + totStud2 + ' students ( <i class="fa  fa-user "></i>: ' + logged2 + ', <i class="fa  fa-user-secret">: ' + (totStud2 - logged2) + ' )')
+
+            }
+
             displayStudents(resCompStud, compareStudents, labelCompar)
             displayUnderstanding(resCompSlide, compareUnderstanding, labelCompar)
             displayAppreciation(resCompSlide, compareAppreciation, labelCompar)
@@ -177,6 +217,21 @@ function retriveData() {
             console.log(data);
         },
     });
+}
+
+
+
+function goToStudStats(x) {
+    if (x) {
+        localStorage.setItem('codes', JSON.stringify(codeLogged1))
+        window.location.href = '../teacher/studentStats'
+
+    } else {
+        localStorage.setItem('codes', JSON.stringify(codeLogged2))
+        window.location.href = '../teacher/studentStats'
+
+    }
+
 }
 
 function displayUnderstanding(data, ctx, labels) {
@@ -282,6 +337,8 @@ function displayAppreciation(data, ctx, labels) {
     };
     var chart = new Chart(ctx, config);
 }
+
+
 
 function displayStudents(data, ctx, labels) {
     const config = {

@@ -27,6 +27,8 @@ var [l, d, c] = [
 var co = [];
 var duration
 var stat = [];
+var chlabels = [];
+var res = { 'l': [], 'd': [], 'c': [] }
 
 function YTplayerMaker() {
     var tag = document.createElement('script');
@@ -85,11 +87,39 @@ function retriveData() {
             var logged = 0;
 
             if (chapters) {
-                for (key in chapters) {
+                //$('#chartRow').attr('class', 'col-12 col-lg-6')
+                $('#chapterRow').show()
+                var keys = Object.keys(chapters);
+                Object.keys(chapters).forEach((key, index) => {
+                    chlabels.push(chapters[key])
                     var ch = '<div class="btn btn-md endsession" style="white-space: nowrap; margin-bottom: 5px" onclick="goToChapter(' + key + ')">' + chapters[key] + ' ' + secondsToMinutes(key) + '</div>';
                     $('#chapters').append(ch);
+                    var next;
+                    if (index == keys.length - 1) {
+                        next = video.duration
+                    } else {
+                        next = keys[index + 1]
+                    }
+                    if (reactions) {
+                        var li = 0;
+                        var di = 0;
+                        var ci = 0;
+                        reactions.forEach(reaction => {
+                            if (reaction.type == 'like' && reaction.at_second >= key && reaction.at_second < next) {
+                                li++
+                            } else if (reaction.type == 'dislike' && reaction.at_second >= key && reaction.at_second < next) {
+                                di++
+                            } else if (reaction.at_second < next && reaction.at_second >= key) {
+                                ci++
+                            }
+                        })
+                        res.l.push(li)
+                        res.d.push(di)
+                        res.c.push(ci)
 
-                }
+                    }
+                })
+                displayReactions(res)
             }
 
             $('#seconds').append(' (Max ' + secondsToMinutes(duration) + ')');
@@ -139,7 +169,74 @@ function retriveData() {
 }
 
 
+function displayReactions(data) {
+    const config = {
+        type: 'bar',
+        data: {
+            labels: chlabels,
+            datasets: [{
+                    label: 'I get it',
+                    data: data.l,
+                    borderColor: '#253D70',
+                    backgroundColor: pattern.draw('zigzag', 'rgba(37, 61, 112, 0.9)'),
 
+                },
+                {
+                    label: 'I don\' t get it',
+                    data: data.d,
+                    borderColor: '#F1B467',
+                    backgroundColor: pattern.draw('disc', 'rgba(241, 179, 103, 0.9)'),
+
+                },
+                {
+                    label: 'Comments',
+                    data: data.c,
+                    borderColor: '#f01166',
+                    backgroundColor: pattern.draw('diamond', 'rgba(240, 15, 101, 0.75)'),
+
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 2,
+
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: false,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+
+                    },
+
+                }
+            },
+            responsive: true,
+            scales: {
+
+                y: {
+                    suggestedMax: Math.max(...data.c, ...data.l, ...data.d) + 2,
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+
+            }
+        }
+    };
+    var chart = new Chart($('#chpchart'), config);
+}
 
 
 

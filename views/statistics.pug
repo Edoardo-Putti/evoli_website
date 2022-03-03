@@ -1,0 +1,71 @@
+extends layout 
+
+block content 
+    body(class="teacherdashborad")
+        header
+            nav(class="d-flex  flex-md-row  navbar navbar-dark navbar-expand-md p-2 px-md-4 ")
+                div(class="navbar-brand d-none d-md-block my-0 mr-md-auto" href="index.html")
+                    img(src="/images/logo_polimi.png" alt="Polimi Logo" height="60px")
+                div(class="row")
+                    a(class="navbar-brand d-md-none d-block my-0 mr-md-auto" href="index.html" style="margin-left: 10px;")
+                        img(src="/images/logo_polimi_mobile.png" alt="Polimi Logo" height="60px")
+                div(style="color: whitesmoke; text-align: center; font-size:calc(10px + .8vw); margin-left: 2vw;")
+                    p#teachersName(style="color: whitesmoke; text-align: center; font-size: calc(10px + .8vw); margin: auto;")
+                        i(class="fa fa-user")
+                        | Logged in as: 
+                        != name
+                button(class="navbar-toggler " type="button" data-toggle="collapse" data-target="#Navbar")
+                    span(class="navbar-toggler-icon")
+                #Navbar(class="collapse navbar-collapse justify-content-stretch")
+                    ul(class="navbar-nav ml-auto principal")
+                        li(class="nav-item ")
+                            a(class="nav-link" href="/")
+                                span(class="fa fa-home fa-lg")
+                                |  Home
+                        li(class="nav-item")
+                            a(class="nav-link" href="/teacher")
+                                span
+                                    img#teachersLogo(src="../images/chalkboard.png" height="30px" width="30px")
+                                |  My
+                                | videos
+                        li(class="nav-item active")
+                            a(class="nav-link" href="/teacher/statistics")
+                                span(class="fa fa-bar-chart fa-lg")
+                                |  Statistics
+                    a(role="button" class="btn  btn-logOut  rounded-pill" href='teacher/logout')
+                        | Log
+                        | Out
+        
+        div(class="row d-flex justify-content-center" style="margin: 20px")
+            div(class="col-12 d-flex justify-content-center")
+                h2 How do you want to Aggregate the feedbacks ?
+            div(class="col-3  d-flex justify-content-center")
+                div(class="custom-control custom-switch")
+                    input(type="checkbox", class="custom-control-input")
+                    label(class="custom-control-label", for="customSwitch1") Compare groups of videos
+            div(class="col-3  d-flex justify-content-center")
+                div(class="custom-control custom-switch")
+                    input(type="checkbox", class="custom-control-input")
+                    label(class="custom-control-label", for="customSwitch1") Aggregate feedback from multiple videos
+            div(class="col-3  d-flex justify-content-center")
+                div(class="custom-control custom-switch")
+                    input(type="checkbox", class="custom-control-input")
+                    label(class="custom-control-label", for="customSwitch1") See which student gave you feedbacks on the selected videos
+            div(class="col-3  d-flex justify-content-center")
+                div(class="custom-control custom-switch")
+                    input(type="checkbox", class="custom-control-input")
+                    label(class="custom-control-label", for="customSwitch1") See the logged students that reacted to your videos
+        div(class="row d-flex justify-content-center")
+            div(class="col-10")
+                nav(class="navbar navbar-expand-md navbar-dark  shadow-sm nav-teacher")
+                            a(class="navbar-brand d-none d-lg-block " style="color: #f1b467; margin-left: 1.5vw;")
+                                | Aggregate for: 
+                            a(class="navbar-brand d-none d-md-block d-lg-none" style="color: #f1b467; margin-left: 1.5vw;") videos in:
+                            div(class="whichfolder d-flex " style="display:inline-flex; margin-left: 1.5vw;")
+                                
+                            div(class="d-flex ml-auto")
+                                div(class="custom d-flex " style="margin-left: 1.5vw; margin-right: 1.5vw;")
+                                    input#search(class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="max-width: 30vw ;" )
+                                    button(class="btn  edit d-flex editable " style="align-items: center;" type="submit")
+                                        i(class="fa fa-pencil" aria-hidden="true" style="margin-right: 5px;")
+                                        | edit

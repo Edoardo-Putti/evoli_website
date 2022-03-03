@@ -21,13 +21,17 @@ block content
                         li(class="nav-item ")
                             a(class="nav-link" href="/")
                                 span(class="fa fa-home fa-lg")
-                                | Home
+                                |  Home
                         li(class="nav-item active")
                             a(class="nav-link" href="/teacher")
                                 span
                                     img#teachersLogo(src="images/chalkboard.png" height="30px" width="30px")
-                                | My
+                                |  My
                                 | videos
+                        li(class="nav-item ")
+                            a(class="nav-link" href="/teacher/statistics")
+                                span(class="fa fa-bar-chart fa-lg")
+                                |  Statistics
                     a(role="button" class="btn  btn-logOut  rounded-pill" href='teacher/logout')
                         | Log
                         | Out
@@ -125,6 +129,7 @@ block content
                     div(class="modal-footer")
                         button#confirmRename(class="btn btn-logOut " style="margin-right: 20px;" onclick="confirmRenameFolder()")  Confirm 
                         button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        
         #modifyTitle(class="modal fade")
             div(class="modal-dialog modal-dialog-centered ")
                 div(class="modal-content")
@@ -173,6 +178,23 @@ block content
                     div(class="modal-footer")
                         button#modNodeBtn(class="btn btn-logOut" style="margin-right: 20px;" onclick="editNote()")  Save 
                         button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+        
+        #manageChapters(class="modal fade")
+            div(class="modal-dialog modal-dialog-centered ")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h2(class="modal-title") Manage the video chapters
+                        button(type="button" class="close" data-dismiss="modal") &times;
+                    div(class="modal-body " style="margin-bottom: 10px;")
+                        div#explanation
+                            
+                        #chapterList(class="row d-flex justify-content-center")
+                            
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-secondary" style="margin-right: auto;" data-dismiss="modal") Close
+                        button(type="button" class="btn btn-success" onclick="addChapter()" ) Add
+                        button#confirmRename(class="btn btn-logOut "  onclick="confirmChapters()")  Confirm 
+                        
         #wrapper
             nav#sidebar-wrapper(class="navbar navbar-inverse fixed-top" role="navigation")
                 ul#folderList(class="nav sidebar-nav")
@@ -212,6 +234,8 @@ block content
                                         input#link(style="margin-bottom: 8px" type="text" class="form-control" placeholder="Paste YT link here" name="link" aria-describedby="basic-addon1" required)
                                     div(class="input-group ")
                                         input#note(style="margin-bottom: 8px" type="text" class="form-control" placeholder="write personal notes (optional)" name="note" aria-describedby="basic-addon1")
+                                div(class="col-12 chp" style=" display: none;")
+                                    label(class="chapters" onclick="checkForChapters()" ) add/manage chapters
                             button(class="w-50 btn btn-lg btn-primary " onclick="uploadVideo()") Upload
                 div(class="col-10 col-sm-10 col-md-5 col-lg-5 col-xl-3")
                     div(class="form" style="border-radius: 40px; text-align: center;  padding: 5px;" )
@@ -266,31 +290,31 @@ block content
                                 tr
                                     th(scope="col") Title
                                     th(scope="col")
-                                        i(class="fa fa-bar-chart fa-lg" aria-hidden="true")
-                                        | Statistics
+                                        i(class="fa fa-comments fa-lg" aria-hidden="true")
+                                        |  Feedbacks
                                     th(scope="col")
                                         i(class="fa fa-barcode fa-lg" aria-hidden="true")
-                                        | Code
+                                        |  Code
                                     th(scope="col")
                                         i(class="fa fa-file-text fa-lg" aria-hidden="true")
-                                        | Notes
+                                        |  Notes
                             tbody
                         table#videoTableSearch(class="table  table-hover my-table " style="margin-top: 0%; display: none;")
                             thead
                                 tr
                                     th(scope="col") Title
                                     th(scope="col")
-                                        i(class="fa fa-bar-chart fa-lg" aria-hidden="true")
-                                        | Statistics
+                                        i(class="fa fa-comments fa-lg" aria-hidden="true")
+                                        |  Feedbacks
                                     th(scope="col")
                                         i(class="fa fa-barcode fa-lg" aria-hidden="true")
-                                        | Code
+                                        |  Code
                                     th(scope="col")
                                         i(class="fa fa-file-text fa-lg" aria-hidden="true")
-                                        | Notes
+                                        |  Notes
                                     th(scope="col")
                                         i(class="fa fa-folder fa-lg" aria-hidden="true")
-                                        | Folder
+                                        |  Folder
                             tbody
         button(class="btn btn-circle btn-logOut stat" onclick="aggStats()")
             i(class="fa fa-pie-chart fa-lg" title="move"   aria-hidden="true")

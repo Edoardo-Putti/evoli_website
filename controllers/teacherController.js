@@ -81,6 +81,7 @@ exports.signUp = [
                     var salt = crypto.randomBytes(16).toString('base64');
                     scrypt.hash(req.body.password, salt).then(hash => {
                         var stud = {
+                            uid: uuid.v4().replace(/-/g, ""),
                             email: req.body.email,
                             hash: hash,
                             salt: salt
@@ -639,8 +640,11 @@ exports.checkOne = (req, res) => {
             logged: function(callback) {
                 db.Slider.findOne({
                     where: {
-                        [Op.and]: [{ video_code: req.body.code }, { visible: 1 }, { user_name: {
-                                [Op.like]: '%@%' } }]
+                        [Op.and]: [{ video_code: req.body.code }, { visible: 1 }, {
+                            user_name: {
+                                [Op.like]: '%@%'
+                            }
+                        }]
                     }
                 }).then(data => {
                     callback(null, data);

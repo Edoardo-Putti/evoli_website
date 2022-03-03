@@ -1823,3 +1823,13 @@ input:checked+.slider:before {
     border: 1px solid #ced4da;
     text-align: center;
 }
+
+.chapters {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.chapters:hover {
+    font-weight: bold;
+    color: #fdb313;
+}

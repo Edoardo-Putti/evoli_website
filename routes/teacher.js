@@ -15,7 +15,7 @@ router.get('/resetPwd', function(req, res, next) {
     res.render('resetPwd', { title: 'Reset Password' });
 });
 
-router.get('/statistics', function(req, res, next) {
+router.get('/feedbacks', function(req, res, next) {
     if (req.session.teacher) {
         res.render('feedbacks', { title: 'View feedbacks', name: req.session.teacher });
     } else {
@@ -45,6 +45,15 @@ router.get('/compare', function(req, res, next) {
 router.get('/studentStats', function(req, res, next) {
     if (req.session.teacher) {
         res.render('studentStats', { title: 'Aggregated Stats', name: req.session.teacher });
+    } else {
+        res.render('teacherAuth', { title: 'Auth' })
+    }
+
+});
+
+router.get('/statistics', function(req, res, next) {
+    if (req.session.teacher) {
+        res.render('statistics', { title: 'Statistics', name: req.session.teacher });
     } else {
         res.render('teacherAuth', { title: 'Auth' })
     }

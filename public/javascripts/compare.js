@@ -140,13 +140,19 @@ function retriveData() {
 
             Object.entries(code2tiltle).forEach(([key, value]) => {
                 if (group1.includes(key)) {
-                    res1.l.push(code2reaction[key].l)
-                    res1.d.push(code2reaction[key].d)
-                    res1.c.push(code2reaction[key].c);
-                    res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
-                    res1.l1 += code2reaction[key].l
-                    res1.d1 += code2reaction[key].d
-                    res1.c1 += code2reaction[key].c
+                    if (code2reaction[key]) {
+                        res1.l.push(code2reaction[key].l)
+                        res1.d.push(code2reaction[key].d)
+                        res1.c.push(code2reaction[key].c);
+                        res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                        res1.l1 += code2reaction[key].l
+                        res1.d1 += code2reaction[key].d
+                        res1.c1 += code2reaction[key].c
+                    } else {
+                        res1.l.push(0)
+                        res1.d.push(0)
+                        res1.c.push(0)
+                    }
                     labels.push(code2tiltle[key])
                     res.understanding.push(average(code2slider[key].understanding).toFixed(2))
                     res.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
@@ -157,13 +163,19 @@ function retriveData() {
                 } else {
 
                     labels2.push(code2tiltle[key])
-                    res2.l.push(code2reaction[key].l)
-                    res2.d.push(code2reaction[key].d)
-                    res2.c.push(code2reaction[key].c);
-                    res2.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
-                    res2.l1 += code2reaction[key].l
-                    res2.d1 += code2reaction[key].d
-                    res2.c1 += code2reaction[key].c
+                    if (code2reaction[key]) {
+                        res2.l.push(code2reaction[key].l)
+                        res2.d.push(code2reaction[key].d)
+                        res2.c.push(code2reaction[key].c);
+                        res2.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                        res2.l1 += code2reaction[key].l
+                        res2.d1 += code2reaction[key].d
+                        res2.c1 += code2reaction[key].c
+                    } else {
+                        res2.l.push(0)
+                        res2.d.push(0)
+                        res2.c.push(0)
+                    }
                     res3.understanding.push(average(code2slider[key].understanding).toFixed(2))
                     res3.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
                     res3.logged.push(code2slider[key].logged);

@@ -30,16 +30,16 @@ block content
                         li(class="nav-item ")
                             a(class="nav-link" href="/")
                                 span(class="fa fa-home fa-lg")
-                                | Home
+                                |  Home
                         li(class="nav-item")
                             a(class="nav-link" href="/teacher")
                                 span
                                     img#teachersLogo(src="../images/chalkboard.png" height="30px" width="30px")
-                                | My videos
+                                |  My videos
                         li(class="nav-item active")
                             a(class="nav-link")
-                                span(class="fa fa-bar-chart fa-lg")
-                                | Statistics
+                                span(class="fa fa-comments fa-lg")
+                                |  Comments
                 a(role="button" class="btn  btn-logOut  rounded-pill" href='../teacher/logout')
                     | Log
                     | Out
@@ -112,20 +112,20 @@ block content
                 #chapters(class='row d-flex justify-content-center' )
             div(class="col-12 d-flex justify-content-center")
                 h3(id="intError")
-            div(class="interval" style="white-space: nowrap;") Focus on the interval from 
-                input#sh(type="text"  placeholder="HH") 
-                |:
-                input#sm(type="text"  placeholder="MM") 
-                |:
-                input#ss(type="text"  placeholder="SS") 
-                | to 
-                input#endh(type="text"  placeholder="HH") 
-                |:
-                input#endm(type="text"  placeholder="MM") 
-                |:
-                input#ends(type="text"  placeholder="SS") 
-                text#seconds 
-                btn(class="btn btn-md endsession" onclick="customFocus()") GO
+                div(class="interval" style="white-space: nowrap;") Focus on the interval from 
+                    input#sh(type="text"  placeholder="HH") 
+                    |:
+                    input#sm(type="text"  placeholder="MM") 
+                    |:
+                    input#ss(type="text"  placeholder="SS") 
+                    |  to 
+                    input#endh(type="text"  placeholder="HH") 
+                    |:
+                    input#endm(type="text"  placeholder="MM") 
+                    |:
+                    input#ends(type="text"  placeholder="SS") 
+                    text#seconds 
+                    btn(class="btn btn-md endsession" onclick="customFocus()") GO
             #chartRow(class="col-12 col-lg-10")
                 #legend(style="background: rgba(161, 158, 158, 0.555); padding-right: 10px")
                 canvas#chart(height="95%")
@@ -135,7 +135,8 @@ block content
                     button(type="button" class="btn btn-logOut" onclick="returnFirstChart()") reset
                     button(type="button" class="btn btn-logOut zoomOut" onclick="zoomOutChart()" style="border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;")
                         i(class="fa fa-search-minus")
-                    
+            #chapterRow(class="col-12 col-lg-10" style="display: none")
+                canvas#chpchart
                         
             
                 

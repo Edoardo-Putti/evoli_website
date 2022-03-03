@@ -87,14 +87,20 @@ function retriveData() {
 
                 labels.push(code2tiltle[key])
                     //-----------------------------------------
-                res1.l.push(code2reaction[key].l)
-                res1.d.push(code2reaction[key].d)
-                res1.c.push(code2reaction[key].c);
-                res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
-                res1.l1 += code2reaction[key].l
-                res1.d1 += code2reaction[key].d
-                res1.c1 += code2reaction[key].c
-                    //-----------------------------------------
+                if (code2reaction[key]) {
+                    res1.l.push(code2reaction[key].l)
+                    res1.d.push(code2reaction[key].d)
+                    res1.c.push(code2reaction[key].c);
+                    res1.total += (code2reaction[key].l + code2reaction[key].d + code2reaction[key].c)
+                    res1.l1 += code2reaction[key].l
+                    res1.d1 += code2reaction[key].d
+                    res1.c1 += code2reaction[key].c
+                } else {
+                    res1.l.push(0)
+                    res1.d.push(0)
+                    res1.c.push(0)
+                }
+                //-----------------------------------------
                 res.understanding.push(average(code2slider[key].understanding).toFixed(2))
                 res.appreciation.push(average(code2slider[key].appreciation).toFixed(2))
                 res.logged.push(code2slider[key].logged);

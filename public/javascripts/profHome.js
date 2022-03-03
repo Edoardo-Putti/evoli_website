@@ -13,6 +13,7 @@ var folders2code = {};
 var videos;
 var actualFolder;
 var editing = false;
+var chapters = {}
 
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\./g, '');
@@ -168,19 +169,24 @@ function confirmDeleteFolder() {
             codes: JSON.stringify(codes),
         },
         success: function(data) {
-            videos.forEach((video, i) => {
+            removed = [];
+            videos.forEach((video, index) => {
                 if (video.folder == folder)
-                    videos.splice(i, 1);
+                    removed.push(index)
             })
-            folders.splice(name2id[folder].slice(1), 1);
-            delete folders2code[folder]
+            for (var i = removed.length - 1; i >= 0; i--)
+                videos.splice(removed[i], 1);
 
-            if (Number(name2id[folder].slice(1)) != 0) {
-                changeCurrentPath(a0)
-            } else {
-                changeCurrentPath(a1)
-            }
+            delete folders[name2id[folder].slice(1)]
+            delete folders2code[folder]
             delete name2id[folder];
+            var ids = Object.values(name2id)
+            if (ids.length != 0) {
+                $('#' + ids[0]).click()
+            } else {
+                retriveData()
+            }
+
             $('#cancelFolder').modal('hide')
             displayFolders(folders);
 
@@ -334,6 +340,7 @@ function uploadFolder() {
                 folders2code[name] = []
                 displayFolders(folders)
                 changeCurrentPath($('#' + name2id[data.name])[0])
+                $('#folderName').val('');
                 $(".showfo").trigger('click');
             },
             error: function(data, status) {
@@ -381,6 +388,168 @@ function Time2Second(Isotime) {
     }
 }
 
+function secondsToMinutes(s) {
+    var h = Math.floor(s / 3600); //Get whole hours
+    s -= h * 3600;
+    var m = Math.floor(s / 60); //Get remaining minutes
+    s -= m * 60;
+    if (h == 0) {
+        return (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
+    } else {
+        return h + ":" + (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
+    }
+}
+
+$('#link').on("keyup", function() {
+    if ($('#link').val()) {
+        $('.chp').show()
+    } else {
+        chapters = {}
+        $('.chp').hide()
+    }
+});
+
+async function checkForChapters() {
+    $('#chapterList').empty()
+    if (Object.keys(chapters).length == 0) {
+        var id = getYoutubeIdByUrl($('#link').val())
+        var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=contentDetails';
+        if (id) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(response) {
+                    var Isotime = response["items"][0]["contentDetails"]["duration"];
+                    var duration = ISO2Second(Isotime)
+                    if (duration) {
+                        var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=snippet';
+                        $.ajax({
+                            url: url,
+                            type: 'get',
+                            success: function(response) {
+                                var description = response['items'][0]['snippet']['description']
+                                var filtered = [...description.matchAll(/.*\d+:\d+(:\d+)?.*/g)]
+                                $('#chapterList').attr('name', duration);
+                                $('#explanation').empty()
+                                $('#explanation').append('here you can add or edit the youtube video chapters. <br/> Please always follow this format: \
+                                <br/> \
+                                 - chapter\'s title \
+                                 <br/> \
+                                 - starting point with format (HH:MM:SS) Max: ' + secondsToMinutes(duration - 5))
+                                if (filtered.length) {
+                                    filtered.forEach(str => {
+                                        whole = str[0]
+                                        time = whole.match(/\d+:\d+(:\d+)?/)[0]
+                                        title = whole.replace(time, '')
+                                        chapters[Time2Second(time)] = title
+                                        var c = '<div class="input-group" style="margin: 2px"><input  class="form-control" style="width: 60%" value="' + title + '"><input  class="form-control" style="width: 20%" value="' + time + '"><div class="col-2"><button class="btn btn-circle" name="' + Time2Second(time) + '" onclick="deleteChapter(this)"><i class="fa fa-trash fa-lg" title="delete" aria-hidden="true"></i></button></div></div>'
+                                        $('#chapterList').append(c);
+
+
+                                    })
+                                } else {
+                                    var c = '<div class="input-group" style="margin: 2px"><input class="form-control" style="width: 60%" ><input  class="form-control" style="width: 20%" ><div class="col-2"><button class="btn btn-circle"  onclick="deleteChapter(this)"><i class="fa fa-trash fa-lg" title="delete" aria-hidden="true"></i></button></div></div>'
+                                    $('#chapterList').append(c);
+                                }
+
+                                $('#manageChapters').modal('show')
+                            }
+                        })
+
+                    } else {
+                        $('#newVideoError').empty()
+                        $('#newVideoError').text('There is no video matching this URL');
+                    }
+                },
+                error: function(data, status) {
+                    $('#newVideoError').empty()
+                    $('#newVideoError').text('There is no video matching this URL');
+                },
+            })
+        } else {
+            $('#newVideoError').empty()
+            $('#newVideoError').text('There is no video matching this URL');
+        }
+    } else {
+        $('#chapterList').empty()
+        Object.keys(chapters).forEach((time, index) => {
+            title = chapters[time]
+            var c = '<div class="input-group" style="margin: 2px"><input  class="form-control" style="width: 60%" value="' + title + '"><input  class="form-control" style="width: 20%" value="' + secondsToMinutes(time) + '"><div class="col-2"><button class="btn btn-circle" name="' + time + '" onclick="deleteChapter(this)"><i class="fa fa-trash fa-lg" title="delete" aria-hidden="true"></i></button></div></div>'
+            $('#chapterList').append(c);
+            $('#manageChapters').modal('show')
+        })
+    }
+}
+
+function addChapter() {
+    var c = '<div class="input-group" style="margin: 2px"><input class="form-control" style="width: 60%" ><input  class="form-control" style="width: 20%" ><div class="col-2"><button class="btn btn-circle"  onclick="deleteChapter(this)"><i class="fa fa-trash fa-lg" title="delete" aria-hidden="true"></i></button></div></div>'
+    $('#chapterList').append(c);
+}
+
+function deleteChapter(e) {
+    $(e).parent().parent().remove()
+}
+
+function confirmChapters() {
+    var error = false;
+    var duration = Number($('#chapterList').attr('name')) - 5;
+    chapters = {}
+    $('#chapterList').children().each(function(e) {
+        if ($(this).children().eq(0).val()) {
+            if ($(this).children().eq(1).val()) {
+                console.log($(this).children().eq(0).val(), Time2Second($(this).children().eq(1).val()))
+                if (/\d+:\d+(:\d+)?/.test($(this).children().eq(1).val())) {
+                    if (Time2Second($(this).children().eq(1).val()) > duration) {
+                        error = true;
+                        $(this).popover({
+                            placement: "right",
+                            content: 'Please the starting time must be less then the video duration'
+                        }).popover('show')
+                        setTimeout(function() {
+                            $('.popover').popover('dispose')
+                        }, 2000);
+                    } else {
+                        chapters[Time2Second($(this).children().eq(1).val())] = $(this).children().eq(0).val()
+                    }
+                } else {
+                    error = true;
+                    $(this).popover({
+                        placement: "right",
+                        content: 'Please insert a valid initial time'
+                    }).popover('show')
+                    setTimeout(function() {
+                        $('.popover').popover('dispose')
+                    }, 2000);
+                }
+            } else {
+                error = true;
+                $(this).popover({
+                    placement: "right",
+                    content: 'Please insert the initial time'
+                }).popover('show')
+                setTimeout(function() {
+                    $('.popover').popover('dispose')
+                }, 2000);
+            }
+
+
+        } else {
+            error = true;
+            $(this).popover({
+                placement: "right",
+                content: 'Please insert the title'
+            }).popover('show')
+            setTimeout(function() {
+                $('.popover').popover('dispose')
+            }, 2000);
+        }
+
+    })
+    if (!error)
+        $('#manageChapters').modal('hide');
+}
+
+
 async function uploadVideo() {
     var id = getYoutubeIdByUrl($('#link').val())
     var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=contentDetails';
@@ -392,55 +561,89 @@ async function uploadVideo() {
                 var Isotime = response["items"][0]["contentDetails"]["duration"];
                 var duration = ISO2Second(Isotime)
                 if (duration) {
-                    var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=snippet';
-                    $.ajax({
-                        url: url,
-                        type: 'get',
-                        success: function(response) {
-                            var description = response['items'][0]['snippet']['description']
-                            var filtered = [...description.matchAll(/.*\d+:\d+(:\d+)?.*/g)]
-                            var chapters = {}
-                            filtered.forEach(str => {
-                                whole = str[0]
-                                time = whole.match(/\d+:\d+(:\d+)?/)[0]
-                                title = whole.replace(time, '')
-                                chapters[Time2Second(time)] = title
-                            })
-                            $.ajax({
-                                url: "teacher/newVideo",
-                                type: 'post',
-                                data: {
-                                    title: $('#className').val(),
-                                    folder: $('#folder option:selected').val(),
-                                    comment: $('#note').val(),
-                                    id: id,
-                                    seconds: duration,
-                                    chapters: JSON.stringify(chapters)
-                                },
-                                success: function(data) {
-                                    videos.push(data);
-                                    if ($('#folder option:selected').val() != actualFolder)
-                                        changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
-                                    else
-                                        displayVideos(videos)
-                                    $(".showup").trigger('click');
-                                    $('#link').val('')
-                                    $('#note').val('')
-                                    $('#className').val('')
+                    if (Object.keys(chapters).length == 0) {
+                        var url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyDKlvdmXY3wAbBNT8M_dayllK8_JvneOMA&part=snippet';
+                        $.ajax({
+                            url: url,
+                            type: 'get',
+                            success: function(response) {
+                                var description = response['items'][0]['snippet']['description']
+                                var filtered = [...description.matchAll(/.*\d+:\d+(:\d+)?.*/g)]
 
-                                },
-                                error: function(data, status) {
-                                    var errorMessage = JSON.parse(data.responseText).msg;
-                                    $('#newVideoError').empty()
-                                    $('#newVideoError').text(errorMessage);
-                                },
-                            });
-                        },
-                        error: function(data, status) {
-                            $('#newVideoError').empty()
-                            $('#newVideoError').text('There was an error');
-                        },
-                    })
+                                filtered.forEach(str => {
+                                    whole = str[0]
+                                    time = whole.match(/\d+:\d+(:\d+)?/)[0]
+                                    title = whole.replace(time, '')
+                                    chapters[Time2Second(time)] = title
+                                })
+                                $.ajax({
+                                    url: "teacher/newVideo",
+                                    type: 'post',
+                                    data: {
+                                        title: $('#className').val(),
+                                        folder: $('#folder option:selected').val(),
+                                        comment: $('#note').val(),
+                                        id: id,
+                                        seconds: duration,
+                                        chapters: JSON.stringify(chapters)
+                                    },
+                                    success: function(data) {
+                                        videos.push(data);
+                                        if ($('#folder option:selected').val() != actualFolder)
+                                            changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
+                                        else
+                                            displayVideos(videos)
+                                        $(".showup").trigger('click');
+                                        $('#link').val('')
+                                        $('#note').val('')
+                                        $('#className').val('')
+                                        chapters = {}
+
+                                    },
+                                    error: function(data, status) {
+                                        var errorMessage = JSON.parse(data.responseText).msg;
+                                        $('#newVideoError').empty()
+                                        $('#newVideoError').text(errorMessage);
+                                    },
+                                });
+                            },
+                            error: function(data, status) {
+                                $('#newVideoError').empty()
+                                $('#newVideoError').text('There was an error');
+                            },
+                        })
+                    } else {
+                        $.ajax({
+                            url: "teacher/newVideo",
+                            type: 'post',
+                            data: {
+                                title: $('#className').val(),
+                                folder: $('#folder option:selected').val(),
+                                comment: $('#note').val(),
+                                id: id,
+                                seconds: duration,
+                                chapters: JSON.stringify(chapters)
+                            },
+                            success: function(data) {
+                                videos.push(data);
+                                if ($('#folder option:selected').val() != actualFolder)
+                                    changeCurrentPath($('#' + name2id[$('#folder option:selected').val()])[0])
+                                else
+                                    displayVideos(videos)
+                                $(".showup").trigger('click');
+                                $('#link').val('')
+                                $('#note').val('')
+                                $('#className').val('')
+                                chapters = {}
+                            },
+                            error: function(data, status) {
+                                var errorMessage = JSON.parse(data.responseText).msg;
+                                $('#newVideoError').empty()
+                                $('#newVideoError').text(errorMessage);
+                            },
+                        });
+                    }
+
 
                 } else {
                     $('#newVideoError').empty()
@@ -928,7 +1131,7 @@ function showStat(tr) {
         },
         success: function(data) {
             if (data) {
-                document.location.href = 'teacher/statistics';
+                document.location.href = 'teacher/feedbacks';
             } else {
                 $(tr).popover({
                     placement: "right",

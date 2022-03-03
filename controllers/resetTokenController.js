@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 const { body, validationResult } = require('express-validator');
 
 const transport = nodemailer.createTransport({
-    host: 'smtp.polimi.it',
-    port: 25,
+    host: 'XXXX',
+    port: XX,
 });
 
 exports.create = [
